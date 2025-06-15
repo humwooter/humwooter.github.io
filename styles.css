@@ -52,7 +52,7 @@ body {
 .logo {
     font-size: 1.5rem;
     font-weight: 700;
-    color: var(--text-color);
+    color: var(--accent-color);
 }
 
 .nav-links a {
@@ -98,7 +98,7 @@ section {
 
 .subtitle {
     font-size: 1.25rem;
-    color: var(--text-color);
+    color: color-mix(in srgb, var(--text-color) 50%, transparent);
     margin-bottom: 2rem;
 }
 
@@ -115,7 +115,7 @@ section {
 
 .cta-button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--text-color) 10%, transparent);
 }
 
 .hero-image {
@@ -129,7 +129,7 @@ section {
     max-width: 100%;
     height: auto;
     border-radius: 20px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 20px 40px color-mix(in srgb, var(--text-color) 10%, transparent);
 }
 
 .features {
@@ -155,7 +155,7 @@ section {
     backdrop-filter: blur(10px);
     padding: 2rem;
     border-radius: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 6px color-mix(in srgb, var(--text-color) 10%, transparent);
     transition: transform 0.3s ease;
 }
 
@@ -189,7 +189,7 @@ section {
     width: 100%;
     height: auto;
     border-radius: 20px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 20px color-mix(in srgb, var(--text-color) 10%, transparent);
     transition: transform 0.3s ease;
 }
 
