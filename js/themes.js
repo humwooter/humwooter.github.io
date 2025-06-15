@@ -3,6 +3,7 @@ const themes = {
         name: "Cloud",
         accentColor: "rgb(255, 248, 148)", // Selection color
         textColor: "rgb(255, 255, 255)", // White text
+        accentTextColor: "rgb(0, 0, 0)", //Black text
         topColor: "rgb(100, 114, 255)", // 0.3914300203323364, 0.4465039372444153, 1.000000238418579
         bottomColor: "rgb(0, 4, 114)", // 0.00023245636839419603, 0.014830045402050018, 0.446861207485199
         entryBackgroundColor: "rgba(255, 255, 120, 0.083)", // 1.0000089406967163, 0.9999930262565613, 0.4695098400115967, 0.08297565579414368
@@ -15,6 +16,7 @@ const themes = {
         name: "Chrome",
         accentColor: "rgb(146, 255, 255)", // Selection color
         textColor: "rgb(255, 255, 255)", // White text
+        accentTextColor: "rgb(0, 0, 0)", //Black text
         topColor: "rgb(0, 0, 0)", // 0, 0, 0
         bottomColor: "rgb(0, 65, 144)", // -0.10885760933160782, 0.25529563426971436, 0.563895583152771
         entryBackgroundColor: "rgba(255, 77, 255, 0.229)", // 1.0831798315048218, 0.3028375506401062, 1.0300824642181396, 0.2291666030883789
@@ -27,6 +29,7 @@ const themes = {
         name: "Mocha",
         accentColor: "rgb(255, 255, 255)", // Selection color
         textColor: "rgb(255, 255, 255)", // White text
+        accentTextColor: "rgb(0, 0, 0)", //Black text
         topColor: "rgb(106, 84, 80)", // 0.41389602422714233, 0.33013349771499634, 0.3144141435623169
         bottomColor: "rgb(20, 15, 17)", // 0.07758093625307083, 0.05792427808046341, 0.06616977602243423
         entryBackgroundColor: "rgba(0, 0, 0, 0.305)", // 0.0, 0.0, 0.0, 0.3047210300429184

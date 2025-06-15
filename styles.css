@@ -201,6 +201,7 @@ section {
 .download {
     background-color: transparent;
     text-align: center;
+    color: var(--text-color);
 }
 
 .download h2 {
