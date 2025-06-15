@@ -201,13 +201,13 @@ section {
 .download {
     background-color: transparent;
     text-align: center;
-    color: var(--buttonTextColor);
+    color: var(--accentTextColor);
 }
 
 .download h2 {
     font-size: 2.5rem;
     margin-bottom: 1rem;
-    color: var(--buttonTextColor);
+    color: var(--accentTextColor);
 }
 
 .download p {
