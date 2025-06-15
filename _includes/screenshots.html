@@ -1,0 +1,10 @@
+<section id="screenshots" class="screenshots">
+    <h2>Screenshots</h2>
+    <div class="screenshot-gallery">
+        {% for screenshot in site.screenshots %}
+        <div class="screenshot">
+            <img src="{{ site.baseurl }}/images/{{ screenshot.image }}" alt="{{ screenshot.alt }}">
+        </div>
+        {% endfor %}
+    </div>
+</section> 

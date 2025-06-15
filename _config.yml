@@ -1,3 +1,26 @@
 theme: jekyll-theme-minimal
 title: Your App Name
-description: Your app description here 
+description: A brief, compelling description of your app that highlights its main value proposition.
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "" # the base hostname & protocol for your site, e.g. http://example.com
+
+# App Store URL
+app_store_url: "https://apps.apple.com/app/your-app-id"
+
+# Features
+features:
+  - title: "Feature 1"
+    description: "Description of your first key feature."
+  - title: "Feature 2"
+    description: "Description of your second key feature."
+  - title: "Feature 3"
+    description: "Description of your third key feature."
+
+# Screenshots
+screenshots:
+  - image: "screenshot1.png"
+    alt: "App Screenshot 1"
+  - image: "screenshot2.png"
+    alt: "App Screenshot 2"
+  - image: "screenshot3.png"
+    alt: "App Screenshot 3" 
