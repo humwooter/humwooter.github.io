@@ -1,5 +1,5 @@
-theme: jekyll-theme-minimal
-title: Your App Name
+theme: slate
+title: Logs
 description: A brief, compelling description of your app that highlights its main value proposition.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
