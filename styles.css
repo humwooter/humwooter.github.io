@@ -1,12 +1,9 @@
 :root {
-    --primary-color: #007AFF;
+    --primary-color: var(--accent-color);
     --text-color: var(--text-color);
     --background-color: transparent;
     --secondary-background: transparent;
-    --accent-color: rgb(255, 248, 148);
-    --entry-background: rgba(255, 255, 120, 0.083);
-    --pin-color: rgb(255, 255, 255);
-    --reminder-color: rgb(55, 190, 251);
+    --accent-color: var(--accent-color);
     --font-family: "Timeburner";
     --font-size: 13.5px;
     --line-spacing: 1.5;
@@ -33,7 +30,7 @@ body {
     top: 0;
     left: 0;
     right: 0;
-    background-color: var(--entry-background);
+    /* background-color: var(--entry-background); */
     backdrop-filter: blur(10px);
     z-index: 1000;
     padding: 1rem 2rem;
