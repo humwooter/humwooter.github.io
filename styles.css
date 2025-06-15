@@ -1,6 +1,6 @@
 :root {
     --primary-color: #007AFF;
-    --text-color: rgb(255, 255, 255);
+    --text-color: var(--text-color);
     --background-color: transparent;
     --secondary-background: transparent;
     --accent-color: rgb(255, 248, 148);
@@ -33,7 +33,7 @@ body {
     top: 0;
     left: 0;
     right: 0;
-    background-color: rgba(255, 255, 255, 0.98);
+    background-color: var(--entry-background);
     backdrop-filter: blur(10px);
     z-index: 1000;
     padding: 1rem 2rem;
