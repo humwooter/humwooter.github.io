@@ -3,22 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ site.title }}</title>
-    <link rel="stylesheet" href="{{ site.baseurl }}/styles.css">
+    <title>Logs</title>
+    <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    {% include header.html %}
+    <div id="header-container"></div>
 
     <main>
-        {% include hero.html %}
-        {% include features.html %}
-        {% include screenshots.html %}
-        {% include download.html %}
+        <div id="hero-container"></div>
+        <div id="features-container"></div>
+        <div id="screenshots-container"></div>
+        <div id="download-container"></div>
     </main>
 
-    {% include footer.html %}
+    <div id="footer-container"></div>
+
+    <script src="js/components.js"></script>
 </body>
 </html> 
