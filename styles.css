@@ -16,7 +16,7 @@
 }
 
 title {
-    color: var(--accent-color);
+    color: var(--text-color);
 }
 
 body {
@@ -52,7 +52,7 @@ body {
 .logo {
     font-size: 1.5rem;
     font-weight: 700;
-    color: var(--primary-color);
+    color: var(--text-color);
 }
 
 .nav-links a {
@@ -98,7 +98,7 @@ section {
 
 .subtitle {
     font-size: 1.25rem;
-    color: #666;
+    color: var(--text-color);
     margin-bottom: 2rem;
 }
 
