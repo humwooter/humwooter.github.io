@@ -51,6 +51,7 @@ function applyTheme(themeName) {
     // Apply theme variables
     document.documentElement.style.setProperty('--accent-color', theme.accentColor);
     document.documentElement.style.setProperty('--text-color', theme.textColor);
+    document.documentElement.style.setProperty('--accentTextColor', theme.accentTextColor);
     document.documentElement.style.setProperty('--entry-background', theme.entryBackgroundColor);
     document.documentElement.style.setProperty('--font-family', theme.fontName);
     document.documentElement.style.setProperty('--font-size', theme.fontSize);

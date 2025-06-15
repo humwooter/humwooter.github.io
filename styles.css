@@ -106,7 +106,7 @@ section {
 .cta-button {
     display: inline-block;
     background-color: var(--accent-color);
-    color: var(--bottom-color);
+    color: var(--accentTextColor);
     padding: 1rem 2rem;
     border-radius: 30px;
     text-decoration: none;
