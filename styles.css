@@ -34,11 +34,11 @@ body {
     top: 0;
     left: 0;
     right: 0;
-    /* background-color: var(--entry-background); */
+    background-color: var(--entry-background);
     backdrop-filter: blur(10px);
     z-index: 1000;
     padding: 1rem 2rem;
-    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 0 color-mix(in srgb, var(--text-color) 10%, transparent);
 }
 
 .nav {
@@ -64,7 +64,7 @@ body {
 }
 
 .nav-links a:hover {
-    color: var(--primary-color);
+    color: var(--accent-color);
 }
 
 main {

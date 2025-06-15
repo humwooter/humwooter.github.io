@@ -46,19 +46,16 @@ function applyTheme(themeName) {
     document.body.style.background = `linear-gradient(to bottom, ${theme.topColor}, ${theme.bottomColor})`;
     
     // Apply theme variables
-    // document.documentElement.style.setProperty('--accent-color', theme.accentColor);
+    document.documentElement.style.setProperty('--accent-color', theme.accentColor);
     document.documentElement.style.setProperty('--text-color', theme.textColor);
-    // document.documentElement.style.setProperty('--entry-background', theme.entryBackgroundColor);
-    // document.documentElement.style.setProperty('--pin-color', theme.pinColor);
-    // document.documentElement.style.setProperty('--reminder-color', theme.reminderColor);
+    document.documentElement.style.setProperty('--entry-background', theme.entryBackgroundColor);
     document.documentElement.style.setProperty('--font-family', theme.fontName);
     document.documentElement.style.setProperty('--font-size', theme.fontSize);
-    // document.documentElement.style.setProperty('--line-spacing', theme.lineSpacing);
+    document.documentElement.style.setProperty('--line-spacing', theme.lineSpacing);
     
     // Apply font and text color
     document.body.style.fontFamily = theme.fontName;
     document.body.style.fontSize = theme.fontSize;
-    // document.body.style.lineHeight = theme.lineSpacing;
     document.body.style.color = theme.textColor;
     
     // Store the selected theme
