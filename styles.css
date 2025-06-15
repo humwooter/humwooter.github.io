@@ -295,8 +295,17 @@ section {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     position: relative;
     overflow: hidden;
-    background: var(--entry-background);
-    backdrop-filter: blur(10px);
+}
+
+.theme-preview {
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    transition: all 0.3s ease;
 }
 
 .theme-card:hover {
@@ -304,21 +313,13 @@ section {
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
 }
 
+.theme-card:hover .theme-preview {
+    transform: scale(0.95);
+}
+
 .theme-card.selected {
     transform: scale(1.1) translateY(-10px);
     z-index: 1;
-}
-
-.theme-card img {
-    width: 120px;
-    height: 120px;
-    object-fit: contain;
-    margin-bottom: 1rem;
-    transition: transform 0.3s ease;
-}
-
-.theme-card:hover img {
-    transform: scale(1.1);
 }
 
 .theme-card h3 {
@@ -326,6 +327,5 @@ section {
     font-weight: 600;
     text-align: center;
     margin: 0;
-    color: var(--accent-color);
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 } 

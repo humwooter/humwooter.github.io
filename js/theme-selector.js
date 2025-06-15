@@ -5,34 +5,37 @@ class ThemeSelector {
         this.selectedTheme = null;
     }
 
-    createCard(theme) {
+    createCard(themeKey, theme) {
         const card = document.createElement('div');
         card.className = 'theme-card';
         card.style.background = `linear-gradient(to bottom, ${theme.topColor}, ${theme.bottomColor})`;
         
-        const icon = document.createElement('img');
-        icon.src = `images/${theme.icon}`;
-        icon.alt = `${theme.name} icon`;
+        // Create theme preview
+        const preview = document.createElement('div');
+        preview.className = 'theme-preview';
+        preview.style.background = theme.entryBackgroundColor;
+        preview.style.backdropFilter = 'blur(10px)';
         
+        // Add theme name
         const name = document.createElement('h3');
         name.textContent = theme.name;
         name.style.color = theme.accentColor;
         
-        card.appendChild(icon);
-        card.appendChild(name);
+        preview.appendChild(name);
+        card.appendChild(preview);
         
-        card.addEventListener('click', () => this.selectTheme(theme));
+        card.addEventListener('click', () => this.selectTheme(themeKey));
         
         return card;
     }
 
-    selectTheme(theme) {
+    selectTheme(themeKey) {
         // Remove selected class from all cards
         this.cards.forEach(card => card.classList.remove('selected'));
         
         // Add selected class to clicked card
         const selectedCard = this.cards.find(card => 
-            card.querySelector('h3').textContent === theme.name
+            card.querySelector('h3').textContent === themes[themeKey].name
         );
         if (selectedCard) {
             selectedCard.classList.add('selected');
@@ -40,7 +43,7 @@ class ThemeSelector {
         }
         
         // Apply the theme
-        applyTheme(Object.keys(themes).find(key => themes[key] === theme));
+        applyTheme(themeKey);
     }
 
     render() {
@@ -49,15 +52,15 @@ class ThemeSelector {
         this.cards = [];
         
         // Create and add cards for each theme
-        Object.values(themes).forEach(theme => {
-            const card = this.createCard(theme);
+        Object.entries(themes).forEach(([themeKey, theme]) => {
+            const card = this.createCard(themeKey, theme);
             this.container.appendChild(card);
             this.cards.push(card);
         });
         
         // Select the current theme
-        const currentTheme = localStorage.getItem('selectedTheme') || 'theme1';
-        this.selectTheme(themes[currentTheme]);
+        const currentTheme = localStorage.getItem('selectedTheme') || 'cloud';
+        this.selectTheme(currentTheme);
     }
 }
 
