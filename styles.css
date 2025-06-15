@@ -3,7 +3,13 @@
     --text-color: #333333;
     --background-color: #FFFFFF;
     --secondary-background: #F5F5F7;
-    --accent-color: #fdbb2d;
+    --accent-color: rgb(255, 248, 148);
+    --entry-background: rgba(255, 255, 120, 0.083);
+    --pin-color: rgb(255, 255, 255);
+    --reminder-color: rgb(55, 190, 251);
+    --font-family: "Timeburner";
+    --font-size: 13.5px;
+    --line-spacing: 0px;
 }
 
 * {
@@ -13,10 +19,13 @@
 }
 
 body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    line-height: 1.6;
-    color: var(--text-color);
+    font-family: var(--font-family);
+    font-size: var(--font-size);
+    line-height: var(--line-spacing);
+    color: var(--accent-color);
     background-color: var(--background-color);
+    min-height: 100vh;
+    transition: all 0.3s ease;
 }
 
 .header {
@@ -95,7 +104,7 @@ section {
 .cta-button {
     display: inline-block;
     background-color: var(--accent-color);
-    color: #000;
+    color: var(--bottom-color);
     padding: 1rem 2rem;
     border-radius: 30px;
     text-decoration: none;
@@ -141,7 +150,8 @@ section {
 }
 
 .feature-card {
-    background: white;
+    background: var(--entry-background);
+    backdrop-filter: blur(10px);
     padding: 2rem;
     border-radius: 20px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
@@ -285,6 +295,8 @@ section {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     position: relative;
     overflow: hidden;
+    background: var(--entry-background);
+    backdrop-filter: blur(10px);
 }
 
 .theme-card:hover {
@@ -314,5 +326,6 @@ section {
     font-weight: 600;
     text-align: center;
     margin: 0;
+    color: var(--accent-color);
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 } 
