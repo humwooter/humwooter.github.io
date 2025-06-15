@@ -19,7 +19,7 @@ class ThemeSelector {
         // Add theme name
         const name = document.createElement('h3');
         name.textContent = theme.name;
-        name.style.color = theme.accentColor;
+        name.style.color = theme.textColor;
         
         preview.appendChild(name);
         card.appendChild(preview);
