@@ -8,7 +8,7 @@ const themes = {
         entryBackgroundColor: "rgba(255, 255, 120, 0.083)", // 1.0000089406967163, 0.9999930262565613, 0.4695098400115967, 0.08297565579414368
         reminderColor: "rgb(55, 190, 251)", // 0.21516916155815125, 0.7442479729652405, 0.9846494793891907
         fontName: "Timeburner",
-        fontSize: "13.5px",
+        fontSize: "18px",
         lineSpacing: "1.5" // Changed from 0px to 1.5
     },
     chrome: {
@@ -20,7 +20,7 @@ const themes = {
         entryBackgroundColor: "rgba(255, 77, 255, 0.229)", // 1.0831798315048218, 0.3028375506401062, 1.0300824642181396, 0.2291666030883789
         reminderColor: "rgb(70, 255, 150)", // 0.2749909460544586, 1.014039397239685, 0.5884220004081726
         fontName: "BrassMono-Regular",
-        fontSize: "15.5px",
+        fontSize: "18px",
         lineSpacing: "1.5" // Changed from 3px to 1.5
     },
     mocha: {
@@ -32,7 +32,7 @@ const themes = {
         entryBackgroundColor: "rgba(0, 0, 0, 0.305)", // 0.0, 0.0, 0.0, 0.3047210300429184
         reminderColor: "rgb(255, 93, 144)", // 1.0802855491638184, 0.3632991313934326, 0.5633771419525146
         fontName: "Catbrother",
-        fontSize: "13.5px",
+        fontSize: "18px",
         lineSpacing: "1.5" // Changed from 2px to 1.5
     }
 };
