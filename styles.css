@@ -522,7 +522,7 @@ section {
     .mobile-nav {
         display: block;
         position: fixed;
-        top: 64px; /* match header height */
+        top: 64px; /* or your header height */
         right: -100%;
         width: 30vw;
         max-width: 50px;
