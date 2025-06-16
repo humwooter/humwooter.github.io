@@ -488,12 +488,16 @@ section {
 
 @media (max-width: 768px) {
     .header {
-        padding: 0.5rem;
-        height: 50px;
+        padding: 0.75rem 0.5rem;
+        height: 64px;
+        min-height: 64px;
+        box-sizing: border-box;
     }
 
     .nav {
-        padding: 0.25rem 0.5rem;
+        padding: 0;
+        height: 100%;
+        align-items: center;
     }
 
     .logo img {
@@ -517,9 +521,14 @@ section {
 
     .mobile-nav {
         display: block;
-        width: 40vw;
-        max-width: 160px;
+        width: 50vw;
+        max-width: 50vw;
         min-width: 120px;
+        background: linear-gradient(to bottom, transparent 0%, var(--entry-background) 30%, var(--entry-background) 100%);
+        border-radius: 24px 0 24px 24px;
+        outline: 2px solid var(--text-color);
+        border-top: none;
+        box-shadow: 0 4px 24px rgba(0,0,0,0.08);
     }
 
     .mobile-nav-header {
@@ -534,24 +543,29 @@ section {
     }
 
     main {
-        margin-top: 60px;
+        margin-top: 120px;
     }
 
     .hero {
         flex-direction: column;
         text-align: center;
         padding: 1rem;
-        min-height: calc(100vh - 60px);
+        min-height: calc(100vh - 120px);
     }
 
     .hero-content {
         padding-right: 0;
-        margin-bottom: 1.5rem;
+        margin-bottom: 0.5rem;
     }
 
     .hero h1 {
         font-size: 1.8rem;
         margin-bottom: 1rem;
+        margin-top: 0;
+    }
+
+    .hero-image {
+        margin-bottom: 0.5rem;
     }
 
     .subtitle {
@@ -562,6 +576,7 @@ section {
     .app-icon-carousel {
         width: 60px;
         height: 60px;
+        margin-bottom: 0.2rem;
     }
 
     .app-icon-card img.app-icon {
