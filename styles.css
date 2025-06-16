@@ -529,7 +529,7 @@ section {
         max-width: 50px;
         min-width: 30px;
         height: calc(100vh - 64px);
-        background: var(--mobile-nav-gradient, linear-gradient(to bottom, #333, #111)); /* fallback */
+        background: var(--topColor);
         border-radius: 18px 0 18px 18px;
         outline: 1.5px solid var(--text-color);
         border-top: none;
