@@ -115,7 +115,7 @@ function applyTheme(themeName) {
     const logoImg = document.querySelector('.logo img');
     if (logoImg) {
         const logoColor = isLightText(theme.textColor) ? 'white' : 'black';
-        logoImg.src = `images/logo_${logoColor}.png`;
+        logoImg.src = `images/logo_${logoColor}.PNG`;
     }
     
     // Store the selected theme
