@@ -522,8 +522,8 @@ section {
     .mobile-nav {
         display: block;
         width: 30vw;
-        max-width: 80px;
-        min-width: 50px;
+        max-width: 50px;
+        min-width: 30px;
         background: linear-gradient(to bottom, transparent 0%, var(--entry-background) 30%, var(--entry-background) 100%);
         border-radius: 18px 0 18px 18px;
         outline: 1.5px solid var(--text-color);
@@ -561,7 +561,7 @@ section {
 
     .hero-image {
         margin-bottom: 0;
-        margin-top: 0.2rem;
+        /* margin-top: 0.2rem; */
     }
 
     .hero h1 {
@@ -617,7 +617,7 @@ section {
     
     .feature-screenshots img {
         width: 100%;
-        max-width: 120px !important;
+        max-width: 70px !important;
         position: relative !important;
         transform: none !important;
         opacity: 1 !important;
