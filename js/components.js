@@ -7,9 +7,6 @@ const components = {
                     <div class="logo">
                         <img src="images/logo_white.png" alt="" width="120" height="120">
                     </div>
-                    <button class="mobile-menu-button">☰</button>
-                </div>
-                <div class="nav-links">
                     <div class="dropdown">
                         <a href="#" class="dropdown-trigger">Themes</a>
                         <div class="dropdown-content">
@@ -21,6 +18,8 @@ const components = {
                             <a href="#" data-theme="scarab">Scarab</a>
                         </div>
                     </div>
+                </div>
+                <div class="nav-links">
                     <div class="dropdown">
                         <a href="#features" class="dropdown-trigger">Features</a>
                         <div class="dropdown-content">
@@ -306,30 +305,6 @@ function renderAllComponents() {
     
     // Setup animations after components are rendered
     setupSectionAnimations();
-
-    // Setup mobile menu functionality
-    const mobileMenuButton = document.querySelector('.mobile-menu-button');
-    const navLinks = document.querySelector('.nav-links');
-    
-    if (mobileMenuButton && navLinks) {
-        mobileMenuButton.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-        });
-
-        // Close mobile menu when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('.nav') && navLinks.classList.contains('active')) {
-                navLinks.classList.remove('active');
-            }
-        });
-
-        // Close mobile menu when clicking a link
-        navLinks.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                navLinks.classList.remove('active');
-            });
-        });
-    }
 
     // Setup feature dropdown functionality
     const featureLinks = document.querySelectorAll('.dropdown-content a[data-feature]');
