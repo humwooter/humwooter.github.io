@@ -72,13 +72,6 @@ body {
     align-items: center;
 }
 
-.logo-svg {
-    width: 40px;
-    height: 40px;
-    color: var(--accent-color);
-    fill: currentColor;
-    stroke: currentColor;
-}
 
 .nav-links a,
 .dropdown-trigger {

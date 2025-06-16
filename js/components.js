@@ -5,7 +5,7 @@ const components = {
             <nav class="nav">
                 <div class="nav-left">
                     <div class="logo">
-                        <img src="/images/logo_black.PNG" alt="" width="120" height="120">
+                        <img src="images/logo_black.PNG" alt="" width="120" height="120">
                     </div>
                     <div class="dropdown">
                         <a href="#" class="dropdown-trigger">Themes</a>
