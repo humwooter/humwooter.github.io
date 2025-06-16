@@ -550,8 +550,9 @@ section {
         flex-direction: column;
         text-align: center;
         padding: 1rem;
-        min-height: calc(100vh - 70px);
+        min-height: unset !important;
         margin-top: 0;
+        justify-content: flex-start !important;
     }
 
     .hero-content {
@@ -1127,7 +1128,9 @@ section {
         flex-direction: column;
         text-align: center;
         padding: 1rem;
-        min-height: calc(100vh - 60px);
+        min-height: unset !important;
+        margin-top: 0;
+        justify-content: flex-start !important;
     }
 
     .hero-content {
