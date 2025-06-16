@@ -7,7 +7,7 @@ const components = {
                     <div class="logo">
                         <img src="images/logo_black.PNG" alt="" width="120" height="120">
                     </div>
-                    <div class="dropdown">
+                    <div class="dropdown desktop-only">
                         <a href="#" class="dropdown-trigger">Themes</a>
                         <div class="dropdown-content">
                             <a href="#" data-theme="cloud">Cloud</a>
@@ -19,7 +19,7 @@ const components = {
                         </div>
                     </div>
                 </div>
-                <div class="nav-links">
+                <div class="nav-links desktop-only">
                     <div class="dropdown">
                         <a href="#features" class="dropdown-trigger">Features</a>
                         <div class="dropdown-content">
@@ -36,7 +36,44 @@ const components = {
                     <a href="#contact">Contact</a>
                     <a href="#download">Download</a>
                 </div>
+                <button class="mobile-menu-button">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
             </nav>
+            <div class="mobile-nav">
+                <div class="mobile-nav-content">
+                    <div class="mobile-nav-section">
+                        <div class="mobile-nav-header">Themes</div>
+                        <div class="mobile-nav-items">
+                            <a href="#" data-theme="cloud">Cloud</a>
+                            <a href="#" data-theme="chrome">Chrome</a>
+                            <a href="#" data-theme="mocha">Mocha</a>
+                            <a href="#" data-theme="mag">Mag</a>
+                            <a href="#" data-theme="wheatgrass">Wheatgrass</a>
+                            <a href="#" data-theme="scarab">Scarab</a>
+                        </div>
+                    </div>
+                    <div class="mobile-nav-section">
+                        <div class="mobile-nav-header">Features</div>
+                        <div class="mobile-nav-items">
+                            <a href="#features" data-feature="minimal-cognitive">Minimal Cognitive Load</a>
+                            <a href="#features" data-feature="easy-creation">Easy Creation</a>
+                            <a href="#features" data-feature="stamps">Intuitive Stamps</a>
+                            <a href="#features" data-feature="customization">Extensive Customization</a>
+                            <a href="#features" data-feature="search-organization">Smart Search & Organization</a>
+                            <a href="#features" data-feature="privacy">Complete Privacy</a>
+                            <a href="#features" data-feature="calendar-schedule">Calendar & Schedule View</a>
+                            <a href="#features" data-feature="insights">Insights</a>
+                        </div>
+                    </div>
+                    <div class="mobile-nav-section">
+                        <a href="#contact">Contact</a>
+                        <a href="#download">Download</a>
+                    </div>
+                </div>
+            </div>
         </header>
     `,
 
@@ -393,4 +430,42 @@ document.addEventListener('DOMContentLoaded', () => {
         carousel.insertBefore(activeIcon, carousel.firstChild);
         updateCardPositions();
     }
+
+    // Add mobile navigation functionality
+    const mobileMenuButton = document.querySelector('.mobile-menu-button');
+    const mobileNav = document.querySelector('.mobile-nav');
+    const mobileNavHeaders = document.querySelectorAll('.mobile-nav-header');
+
+    // Toggle mobile menu
+    mobileMenuButton?.addEventListener('click', () => {
+        mobileNav.classList.toggle('active');
+        document.body.style.overflow = mobileNav.classList.contains('active') ? 'hidden' : '';
+    });
+
+    // Toggle mobile nav sections
+    mobileNavHeaders.forEach(header => {
+        header.addEventListener('click', () => {
+            const items = header.nextElementSibling;
+            items.classList.toggle('active');
+        });
+    });
+
+    // Close mobile menu when clicking a link
+    const mobileNavLinks = document.querySelectorAll('.mobile-nav a');
+    mobileNavLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            mobileNav.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+    });
+
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', (e) => {
+        if (mobileNav.classList.contains('active') && 
+            !mobileNav.contains(e.target) && 
+            !mobileMenuButton.contains(e.target)) {
+            mobileNav.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    });
 }); 
