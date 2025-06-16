@@ -522,8 +522,8 @@ section {
     .mobile-nav {
         display: block;
         width: 30vw;
-        max-width: 110px;
-        min-width: 80px;
+        max-width: 80px;
+        min-width: 50px;
         background: linear-gradient(to bottom, transparent 0%, var(--entry-background) 30%, var(--entry-background) 100%);
         border-radius: 18px 0 18px 18px;
         outline: 1.5px solid var(--text-color);
@@ -534,7 +534,7 @@ section {
     .mobile-nav-header {
         font-size: 0.8rem;
         margin-bottom: 0.2rem;
-        padding-bottom: 0.1rem;
+        padding-bottom: 0.5rem;
     }
 
     .mobile-nav-section a {
