@@ -566,7 +566,7 @@ section {
 
     .hero h1 {
         font-size: 1.8rem;
-        margin-bottom: 1rem;
+        /* margin-bottom: 1rem; */
         margin-top: 0;
     }
 
