@@ -134,7 +134,7 @@ section {
 .hero h1 {
     font-size: 4rem;
     font-weight: 700;
-    margin-bottom: 1.5rem;
+    margin-top: 1.5rem;
     line-height: 1.2;
     color: var(--accent-color);
 }
