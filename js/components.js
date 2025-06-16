@@ -450,6 +450,44 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // Mobile theme links
+    const mobileThemeLinks = document.querySelectorAll('.mobile-nav [data-theme]');
+    mobileThemeLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const theme = link.dataset.theme;
+            applyTheme(theme);
+            localStorage.setItem('selectedTheme', theme);
+            mobileNav.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+    });
+
+    // Mobile feature links
+    const mobileFeatureLinks = document.querySelectorAll('.mobile-nav [data-feature]');
+    mobileFeatureLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const feature = link.dataset.feature;
+            const featureElement = document.getElementById(feature);
+            if (featureElement) {
+                const headerHeight = document.querySelector('.header').offsetHeight;
+                const elementPosition = featureElement.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerHeight - 20;
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+                featureElement.classList.add('highlight');
+                setTimeout(() => {
+                    featureElement.classList.remove('highlight');
+                }, 2000);
+            }
+            mobileNav.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+    });
+
     // Close mobile menu when clicking a link
     const mobileNavLinks = document.querySelectorAll('.mobile-nav a');
     mobileNavLinks.forEach(link => {
