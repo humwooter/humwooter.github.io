@@ -556,7 +556,6 @@ section {
 
     .hero-content {
         padding-right: 0;
-        margin-bottom: 0.2rem; /* Small gap below description */
     }
 
     .hero-image {
@@ -567,7 +566,7 @@ section {
     .hero h1 {
         font-size: 1.8rem;
         /* margin-bottom: 1rem; */
-        margin-top: 0;
+        margin-top: 1rem;
     }
 
     .subtitle {
