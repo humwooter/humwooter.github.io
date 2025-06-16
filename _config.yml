@@ -1,6 +1,6 @@
 theme: slate
 title: Logs
-description: A brief, compelling description of your app that highlights its main value proposition.
+description: Logs is a beautifully customizable and private digital pocketbook designed for minimal cognitive load. Its core experience centers around an intuitive daily view, showing only today's entries by default to keep you focused. Key features include expressive "Stamps" for one-tap visual categorization, extensive personalization of themes and tools, and complete local privacy – your data stays securely on your device unless you choose to back it up. It's a calm space to capture thoughts, moments, and ideas your way.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 
