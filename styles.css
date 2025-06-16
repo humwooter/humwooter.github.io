@@ -547,17 +547,29 @@ section {
     }
 
     .hero {
+        display: flex;
         flex-direction: column;
-        text-align: center;
-        padding: 1rem;
-        min-height: unset !important;
-        margin-top: 0;
         justify-content: flex-start !important;
+        align-items: center !important;
+        min-height: 0 !important;
+        height: auto !important;
+        margin-top: 0 !important;
+        padding-bottom: 0 !important;
     }
-
+    .hero-content,
+    .hero-image {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
     .hero-content {
-        padding-right: 0;
-        margin-bottom: 0.2rem;
+        margin-bottom: 0.2rem !important; /* Small gap if you want */
+    }
+    .hero-image {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+    }
+    .subtitle {
+        margin-bottom: 0 !important;
     }
 
     .hero h1 {
@@ -571,14 +583,10 @@ section {
         /* margin-bottom: 0.5rem; */
     }
 
-    .hero-image {
-        margin-bottom: 0;
-        margin-top: 0.2rem;
-    }
-
     .app-icon-carousel {
         width: 60px;
         height: 60px;
+        margin-left: 5px;
         margin-bottom: 0.2rem;
     }
 
@@ -845,15 +853,22 @@ section {
 }
 
 .dropdown-trigger {
-    cursor: pointer;
     position: relative;
+    display: inline-flex;
+    align-items: center;
+    padding: 0 1rem;
+    font-size: 1.6rem;
+    font-weight: 500;
+    line-height: 1;
+    z-index: 2;
 }
 
 .dropdown-trigger::after {
     content: '';
     position: absolute;
-    bottom: 0;
-    left: 1rem;
+    left: 0;
+    right: 0;
+    bottom: -5px;
     width: 0;
     height: 2px;
     background-color: var(--accent-color);
@@ -861,7 +876,7 @@ section {
 }
 
 .dropdown-trigger:hover::after {
-    width: calc(100% - 2rem);
+    width: 100%;
 }
 
 .dropdown-content {
@@ -876,6 +891,7 @@ section {
     border-top: none;
     border-radius: 0 0 20px 20px;
     padding: 0.5rem 0;
+    margin-top: 10px;
 }
 
 .dropdown:hover .dropdown-content {
@@ -1210,4 +1226,28 @@ section {
     section {
         padding: 3rem 1rem;
     }
+}
+
+/* Add more space above the first theme in the theme dropdown */
+.header .nav-left .dropdown-content a:first-child {
+    margin-top: 1rem; /* Adjust as needed to match features spacing */
+}
+
+.theme-dropdown .dropdown-content a:first-child {
+    margin-top: 1rem;
+}
+
+.header .dropdown-trigger::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -5px;
+    width: 0;
+    height: 2px;
+    background-color: var(--accent-color);
+    transition: width 0.3s ease;
+}
+.header .dropdown-trigger:hover::after {
+    width: 100%;
 } 
