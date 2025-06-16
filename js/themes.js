@@ -105,6 +105,8 @@ function applyTheme(themeName) {
     document.documentElement.style.setProperty('--font-family', theme.fontName);
     document.documentElement.style.setProperty('--font-size', theme.fontSize);
     document.documentElement.style.setProperty('--line-spacing', theme.lineSpacing);
+    // Set mobile nav gradient
+    document.documentElement.style.setProperty('--mobile-nav-gradient', `linear-gradient(to bottom, ${theme.topColor}, ${theme.bottomColor})`);
     
     // Apply font and text color
     document.body.style.fontFamily = theme.fontName;
