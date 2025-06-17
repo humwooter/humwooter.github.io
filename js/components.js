@@ -473,11 +473,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const mobileNav = document.querySelector('.mobile-nav');
     const mobileNavHeaders = document.querySelectorAll('.mobile-nav-header');
 
+    // Add a function to ensure menu state is consistent
+    function ensureMenuState() {
+        const isMenuActive = mobileNav.classList.contains('active');
+        if (isMenuActive) {
+            mobileMenuButton.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        } else {
+            mobileMenuButton.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    }
+
     // Toggle mobile menu
-    mobileMenuButton?.addEventListener('click', () => {
+    mobileMenuButton?.addEventListener('click', (e) => {
+        e.stopPropagation();
         mobileNav.classList.toggle('active');
-        mobileMenuButton.classList.toggle('active');
-        document.body.style.overflow = mobileNav.classList.contains('active') ? 'hidden' : '';
+        ensureMenuState();
     });
 
     // Toggle mobile nav sections
@@ -497,7 +509,7 @@ document.addEventListener('DOMContentLoaded', () => {
             applyTheme(theme);
             localStorage.setItem('selectedTheme', theme);
             mobileNav.classList.remove('active');
-            document.body.style.overflow = '';
+            ensureMenuState();
         });
     });
 
@@ -522,16 +534,49 @@ document.addEventListener('DOMContentLoaded', () => {
                 }, 2000);
             }
             mobileNav.classList.remove('active');
-            document.body.style.overflow = '';
+            ensureMenuState();
         });
     });
 
-    // Close mobile menu when clicking a link
+    // Close mobile menu when clicking any nav link
     const mobileNavLinks = document.querySelectorAll('.mobile-nav a');
     mobileNavLinks.forEach(link => {
         link.addEventListener('click', () => {
             mobileNav.classList.remove('active');
-            document.body.style.overflow = '';
+            ensureMenuState();
+        });
+    });
+
+    // Add click handlers for desktop dropdown items
+    const desktopThemeLinks = document.querySelectorAll('.desktop-only .dropdown-content a[data-theme]');
+    desktopThemeLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const theme = link.dataset.theme;
+            applyTheme(theme);
+            localStorage.setItem('selectedTheme', theme);
+        });
+    });
+
+    const desktopFeatureLinks = document.querySelectorAll('.desktop-only .dropdown-content a[data-feature]');
+    desktopFeatureLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const feature = link.dataset.feature;
+            const featureElement = document.getElementById(feature);
+            if (featureElement) {
+                const headerHeight = document.querySelector('.header').offsetHeight;
+                const elementPosition = featureElement.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerHeight;
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+                featureElement.classList.add('highlight');
+                setTimeout(() => {
+                    featureElement.classList.remove('highlight');
+                }, 2000);
+            }
         });
     });
 
@@ -541,7 +586,18 @@ document.addEventListener('DOMContentLoaded', () => {
             !mobileNav.contains(e.target) && 
             !mobileMenuButton.contains(e.target)) {
             mobileNav.classList.remove('active');
-            document.body.style.overflow = '';
+            ensureMenuState();
+        }
+    });
+
+    // Add a check on page load to ensure initial state is correct
+    ensureMenuState();
+
+    // Add a check when window is resized to ensure state is correct
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 900) {
+            mobileNav.classList.remove('active');
+            ensureMenuState();
         }
     });
 }); 
