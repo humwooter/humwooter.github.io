@@ -476,6 +476,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Toggle mobile menu
     mobileMenuButton?.addEventListener('click', () => {
         mobileNav.classList.toggle('active');
+        mobileMenuButton.classList.toggle('active');
         document.body.style.overflow = mobileNav.classList.contains('active') ? 'hidden' : '';
     });
 
