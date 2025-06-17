@@ -866,14 +866,16 @@ section {
     position: fixed;
     top: 0;
     right: -100%;
-    width: 70%;
-    max-width: 250px;
+    width: 30%;
+    /* min-width: 250px;
+    max-width: 400px; */
     height: 100vh;
     background: var(--mobile-nav-gradient);
     backdrop-filter: blur(10px);
     z-index: 1001;
     transition: right 0.3s ease;
     overflow-y: auto; /* Changed from 'none' to 'auto' */
+    border-left: 2px solid color-mix(in srgb, var(--text-color) 30%, transparent);
 }
 
 .mobile-nav.active {
@@ -891,7 +893,7 @@ section {
 }
 
 .mobile-nav-header {
-    font-size: 1.4rem;
+    font-size: 1.8rem;
     font-weight: 600;
     color: var(--text-color);
     /* margin-bottom: 1rem; */
@@ -958,7 +960,7 @@ section {
     display: block;
     color: var(--text-color);
     text-decoration: none;
-    font-size: 1.0rem;
+    font-size: 1.4rem;
     padding: 0.8rem 0;
     transition: color 0.3s ease;
 }
@@ -995,6 +997,46 @@ section {
 
 
 @media (max-width: 900px) {
+
+    .mobile-nav {
+        display: block;
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 50%;
+        /* min-width: 250px;
+        max-width: 400px; */
+        height: 100vh;
+        background: var(--mobile-nav-gradient);
+        backdrop-filter: blur(10px);
+        z-index: 1001;
+        transition: right 0.3s ease;
+        overflow-y: auto; /* Changed from 'none' to 'auto' */
+        border-left: 2px solid color-mix(in srgb, var(--text-color) 30%, transparent);
+    }
+
+    .mobile-nav-header {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: var(--text-color);
+        /* margin-bottom: 1rem; */
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid color-mix(in srgb, var(--text-color) 20%, transparent);
+        transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        display: inline-block;
+    }
+
+    .mobile-nav-section a {
+        position: relative;
+        display: block;
+        color: var(--text-color);
+        text-decoration: none;
+        font-size: 1.0rem;
+        padding: 0.8rem 0;
+        transition: color 0.3s ease;
+    }
+
     .desktop-only {
         display: none;
     }
