@@ -330,6 +330,40 @@ function setupSectionAnimations() {
     });
 }
 
+function setupLogoClick() {
+    const logo = document.querySelector('.logo');
+    if (logo) {
+        logo.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    }
+}
+
+function setupHeaderTransformation() {
+    const header = document.querySelector('.header');
+    const subtitle = document.querySelector('.subtitle');
+    
+    if (!header || !subtitle) return;
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (!entry.isIntersecting) {
+                header.classList.add('transformed');
+            } else {
+                header.classList.remove('transformed');
+            }
+        });
+    }, {
+        threshold: 0.1 // Trigger when 10% of the subtitle is out of view
+    });
+
+    observer.observe(subtitle);
+}
+
 // Function to render all components
 function renderAllComponents() {
     // Render each component in its designated container
@@ -379,6 +413,9 @@ function renderAllComponents() {
             localStorage.setItem('selectedTheme', theme);
         });
     });
+
+    setupLogoClick();
+    setupHeaderTransformation();
 }
 
 // Initialize components when the DOM is loaded
