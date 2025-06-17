@@ -679,8 +679,9 @@ section {
     display: none;
     position: absolute;
     background: linear-gradient(to bottom, transparent, color-mix(in srgb, var(--entry-background) 50%, transparent));
-    /* backdrop-filter: blur(0.3px); */
     min-width: 200px;
+    max-height: 80vh; /* Limit height to 80% of viewport height */
+    overflow-y: auto; /* Enable vertical scrolling */
     box-shadow: 0 2px 4px color-mix(in srgb, var(--text-color) 5%, transparent);
     z-index: 1;
     border: 1px solid color-mix(in srgb, var(--text-color) 30%, transparent);
@@ -872,7 +873,7 @@ section {
     backdrop-filter: blur(10px);
     z-index: 1001;
     transition: right 0.3s ease;
-    overflow-y: none;
+    overflow-y: auto; /* Changed from 'none' to 'auto' */
 }
 
 .mobile-nav.active {
@@ -881,6 +882,8 @@ section {
 
 .mobile-nav-content {
     padding: 80px 20px 20px;
+    height: 100%;
+    overflow-y: auto; /* Added to ensure content is scrollable */
 }
 
 .mobile-nav-section {
