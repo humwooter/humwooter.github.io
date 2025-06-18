@@ -611,7 +611,7 @@ section {
 }
 
 /* Add a subtle hover effect to the entire app icon deck */
-.app-icon-carousel:hover {
+.app-icon-carousel:hover { 
     transform: translateY(-5px);
 }
 
