@@ -8,7 +8,7 @@ const themes = {
         bottomColor: "rgb(0, 4, 114)", // 0.00023245636839419603, 0.014830045402050018, 0.446861207485199
         entryBackgroundColor: "rgba(255, 255, 120, 0.083)", // 1.0000089406967163, 0.9999930262565613, 0.4695098400115967, 0.08297565579414368
         reminderColor: "rgb(55, 190, 251)", // 0.21516916155815125, 0.7442479729652405, 0.9846494793891907
-        fontName: "Quicksand, sans-serif",
+        fontName: "Playfair Display, serif",
         fontSize: "18px",
         lineSpacing: "1.5" // Changed from 0px to 1.5
     },

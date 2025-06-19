@@ -23,33 +23,80 @@ THEMES = {
     'cloud': {
         'topColor': (100, 114, 255),
         'bottomColor': (0, 4, 114),
-        'accentColor': (255, 248, 148)
+        'accentColor': (255, 248, 148),
+        'textColor': (255, 255, 255)
     },
     'chrome': {
         'topColor': (0, 0, 0),
         'bottomColor': (0, 65, 144),
-        'accentColor': (146, 255, 255)
+        'accentColor': (146, 255, 255),
+        'textColor': (255, 255, 255)
     },
     'mocha': {
         'topColor': (106, 84, 80),
         'bottomColor': (20, 15, 17),
-        'accentColor': (255, 255, 255)
+        'accentColor': (255, 255, 255),
+        'textColor': (255, 255, 255)
     },
     'mag': {
         'topColor': (199, 155, 161),
         'bottomColor': (186, 231, 194),
-        'accentColor': (245, 255, 185)
+        'accentColor': (245, 255, 185),
+        'textColor': (0, 0, 0)
     },
     'wheatgrass': {
         'topColor': (10, 31, 0),  # Adjusted from negative values
         'bottomColor': (0, 98, 66),  # Adjusted from negative values
-        'accentColor': (150, 100, 255)
+        'accentColor': (150, 100, 255),
+        'textColor': (255, 255, 255)
     },
     'scarab': {
         'topColor': (165, 61, 158),
         'bottomColor': (112, 112, 112),
-        'accentColor': (204, 255, 141)
+        'accentColor': (204, 255, 141),
+        'textColor': (255, 255, 255)
     }
+}
+
+font = 'Fonts/Original Fonts/KatyasHandwriting-Regular.ttf'
+
+# Map theme fontName to system font names (no TTF files needed)
+THEME_FONT_PATHS = {
+    'cloud': 'Fonts/Original Fonts/KatyasHandwriting-Regular.ttf',  # Custom handwriting font
+    'chrome': 'LucidaGrande',  # Bold monospace, safe for commercial use
+    'mocha': 'Avenir',  # Safe system font, free for commercial use
+    'scarab': 'Fonts/Original Fonts/KatyasHandwriting-Regular.ttf',  # Safe system font, free for commercial use
+    'wheatgrass': 'Fonts/Original Fonts/KatyasHandwriting-Regular.ttf',  # Safe system font, free for commercial use
+    'mag': font,  # Safe system font, free for commercial use
+}
+
+    # # 'cloud': 'Fonts/Original Fonts/KatyasHandwriting-Regular.ttf',
+    # 'chrome': 'Fonts/brass-mono/BrassMono-Bold.ttf',
+    # # 'mocha': 'Fonts/Catbrother/Catbrother.ttf',
+    # 'scarab': 'Fonts/brass-mono/BrassMono-Bold.ttf',
+    # 'wheatgrass': 'Fonts/brass-mono/BrassMono-Bold.ttf',
+    # 'mag': 'Fonts/brass-mono/BrassMono-Bold.ttf',
+
+
+# Map theme fontName to bold system font names for titles
+THEME_BOLD_FONT_PATHS = {
+    'cloud': 'Fonts/Original Fonts/KatyasHandwriting-Regular.ttf',  # Custom handwriting font
+    'chrome': 'LucidaGrande-Bold',  # Bold monospace, safe for commercial use
+    # 'chrome': 'Courier-Bold',  # Bold monospace, safe for commercial use
+    'mocha': 'Avenir-Bold',  # Bold version, safe for commercial use
+    'scarab': 'Fonts/Original Fonts/KatyasHandwriting-Regular.ttf',  # Bold monospace, safe for commercial use
+    'wheatgrass': 'Monaco-Bold',  # Bold monospace, safe for commercial use
+    'mag': 'Fonts/Original Fonts/KatyasHandwriting-Regular.ttf',  # Bold version, safe for commercial use
+}
+
+# Font size multipliers for different font types (display fonts need larger sizes)
+FONT_SIZE_MULTIPLIERS = {
+    'cloud': 1.0,  # Regular font
+    'chrome': 1.0,  # Monospace font
+    'mocha': 1.0,   # Display font - needs much larger size
+    'scarab': 1.0,  # Monospace font
+    'wheatgrass': 1.0,  # Monospace font
+    'mag': 1.1,  # Regular font
 }
 
 # Feature descriptions mapping
@@ -106,28 +153,45 @@ def create_distorted_fit(input_path, output_path, target_size=TARGET_SIZE):
     except Exception as e:
         print(f"Error processing {input_path}: {e}")
 
-def create_scaled_with_space(input_path, output_path, target_size=TARGET_SIZE, text_space_ratio=TEXT_SPACE_RATIO, bottom_padding_ratio=0.03, theme_name='cloud'):
+def create_scaled_with_space(input_path, output_path, target_size=TARGET_SIZE, text_space_ratio=TEXT_SPACE_RATIO, bottom_padding_ratio=0.03, theme_name='cloud', descriptions=None, rel_path=None):
     """
     Move screenshot lower, with only a small gap (3%) at the bottom.
     """
     try:
+        # Determine theme from descriptions if available
+        theme_to_use = theme_name
+        if descriptions and rel_path in descriptions:
+            entry = descriptions[rel_path]
+            if isinstance(entry, dict) and 'theme' in entry:
+                theme_to_use = entry['theme']
+        theme = THEMES.get(theme_to_use, THEMES['cloud'])
         with Image.open(input_path) as img:
             if img.mode != 'RGBA':
                 img = img.convert('RGBA')
-            theme = THEMES.get(theme_name, THEMES['cloud'])
             top_color = theme['topColor']
             bottom_color = theme['bottomColor']
             text_space_height = int(target_size[1] * text_space_ratio)
             bottom_padding_height = int(target_size[1] * bottom_padding_ratio)
             image_space_height = target_size[1] - text_space_height - bottom_padding_height
-            scale_factor = min(target_size[0] / img.width, image_space_height / img.height)
-            new_width = int(img.width * scale_factor)
-            new_height = int(img.height * scale_factor)
+            
+            # Calculate scaling to fit in image space with 1.1 factor
+            img_ratio = img.size[0] / img.size[1]
+            max_width = int(target_size[0] * 1.1)  # Use 1.1 scaling for consistency
+            max_height = int(image_space_height * 1.1)  # Use 1.1 scaling for consistency
+            
+            if img_ratio > max_width / max_height:
+                new_width = max_width
+                new_height = int(max_width / img_ratio)
+            else:
+                new_height = max_height
+                new_width = int(max_height * img_ratio)
+            
             resized_img = img.resize((new_width, new_height), Image.Resampling.LANCZOS)
             final_img = create_gradient_background(target_size[0], target_size[1], top_color, bottom_color).convert('RGBA')
             x_offset = (target_size[0] - new_width) // 2
-            # Place screenshot as low as possible, leaving only the bottom gap
-            y_offset = target_size[1] - bottom_padding_height - new_height
+            # Maintain the same bottom gap as before (3% of target height)
+            bottom_gap = int(target_size[1] * 0.03)
+            y_offset = target_size[1] - bottom_gap - new_height
             paste_with_alpha(final_img, resized_img, (x_offset, y_offset))
             os.makedirs(os.path.dirname(output_path), exist_ok=True)
             final_img.convert('RGB').save(output_path, 'JPEG', quality=95)
@@ -135,72 +199,138 @@ def create_scaled_with_space(input_path, output_path, target_size=TARGET_SIZE, t
     except Exception as e:
         print(f"Error processing {input_path}: {e}")
 
-def create_scaled_with_text(input_path, output_path, target_size=TARGET_SIZE, text_space_ratio=TEXT_SPACE_RATIO, bottom_padding_ratio=0.03, theme_name='cloud', descriptions=None):
-    """
-    Move screenshot lower, bold text, less line spacing.
-    """
+def create_scaled_with_text(input_path, output_path, target_size=TARGET_SIZE, text_space_ratio=TEXT_SPACE_RATIO, bottom_padding_ratio=0.03, theme_name='cloud', descriptions=None, rel_path=None):
     try:
+        # Determine theme from descriptions if available
+        theme_to_use = theme_name
+        title_text = ""
+        description_text = ""
+        
+        if descriptions and rel_path in descriptions:
+            entry = descriptions[rel_path]
+            if isinstance(entry, dict):
+                if 'theme' in entry:
+                    theme_to_use = entry['theme']
+                if 'title' in entry:
+                    title_text = entry['title']
+                if 'description' in entry:
+                    description_text = entry['description']
+        
+        # Fallback to feature description if no custom description
+        if not description_text:
+            feature_name = rel_path.split('/')[0] if '/' in rel_path else 'default'
+            description_text = FEATURE_DESCRIPTIONS.get(feature_name, "Journal your thoughts with ease")
+        
+        theme = THEMES.get(theme_to_use, THEMES['cloud'])
+        top_color = theme['topColor']
+        bottom_color = theme['bottomColor']
+        accent_color = theme['accentColor']
+        
+        # Calculate available space for the image (bottom portion minus bottom padding)
+        text_space_height = int(target_size[1] * text_space_ratio)
+        bottom_padding = int(target_size[1] * bottom_padding_ratio)
+        image_space_height = target_size[1] - text_space_height - bottom_padding
+        
+        # Create gradient background
+        final_img = Image.new('RGB', target_size)
+        draw = ImageDraw.Draw(final_img)
+        
+        # Create gradient
+        for y in range(target_size[1]):
+            ratio = y / target_size[1]
+            r = int(top_color[0] * (1 - ratio) + bottom_color[0] * ratio)
+            g = int(top_color[1] * (1 - ratio) + bottom_color[1] * ratio)
+            b = int(top_color[2] * (1 - ratio) + bottom_color[2] * ratio)
+            draw.line([(0, y), (target_size[0], y)], fill=(r, g, b))
+        
+        # Load and resize screenshot
         with Image.open(input_path) as img:
             if img.mode != 'RGBA':
                 img = img.convert('RGBA')
-            theme = THEMES.get(theme_name, THEMES['cloud'])
-            top_color = theme['topColor']
-            bottom_color = theme['bottomColor']
-            accent_color = theme['accentColor']
-            text_space_height = int(target_size[1] * text_space_ratio)
-            bottom_padding_height = int(target_size[1] * bottom_padding_ratio)
-            image_space_height = target_size[1] - text_space_height - bottom_padding_height
-            scale_factor = min(target_size[0] / img.width, image_space_height / img.height)
-            new_width = int(img.width * scale_factor)
-            new_height = int(img.height * scale_factor)
+            
+            # Calculate scaling to fit in image space
+            img_ratio = img.size[0] / img.size[1]
+            max_width = int(target_size[0] * 1.1)  # Use 1.1 scaling for consistency
+            max_height = int(image_space_height * 1.1)  # Use 1.1 scaling for consistency
+            
+            if img_ratio > max_width / max_height:
+                new_width = max_width
+                new_height = int(max_width / img_ratio)
+            else:
+                new_height = max_height
+                new_width = int(max_height * img_ratio)
+            
             resized_img = img.resize((new_width, new_height), Image.Resampling.LANCZOS)
-            final_img = create_gradient_background(target_size[0], target_size[1], top_color, bottom_color).convert('RGBA')
+            
+            # Position image at bottom center with minimal gap
             x_offset = (target_size[0] - new_width) // 2
-            y_offset = target_size[1] - bottom_padding_height - new_height
+            # Maintain the same bottom gap as before (3% of target height)
+            bottom_gap = int(target_size[1] * 0.03)
+            y_offset = target_size[1] - bottom_gap - new_height
+            
+            # Composite image onto gradient background
             paste_with_alpha(final_img, resized_img, (x_offset, y_offset))
-            draw = ImageDraw.Draw(final_img)
-            try:
-                font_size = int(target_size[0] * 0.08)
-                # Try bold system font
-                font = ImageFont.truetype("/System/Library/Fonts/Helvetica Bold.ttf", font_size)
-            except:
-                try:
-                    font = ImageFont.truetype("/System/Library/Fonts/Arial Bold.ttf", font_size)
-                except:
-                    font = ImageFont.load_default()
-            rel_path = os.path.relpath(input_path, os.path.join(os.path.dirname(input_path), '..'))
-            rel_path = rel_path.replace('images/screenshots/', '').replace('\\', '/').replace('\\', '/')
-            description = None
-            if descriptions:
-                description = descriptions.get(rel_path)
-            if not description:
-                feature_name = get_feature_name_from_path(input_path)
-                description = FEATURE_DESCRIPTIONS.get(feature_name, "Experience this amazing feature")
-            max_width = int(target_size[0] * 0.7)
-            wrapped_text = wrap_text(description, draw, font, max_width)
-            lines = wrapped_text.split('\n')
-            total_text_height = 0
-            line_heights = []
-            for line in lines:
-                bbox = draw.textbbox((0, 0), line, font=font)
-                h = bbox[3] - bbox[1]
-                line_heights.append(h)
-                total_text_height += h
-            # Less line spacing (1.1x font size)
-            line_spacing = int(font.size * 0.1)
-            total_text_height += line_spacing * (len(lines) - 1)
-            text_y = (text_space_height - total_text_height) // 2
-            shadow_offset = 3
-            for i, line in enumerate(lines):
-                bbox = draw.textbbox((0, 0), line, font=font)
+        
+        # Add text overlay
+        draw = ImageDraw.Draw(final_img)
+        
+        # Load fonts
+        font_path = get_font_path(theme_to_use)
+        bold_font_path = THEME_BOLD_FONT_PATHS.get(theme_to_use, font_path)
+        base_description_font_size = int(target_size[0] * 0.04)  # 4% of width
+        base_title_font_size = int(base_description_font_size * 1.99)  # 1.5x the description size
+        
+        # Apply font size multiplier for display fonts
+        font_multiplier = FONT_SIZE_MULTIPLIERS.get(theme_to_use, 1.0)
+        description_font_size = int(base_description_font_size * font_multiplier)
+        title_font_size = int(base_title_font_size * font_multiplier)
+        
+        try:
+            # Load system fonts with proper sizing
+            title_font = load_system_font(bold_font_path, title_font_size)
+            description_font = load_system_font(font_path, description_font_size)
+        except Exception:
+            # Fallback to default font if system font not found
+            title_font = ImageFont.load_default()
+            description_font = ImageFont.load_default()
+        
+        # Calculate text positioning
+        text_y = int(text_space_height * 0.2)  # Start at 20% of text space
+        
+        # Draw title if available
+        if title_text:
+            # Wrap title text
+            title_lines = wrap_text(title_text, title_font, target_size[0] * 0.8)
+            title_heights = [title_font.getbbox(line)[3] for line in title_lines]
+            
+            # Center title
+            for i, line in enumerate(title_lines):
+                bbox = draw.textbbox((0, 0), line, font=title_font)
                 text_width = bbox[2] - bbox[0]
                 text_x = (target_size[0] - text_width) // 2
-                draw.text((text_x + shadow_offset, text_y + shadow_offset), line, fill=(0, 0, 0), font=font)
-                draw.text((text_x, text_y), line, fill=accent_color, font=font)
-                text_y += line_heights[i] + line_spacing
-            os.makedirs(os.path.dirname(output_path), exist_ok=True)
-            final_img.convert('RGB').save(output_path, 'JPEG', quality=95)
-            print(f"Scaled with text: {input_path} -> {output_path}")
+                draw.text((text_x, text_y), line, fill=accent_color, font=title_font)
+                text_y += title_heights[i] + int(title_font_size * 0.001)  # Add spacing
+            
+            text_y += int(title_font_size * 0.6)  # Extra spacing between title and description
+        
+        # Draw description
+        if description_text:
+            # Wrap description text
+            desc_lines = wrap_text(description_text, description_font, target_size[0] * 0.8)
+            desc_heights = [description_font.getbbox(line)[3] for line in desc_lines]
+            
+            # Center description
+            for i, line in enumerate(desc_lines):
+                bbox = draw.textbbox((0, 0), line, font=description_font)
+                text_width = bbox[2] - bbox[0]
+                text_x = (target_size[0] - text_width) // 2
+                draw.text((text_x, text_y), line, fill=theme['textColor'], font=description_font)
+                text_y += desc_heights[i] + int(description_font_size * 0.2)  # Add spacing
+        
+        # Save the image
+        final_img.save(output_path, 'JPEG', quality=95)
+        print(f"Scaled with text: {input_path} -> {output_path}")
+        
     except Exception as e:
         print(f"Error processing {input_path}: {e}")
 
@@ -210,35 +340,32 @@ def get_feature_name_from_path(image_path):
     dir_name = os.path.basename(os.path.dirname(image_path))
     return dir_name
 
-def wrap_text(text, draw, font, max_width):
-    """Wrap text to fit within max_width with better line spacing."""
+def wrap_text(text, font, max_width):
+    """Wrap text to fit within max_width using the given font."""
     words = text.split()
     lines = []
     current_line = []
     
     for word in words:
-        current_line.append(word)
-        test_line = ' '.join(current_line)
-        bbox = draw.textbbox((0, 0), test_line, font=font)
-        line_width = bbox[2] - bbox[0]
+        test_line = ' '.join(current_line + [word])
+        bbox = ImageDraw.Draw(Image.new('RGB', (1, 1))).textbbox((0, 0), test_line, font=font)
+        text_width = bbox[2] - bbox[0]
         
-        if line_width > max_width:
-            if len(current_line) == 1:
-                # Single word is too long, keep it
-                lines.append(test_line)
-                current_line = []
-            else:
-                # Remove the last word and add current line
-                current_line.pop()
+        if text_width <= max_width:
+            current_line.append(word)
+        else:
+            if current_line:
                 lines.append(' '.join(current_line))
                 current_line = [word]
+            else:
+                # Word is too long, add it anyway
+                lines.append(word)
+                current_line = []
     
-    # Add remaining words
     if current_line:
         lines.append(' '.join(current_line))
     
-    # Add extra line spacing for better readability
-    return '\n\n'.join(lines)  # Double line spacing
+    return lines if lines else [text]
 
 def load_descriptions(json_path):
     """Load per-screenshot descriptions from a JSON file."""
@@ -289,21 +416,21 @@ def process_screenshots(input_dir, output_dir, target_size=TARGET_SIZE, theme_na
     for image_path in image_files:
         # Calculate relative path from screenshots directory
         rel_path = os.path.relpath(image_path, screenshots_dir)
-        
+
+        # Skip images in 'default screenshots' folder
+        if rel_path.startswith('default screenshots/'):
+            continue
+
         # Create output paths for all three variations
         distorted_path = os.path.join(distorted_dir, rel_path)
         scaled_path = os.path.join(scaled_dir, rel_path)
         text_path = os.path.join(text_dir, rel_path)
-        
-        # Change extension to .jpg for consistency
         distorted_path = os.path.splitext(distorted_path)[0] + '.jpg'
         scaled_path = os.path.splitext(scaled_path)[0] + '.jpg'
         text_path = os.path.splitext(text_path)[0] + '.jpg'
-        
-        # Create all three variations
         create_distorted_fit(image_path, distorted_path, target_size)
-        create_scaled_with_space(image_path, scaled_path, target_size, theme_name=theme_name)
-        create_scaled_with_text(image_path, text_path, target_size, theme_name=theme_name, descriptions=descriptions)
+        create_scaled_with_space(image_path, scaled_path, target_size, theme_name=theme_name, descriptions=descriptions, rel_path=rel_path)
+        create_scaled_with_text(image_path, text_path, target_size, theme_name=theme_name, descriptions=descriptions, rel_path=rel_path)
     
     print(f"Resized screenshots saved to: {output_dir}")
 
@@ -337,6 +464,83 @@ def main():
     
     print("-" * 80)
     print("Screenshot resizing completed!")
+
+def get_font_path(theme_name):
+    return THEME_FONT_PATHS.get(theme_name, 'Helvetica')  # Safe fallback font
+
+def get_system_font_path(font_name):
+    """Get the actual file path for a system font on macOS or custom TTF files."""
+    # Check if it's already a file path (custom TTF)
+    if font_name.endswith('.ttf') and os.path.exists(font_name):
+        return font_name
+    
+    # Common macOS font locations
+    font_locations = [
+        '/System/Library/Fonts',
+        '/Library/Fonts',
+        '/System/Library/Fonts/Supplemental'
+    ]
+    
+    # Map font names to actual file names - ONLY safe Apple fonts
+    font_mapping = {
+        # Safe sans-serif fonts (Apple fonts)
+        'Helvetica': 'Helvetica.ttc',
+        'Helvetica-Bold': 'Helvetica.ttc',
+        'HelveticaNeue': 'HelveticaNeue.ttc',
+        'HelveticaNeue-Bold': 'HelveticaNeue.ttc',
+        'Avenir': 'Avenir.ttc',
+        'Avenir-Bold': 'Avenir.ttc',
+        'AvenirNext': 'Avenir Next.ttc',
+        'AvenirNext-Bold': 'Avenir Next.ttc',
+        'Geneva': 'Geneva.ttf',
+        'Geneva-Bold': 'Geneva.ttf',
+        'LucidaGrande': 'LucidaGrande.ttc',
+        'LucidaGrande-Bold': 'LucidaGrande.ttc',
+        
+        # Safe monospace fonts (Apple fonts)
+        'Courier': 'Courier.ttc',
+        'Courier-Bold': 'Courier.ttc',
+        'Menlo': 'Menlo.ttc',
+        'Menlo-Bold': 'Menlo.ttc',
+        'Monaco': 'Monaco.ttf',
+        'Monaco-Bold': 'Monaco.ttf',
+        
+        # Safe serif fonts (Apple fonts)
+        'NewYork': 'NewYork.ttf',
+        'NewYork-Bold': 'NewYork.ttf',
+        'AmericanTypewriter': 'AmericanTypewriter.ttc',
+        'AmericanTypewriter-Bold': 'AmericanTypewriter.ttc',
+        
+        # Safe display fonts (Apple fonts)
+        'MarkerFelt': 'MarkerFelt.ttc',
+        'MarkerFelt-Bold': 'MarkerFelt.ttc',
+        'Noteworthy': 'Noteworthy.ttc',
+        'Noteworthy-Bold': 'Noteworthy.ttc',
+        'AppleChancery': 'Apple Chancery.ttf',
+        'AppleChancery-Bold': 'Apple Chancery.ttf'
+    }
+    
+    file_name = font_mapping.get(font_name, 'Helvetica.ttc')
+    
+    for location in font_locations:
+        font_path = os.path.join(location, file_name)
+        if os.path.exists(font_path):
+            return font_path
+    
+    return None
+
+def load_system_font(font_name, size):
+    """Load a system font with proper fallback."""
+    font_path = get_system_font_path(font_name)
+    
+    if font_path:
+        try:
+            return ImageFont.truetype(font_path, size)
+        except Exception:
+            pass
+    
+    # Fallback to default font
+    return ImageFont.load_default()
 
 if __name__ == "__main__":
     main() 

@@ -38,3 +38,5 @@ dist-ssr
 # Ignore IDE files
 .vscode/
 .idea/
+
+venv/

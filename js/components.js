@@ -179,7 +179,7 @@ const components = {
             <div id="privacy" class="feature-row">
                 <div class="feature-card">
                     <h3>Complete Privacy</h3>
-                    <p class="feature-subtitle">Your data stays on your device</p>
+                    <p class="feature-subtitle"> Your data stays on your devic.</p>
                     <p>All entries are stored solely on your device with zero data collection. Protect access with Face ID, Touch ID, or a passcode. Export entries as JSON for safekeeping and restore only when you choose.</p>
                 </div>
                 <div class="feature-screenshots">

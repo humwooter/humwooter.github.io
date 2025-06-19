@@ -87,6 +87,10 @@ def process_directory(input_dir, output_dir, target_size=(1320, 2868)):
         # Calculate relative path from input directory
         rel_path = os.path.relpath(image_path, input_dir)
         
+        # Skip images in 'default screenshots' folder
+        if rel_path.startswith('default screenshots/'):
+            continue
+        
         # Create output path
         output_path = os.path.join(output_dir, rel_path)
         

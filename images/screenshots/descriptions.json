@@ -1,0 +1,68 @@
+{
+  "calendar-schedule/3.png": {"title": "Calendar", "description": "Organize your entries visually through an intuitive calendar or schedule interface", "theme": "cloud"},
+  "calendar-schedule/1.png": {"title": "Calendar", "description": "Organize your entries visually through an intuitive calendar or schedule interface", "theme": "cloud"},
+  "calendar-schedule/2.png": {"title": "Calendar", "description": "Organize your entries visually through an intuitive calendar or schedule interface", "theme": "chrome"},
+  "calendar-schedule/4.png": {"title": "Calendar", "description": "Organize your entries visually through an intuitive calendar or schedule interface", "theme": "scarab"},
+  "calendar-schedule/5.png": {"title": "Calendar", "description": "Choose between a weekly or monthly view", "theme": "cloud"},
+  
+  "search-organization/4.png": {"title": "Library", "description": "Your central hub for exploring and organizing all entries", "theme": "cloud"},
+  "search-organization/2.png": {"title": "Advanced Search", "description": "Search through your journal with advanced filtering options", "theme": "cloud"},
+  "search-organization/3.png": {"title": "Folders", "description": "Group similar folders together through nesting to create a hierarchical structure", "theme": "cloud"},
+  "search-organization/1.png": {"title": "Folders", "description": "Easily create, reorder, or nest folders to group and organize your entries", "theme": "cloud"},
+  "search-organization/5.png": {"title": "Search Filters", "description": "Filter your search results by entry properties like pinned status, tags, stamps, and media", "theme": "cloud"},
+  "search-organization/6.png": {"title": "Folder", "description": "Easily add a folder to any entry through the context menu", "theme": "cloud"},
+  "search-organization/7.png": {"title": "Tags", "description": "Easily add or edit tags to your entries through the context menu", "theme": "cloud"},
+  
+  "insights/1.png": {"title": "Insights", "description": "Discover patterns and insights from your journaling journey", "theme": "cloud"},
+  "insights/2.png": {"title": "Insights", "description": "View detailed analytics about your journaling habits", "theme": "cloud"},
+  "insights/3.png": {"title": "Insights", "description": "Discover patterns and insights from your journaling journey", "theme": "cloud"},
+  
+  "easy-creation/4.png": {"title": "Quick Entry", "description": "Create journal entries quickly and effortlessly", "theme": "cloud"},
+  "easy-creation/5.png": {"title": "Streamlined Writing", "description": "Focus on writing with a clean, distraction-free interface", "theme": "chrome"},
+  "easy-creation/1.png": {
+  "title": "Simple Creation",
+  "description": "Begin journaling instantly with zero setup",
+  "theme": "cloud"
+},
+"easy-creation/2.png": {
+  "title": "Threads",
+  "description": "Connect related thoughts by replying to previous entries",
+  "theme": "cloud"
+},
+
+  "easy-creation/3.png": {"title": "Easy Writing", "description": "Maintain flow with minimal setup and maximum focus", "theme": "cloud"},
+  
+  "stamps/3.png": {"title": "Collection", "description": "Save dashboard stamps to your collection, create new stamps, and organize with folders", "theme": "cloud"},
+  "stamps/2.png": {"title": "Dashboard", "description": "Customize your stamps and choose which ones to activate", "theme": "cloud"},
+  "stamps/1.png": {"title": "Stamps", "description": "Swipe right to reveal active stamps and tap to use", "theme": "cloud"},
+  
+    "minimal-cognitive/1.png": {
+    "title": "Today First",
+    "description": "Start with today's entries by default, keeping pinned entries visible across days to reduce clutter",
+    "theme": "cloud"
+    },
+"minimal-cognitive/2.png": {
+  "title": "Actions",
+  "description": "Quickly edit, reply, or pin entries through the context menu",
+  "theme": "cloud"
+},
+
+
+  "minimal-cognitive/3.png": {
+  "title": "Gestures",
+  "description": "Swipe left to delete or right to apply active stamps",
+  "theme": "cloud"
+},
+  
+  "customization/1.png": {"title": "Customization", "description": "Choose from a variety of defaults or create your own", "theme": "cloud"},
+  "customization/2.png": {"title":  "Customization", "description": "Choose from a variety of defaults or create your own", "theme": "cloud"},
+  "customization/3.png": {"title":  "Customization", "description": "Choose from a variety of defaults or create your own", "theme": "cloud"},
+  "customization/4.png": {"title": "Personalization", "description": "Create your own theme to personalize your journaling experience", "theme": "cloud"},
+  "customization/5.png": {"title": "Style Preferences", "description": "Set your preferred style and appearance options", "theme": "cloud"},
+  
+  "privacy/2.png": {"title": "Privacy Controls", "description": "Keep your journal entries secure with privacy controls", "theme": "scarab"},
+  "privacy/4.png": {"title": "Data", "description": "Your data stays on your device. Export as JSON for safekeeping and restore only when you choose.", "theme": "cloud"},
+  "privacy/1.png": {"title": "Privacy", "description": "Protect access to entries with Face ID, Touch ID, or a passcode.", "theme": "cloud"},
+  "privacy/5.png": {"title": "Privacy", "description": "Protect access to entries with Face ID, Touch ID, or a passcode.", "theme": "cloud"},
+  "privacy/3.png": {"title": "Privacy", "description": "Protect access to entries with Face ID, Touch ID, or a passcode.", "theme": "cloud"}
+} 
