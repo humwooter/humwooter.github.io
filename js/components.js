@@ -447,6 +447,38 @@ function renderAllComponents() {
 
     // If loaded with a scroll hash, scroll to the feature
     handleFeatureScrollHash();
+
+    // Add click handler for download button (works on all pages)
+    document.querySelectorAll('.download-button').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            if (currentPage !== 'index.html' && currentPage !== '') {
+                window.location.href = 'index.html#download';
+            } else {
+                const downloadSection = document.getElementById('download');
+                if (downloadSection) {
+                    downloadSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+        });
+    });
+
+    // Add click handlers for download links in navigation (works on all pages)
+    document.querySelectorAll('a[href="#download"]').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            if (currentPage !== 'index.html' && currentPage !== '') {
+                window.location.href = 'index.html#download';
+            } else {
+                const downloadSection = document.getElementById('download');
+                if (downloadSection) {
+                    downloadSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+        });
+    });
 }
 
 function scrollToFeature(feature) {
