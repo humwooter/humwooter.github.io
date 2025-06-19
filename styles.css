@@ -691,11 +691,22 @@ section {
     border-top: none;
     border-radius: 0 0 20px 20px;
     padding: 0.5rem 0;
-    margin-top: 10px;
+    margin-top: 0;
+    top: 100%;
 }
 
 .dropdown:hover .dropdown-content {
     display: block;
+}
+
+.dropdown::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    height: 10px;
+    background: transparent;
 }
 
 .dropdown-content a {
@@ -703,7 +714,7 @@ section {
     padding: 1rem 1.2rem;
     text-decoration: none;
     display: block;
-    font-size: var(--font-size);
+    font-size: 1.5rem;
     transition: background-color 0.2s ease;
     white-space: nowrap;
     position: relative;
@@ -743,74 +754,52 @@ section {
 
 /* Contact Form Styles */
 .contact {
-    background-color: transparent;
-    padding: 5rem 2rem;
-    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 5rem 2rem 5rem 2rem;
+    padding-top: 160px;
+    min-height: calc(100vh - 80px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .contact h2 {
+    text-align: center;
     font-size: 2.5rem;
     margin-bottom: 3rem;
-    color: var(--text-color);
+    color: var(--accent-color);
 }
 
-.contact-form {
-    max-width: 600px;
-    margin: 0 auto;
-    background: var(--entry-background);
-    backdrop-filter: blur(10px);
-    padding: 2rem;
+.contact-content {
+    background-color: var(--entry-background);
+    padding: 3rem;
     border-radius: 20px;
-    border: 1px solid color-mix(in srgb, var(--text-color) 10%, transparent);
-}
-
-.form-group {
-    margin-bottom: 1.5rem;
-}
-
-.form-group input,
-.form-group textarea {
-    width: 100%;
-    padding: 1rem;
     border: 1px solid color-mix(in srgb, var(--text-color) 20%, transparent);
-    border-radius: 10px;
-    background: color-mix(in srgb, var(--entry-background) 50%, transparent);
+    box-shadow: 0 10px 30px color-mix(in srgb, var(--text-color) 5%, transparent);
+}
+
+.contact-content h3 {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    color: var(--accent-color);
+}
+
+.contact-content p {
+    margin-bottom: 1rem;
+    line-height: 1.6;
     color: var(--text-color);
-    font-family: var(--font-family);
-    font-size: 1.4rem;
-    transition: all 0.3s ease;
 }
 
-.form-group textarea {
-    min-height: 150px;
-    resize: vertical;
+.contact-content a {
+    color: var(--accent-color);
+    text-decoration: none;
+    transition: opacity 0.3s ease;
 }
 
-.form-group input:focus,
-.form-group textarea:focus {
-    outline: none;
-    border-color: var(--accent-color);
-    box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-color) 20%, transparent);
+.contact-content a:hover {
+    opacity: 0.8;
 }
-
-.submit-button {
-    background-color: var(--accent-color);
-    color: var(--accentTextColor);
-    padding: 1rem 2rem;
-    border: none;
-    border-radius: 30px;
-    font-size: 1.4rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.submit-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px color-mix(in srgb, var(--text-color) 10%, transparent);
-}
-
-
 
 /* Mobile Navigation Styles */
 .mobile-menu-button {
@@ -1203,6 +1192,49 @@ section {
     .submit-button {
         width: 100%;
     }
+
+    .privacy {
+        padding: 2rem 1rem 2rem 1rem;
+        padding-top: 120px;
+        min-height: calc(100vh - 60px);
+        justify-content: flex-start;
+    }
+
+    .privacy h2 {
+        font-size: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .privacy-content {
+        padding: 2rem;
+    }
+
+    .privacy-content h3 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .privacy-content h4 {
+        font-size: 1.2rem;
+        margin: 1.5rem 0 0.75rem 0;
+    }
+
+    .privacy-content p {
+        font-size: 0.95rem;
+        line-height: 1.5;
+    }
+
+    .contact {
+        padding: 2rem 1rem 2rem 1rem;
+        padding-top: 120px;
+        min-height: calc(100vh - 60px);
+        justify-content: flex-start;
+    }
+
+    .contact h2 {
+        font-size: 2rem;
+        margin-bottom: 2rem;
+    }
 }
 
 
@@ -1230,6 +1262,86 @@ section {
 .header .dropdown-trigger:hover::after {
     width: 100%;
 } 
+
+/* Desktop styles (outside media query) */
+.privacy {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 5rem 2rem 5rem 2rem;
+    padding-top: 160px;
+    min-height: calc(100vh - 80px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.privacy h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 3rem;
+    color: var(--accent-color);
+}
+
+.privacy-content {
+    background-color: var(--entry-background);
+    padding: 3rem;
+    border-radius: 20px;
+    border: 1px solid color-mix(in srgb, var(--text-color) 20%, transparent);
+    box-shadow: 0 10px 30px color-mix(in srgb, var(--text-color) 5%, transparent);
+}
+
+.privacy-content h3 {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    color: var(--accent-color);
+}
+
+.privacy-content h4 {
+    font-size: 1.3rem;
+    margin: 2rem 0 1rem 0;
+    color: var(--accent-color);
+}
+
+.privacy-content p {
+    margin-bottom: 1rem;
+    line-height: 1.6;
+    color: var(--text-color);
+}
+
+.privacy-content .last-updated {
+    margin-top: 2rem;
+    font-style: italic;
+    color: color-mix(in srgb, var(--text-color) 60%, transparent);
+    text-align: center;
+}
+
+@media (max-width: 900px) {
+    .privacy {
+        padding: 2rem 1rem 2rem 1rem;
+        padding-top: 120px;
+        min-height: calc(100vh - 60px);
+        justify-content: flex-start;
+    }
+    .privacy h2 {
+        font-size: 2rem;
+        margin-bottom: 2rem;
+    }
+    .privacy-content {
+        padding: 2rem;
+    }
+    .privacy-content h3 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+    .privacy-content h4 {
+        font-size: 1.2rem;
+        margin: 1.5rem 0 0.75rem 0;
+    }
+    .privacy-content p {
+        font-size: 0.95rem;
+        line-height: 1.5;
+    }
+}
 
 
 

@@ -33,7 +33,13 @@ const components = {
                             <a href="#features" data-feature="insights">Insights</a>
                         </div>
                     </div>
-                    <a href="#contact">Contact</a>
+                    <div class="dropdown">
+                        <a href="#" class="dropdown-trigger">About</a>
+                        <div class="dropdown-content">
+                            <a href="contact.html">Contact</a>
+                            <a href="privacy.html">Privacy Policy</a>
+                        </div>
+                    </div>
                     <a href="#download">Download</a>
                 </div>
                 <button class="mobile-menu-button">
@@ -69,7 +75,13 @@ const components = {
                         </div>
                     </div>
                     <div class="mobile-nav-section">
-                        <a href="#contact">Contact</a>
+                        <div class="mobile-nav-header">About</div>
+                        <div class="mobile-nav-items">
+                            <a href="contact.html">Contact</a>
+                            <a href="privacy.html">Privacy Policy</a>
+                        </div>
+                    </div>
+                    <div class="mobile-nav-section">
                         <a href="#download">Download</a>
                     </div>
                 </div>
@@ -223,20 +235,10 @@ const components = {
 
     contact: () => `
         <section id="contact" class="contact">
-            <h2>Contact Us</h2>
-            <div class="contact-form">
-                <form id="contactForm" action="mailto:your-email@example.com" method="post" enctype="text/plain">
-                    <div class="form-group">
-                        <input type="text" id="name" name="name" placeholder="Your Name" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="email" id="email" name="email" placeholder="Your Email" required>
-                    </div>
-                    <div class="form-group">
-                        <textarea id="message" name="message" placeholder="Your Message" required></textarea>
-                    </div>
-                    <button type="submit" class="submit-button">Send Message</button>
-                </form>
+            <h2>Contact</h2>
+            <div class="contact-content">
+                <h3>Get in Touch</h3>
+                <p>Email <a href="mailto:humwooter+support@gmail.com">humwooter+support@gmail.com</a> for further questions.</p>
             </div>
         </section>
     `,
@@ -248,13 +250,39 @@ const components = {
         </section>
     `,
 
+    privacy: () => `
+        <section id="privacy" class="privacy">
+            <h2>Privacy Policy</h2>
+            <div class="privacy-content">
+                <h3>Your Privacy Matters</h3>
+                <p>Logs is designed with privacy at its core. No data is ever collected, transmitted, or stored on servers.</p>
+                
+                <h4>Local Storage</h4>
+                <p>All entries are stored locally on your device only.</p>
+                
+                <h4>No Data Collection</h4>
+                <p>No usage tracking, analytics, or personal information is gathered. Your journal entries remain completely private.</p>
+                
+                <h4>Authentication</h4>
+                <p>Protect your data with Face ID, Touch ID, or a passcode.</p>
+                
+                <h4>Data Control</h4>
+                <p>Export entries as JSON files for safekeeping. You have full control over your data.</p>
+                
+                <h4>No Third-Party Access</h4>
+                <p>Data is never shared with third parties.</p>
+                
+                <p class="last-updated">Last updated: ${new Date().toLocaleDateString()}</p>
+            </div>
+        </section>
+    `,
+
     footer: () => `
         <footer class="footer">
             <div class="footer-content">
                 <div class="footer-links">
-                    <a href="#">Privacy Policy</a>
-                    <a href="#">Terms of Service</a>
-                    <a href="#contact">Contact</a>
+                    <a href="privacy.html">Privacy Policy</a>
+                    <a href="contact.html">Contact</a>
                 </div>
                 <p>&copy; ${new Date().getFullYear()} Logs. All rights reserved.</p>
             </div>
@@ -335,10 +363,20 @@ function setupLogoClick() {
     if (logo) {
         logo.addEventListener('click', (e) => {
             e.preventDefault();
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
+            
+            // Check if we're on the home page (index.html) or another page
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            
+            if (currentPage === 'index.html' || currentPage === '') {
+                // If on home page, scroll to top
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            } else {
+                // If on another page, navigate to home page
+                window.location.href = 'index.html';
+            }
         });
     }
 }
@@ -383,22 +421,12 @@ function renderAllComponents() {
         link.addEventListener('click', (e) => {
             e.preventDefault();
             const feature = link.dataset.feature;
-            const featureElement = document.getElementById(feature);
-            
-            if (featureElement) {
-                const headerHeight = document.querySelector('.header').offsetHeight;
-                const elementPosition = featureElement.getBoundingClientRect().top;
-                const offsetPosition = elementPosition + window.pageYOffset - headerHeight;
-
-                window.scrollTo({
-                    top: offsetPosition,
-                    behavior: 'smooth'
-                });
-                
-                featureElement.classList.add('highlight');
-                setTimeout(() => {
-                    featureElement.classList.remove('highlight');
-                }, 2000);
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            if (currentPage !== 'index.html' && currentPage !== '') {
+                // Go to home page with scroll hash
+                window.location.href = `index.html#features?scroll=${feature}`;
+            } else {
+                scrollToFeature(feature);
             }
         });
     });
@@ -416,6 +444,36 @@ function renderAllComponents() {
 
     setupLogoClick();
     setupHeaderTransformation();
+
+    // If loaded with a scroll hash, scroll to the feature
+    handleFeatureScrollHash();
+}
+
+function scrollToFeature(feature) {
+    const featureElement = document.getElementById(feature);
+    if (featureElement) {
+        const headerHeight = document.querySelector('.header').offsetHeight;
+        const elementPosition = featureElement.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerHeight;
+        window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+        });
+        featureElement.classList.add('highlight');
+        setTimeout(() => {
+            featureElement.classList.remove('highlight');
+        }, 2000);
+    }
+}
+
+function handleFeatureScrollHash() {
+    if (window.location.hash.startsWith('#features?scroll=')) {
+        const feature = window.location.hash.split('=')[1];
+        // Wait for DOM to be ready and then scroll
+        setTimeout(() => {
+            scrollToFeature(feature);
+        }, 300);
+    }
 }
 
 // Initialize components when the DOM is loaded
