@@ -1,8 +1,8 @@
 {
-  "calendar-schedule/3.png": {"title": "Calendar", "description": "Organize your entries visually through an intuitive calendar or schedule interface", "theme": "cloud"},
-  "calendar-schedule/1.png": {"title": "Calendar", "description": "Organize your entries visually through an intuitive calendar or schedule interface", "theme": "cloud"},
-  "calendar-schedule/2.png": {"title": "Calendar", "description": "Organize your entries visually through an intuitive calendar or schedule interface", "theme": "chrome"},
-  "calendar-schedule/4.png": {"title": "Calendar", "description": "Organize your entries visually through an intuitive calendar or schedule interface", "theme": "scarab"},
+  "calendar-schedule/3.png": {"title": "Calendar", "description": "Organize your entries visually through a calendar or schedule interface", "theme": "cloud"},
+  "calendar-schedule/1.png": {"title": "Calendar", "description": "Organize your entries visually through a calendar or schedule interface", "theme": "cloud"},
+  "calendar-schedule/2.png": {"title": "Calendar", "description": "Organize your entries visually through a calendar or schedule interface", "theme": "chrome"},
+  "calendar-schedule/4.png": {"title": "Calendar", "description": "Organize your entries visually through a calendar or schedule interface", "theme": "scarab"},
   "calendar-schedule/5.png": {"title": "Calendar", "description": "Choose between a weekly or monthly view", "theme": "cloud"},
   
   "search-organization/4.png": {"title": "Library", "description": "Your central hub for exploring and organizing all entries", "theme": "cloud"},
@@ -26,7 +26,8 @@
 },
 "easy-creation/2.png": {
   "title": "Threads",
-  "description": "Connect related thoughts by replying to previous entries",
+  "description": "Connect related thoughts by replying to previous entries",  "stamps/2.png": {"title": "Dashboard", "description": "Customize your stamps and choose which ones to activate", "theme": "cloud"},
+
   "theme": "cloud"
 },
 
@@ -54,9 +55,9 @@
   "theme": "cloud"
 },
   
-  "customization/1.png": {"title": "Customization", "description": "Choose from a variety of defaults or create your own", "theme": "cloud"},
-  "customization/2.png": {"title":  "Customization", "description": "Choose from a variety of defaults or create your own", "theme": "cloud"},
-  "customization/3.png": {"title":  "Customization", "description": "Choose from a variety of defaults or create your own", "theme": "cloud"},
+  "customization/1.png": {"title": "Personalization", "description": "Choose from a variety of default themes or create your own", "theme": "cloud"},
+  "customization/2.png": {"title":  "Personalization", "description": "Choose from a variety of default themes or create your own", "theme": "cloud"},
+  "customization/3.png": {"title":  "Personalization", "description": "Choose from a variety of default themes or create your own", "theme": "cloud"},
   "customization/4.png": {"title": "Personalization", "description": "Create your own theme to personalize your journaling experience", "theme": "cloud"},
   "customization/5.png": {"title": "Style Preferences", "description": "Set your preferred style and appearance options", "theme": "cloud"},
   

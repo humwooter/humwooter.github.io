@@ -190,8 +190,8 @@ def create_scaled_with_space(input_path, output_path, target_size=TARGET_SIZE, t
             final_img = create_gradient_background(target_size[0], target_size[1], top_color, bottom_color).convert('RGBA')
             x_offset = (target_size[0] - new_width) // 2
             # Maintain the same bottom gap as before (3% of target height)
-            bottom_gap = int(target_size[1] * 0.03)
-            y_offset = target_size[1] - bottom_gap - new_height
+            bottom_gap = int(target_size[1] * 0.0258)  # Reduced from 0.03 to 0.0258 (14% decrease)
+            y_offset = target_size[1] - bottom_gap - new_height - int(new_height * 0.05)  # Moved up by 5%
             paste_with_alpha(final_img, resized_img, (x_offset, y_offset))
             os.makedirs(os.path.dirname(output_path), exist_ok=True)
             final_img.convert('RGB').save(output_path, 'JPEG', quality=95)
@@ -265,8 +265,8 @@ def create_scaled_with_text(input_path, output_path, target_size=TARGET_SIZE, te
             # Position image at bottom center with minimal gap
             x_offset = (target_size[0] - new_width) // 2
             # Maintain the same bottom gap as before (3% of target height)
-            bottom_gap = int(target_size[1] * 0.03)
-            y_offset = target_size[1] - bottom_gap - new_height
+            bottom_gap = int(target_size[1] * 0.0258)  # Reduced from 0.03 to 0.0258 (14% decrease)
+            y_offset = target_size[1] - bottom_gap - new_height   # Moved up by 5%
             
             # Composite image onto gradient background
             paste_with_alpha(final_img, resized_img, (x_offset, y_offset))
@@ -296,39 +296,49 @@ def create_scaled_with_text(input_path, output_path, target_size=TARGET_SIZE, te
         
         # Calculate text positioning
         text_y = int(text_space_height * 0.2)  # Start at 20% of text space
-        
+
         # Draw title if available
         if title_text:
-            # Wrap title text
             title_lines = wrap_text(title_text, title_font, target_size[0] * 0.8)
             title_heights = [title_font.getbbox(line)[3] for line in title_lines]
-            
-            # Center title
             for i, line in enumerate(title_lines):
                 bbox = draw.textbbox((0, 0), line, font=title_font)
                 text_width = bbox[2] - bbox[0]
                 text_x = (target_size[0] - text_width) // 2
                 draw.text((text_x, text_y), line, fill=accent_color, font=title_font)
-                text_y += title_heights[i] + int(title_font_size * 0.001)  # Add spacing
-            
-            text_y += int(title_font_size * 0.6)  # Extra spacing between title and description
-        
-        # Draw description
+                text_y += title_heights[i] + int(title_font_size * 0.001)
+            # Reduce the gap after the title to match the gap below the description
+            title_gap = int(title_font_size * 0.08)
+            text_y += title_gap
+        title_bottom = text_y  # Record the bottom of the title block
+
+        # Prepare description block for centering
+        desc_block_height = 0
+        desc_lines = []
+        desc_heights = []
         if description_text:
-            # Wrap description text
             desc_lines = wrap_text(description_text, description_font, target_size[0] * 0.8)
             desc_heights = [description_font.getbbox(line)[3] for line in desc_lines]
-            
-            # Center description
+            for i in range(len(desc_lines)):
+                desc_block_height += desc_heights[i] + int(description_font_size * 0.08)
+
+        # Calculate where the screenshot starts
+        screenshot_top = y_offset  # y_offset is where the screenshot starts
+        # Center description block between title_bottom and screenshot_top
+        desc_start_y = title_bottom + ((screenshot_top - title_bottom - desc_block_height) // 2)
+
+        # Draw description
+        if description_text:
+            text_y = desc_start_y
             for i, line in enumerate(desc_lines):
                 bbox = draw.textbbox((0, 0), line, font=description_font)
                 text_width = bbox[2] - bbox[0]
                 text_x = (target_size[0] - text_width) // 2
                 draw.text((text_x, text_y), line, fill=theme['textColor'], font=description_font)
-                text_y += desc_heights[i] + int(description_font_size * 0.2)  # Add spacing
-        
+                text_y += desc_heights[i] + int(description_font_size * 0.08)
+
         # Save the image
-        final_img.save(output_path, 'JPEG', quality=95)
+        final_img.save(output_path, 'PNG', quality=95)
         print(f"Scaled with text: {input_path} -> {output_path}")
         
     except Exception as e:
