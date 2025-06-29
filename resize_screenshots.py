@@ -148,8 +148,8 @@ def create_distorted_fit(input_path, output_path, target_size=TARGET_SIZE):
             # Ensure output directory exists
             os.makedirs(os.path.dirname(output_path), exist_ok=True)
             # Save as PNG to preserve transparency
-            transparent_bg.save(output_path.replace('.jpg', '.png'), 'PNG')
-            print(f"Distorted fit: {input_path} -> {output_path.replace('.jpg', '.png')}")
+            transparent_bg.save(output_path, 'PNG')
+            print(f"Distorted fit: {input_path} -> {output_path}")
     except Exception as e:
         print(f"Error processing {input_path}: {e}")
 
@@ -194,7 +194,7 @@ def create_scaled_with_space(input_path, output_path, target_size=TARGET_SIZE, t
             y_offset = target_size[1] - bottom_gap - new_height - int(new_height * 0.05)  # Moved up by 5%
             paste_with_alpha(final_img, resized_img, (x_offset, y_offset))
             os.makedirs(os.path.dirname(output_path), exist_ok=True)
-            final_img.convert('RGB').save(output_path, 'JPEG', quality=95)
+            final_img.save(output_path, 'PNG')
             print(f"Scaled with space: {input_path} -> {output_path}")
     except Exception as e:
         print(f"Error processing {input_path}: {e}")
@@ -338,7 +338,7 @@ def create_scaled_with_text(input_path, output_path, target_size=TARGET_SIZE, te
                 text_y += desc_heights[i] + int(description_font_size * 0.08)
 
         # Save the image
-        final_img.save(output_path, 'PNG', quality=95)
+        final_img.save(output_path, 'PNG')
         print(f"Scaled with text: {input_path} -> {output_path}")
         
     except Exception as e:
@@ -435,9 +435,9 @@ def process_screenshots(input_dir, output_dir, target_size=TARGET_SIZE, theme_na
         distorted_path = os.path.join(distorted_dir, rel_path)
         scaled_path = os.path.join(scaled_dir, rel_path)
         text_path = os.path.join(text_dir, rel_path)
-        distorted_path = os.path.splitext(distorted_path)[0] + '.jpg'
-        scaled_path = os.path.splitext(scaled_path)[0] + '.jpg'
-        text_path = os.path.splitext(text_path)[0] + '.jpg'
+        distorted_path = os.path.splitext(distorted_path)[0] + '.png'
+        scaled_path = os.path.splitext(scaled_path)[0] + '.png'
+        text_path = os.path.splitext(text_path)[0] + '.png'
         create_distorted_fit(image_path, distorted_path, target_size)
         create_scaled_with_space(image_path, scaled_path, target_size, theme_name=theme_name, descriptions=descriptions, rel_path=rel_path)
         create_scaled_with_text(image_path, text_path, target_size, theme_name=theme_name, descriptions=descriptions, rel_path=rel_path)

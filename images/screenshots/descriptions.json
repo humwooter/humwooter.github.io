@@ -51,7 +51,7 @@
 
   "minimal-cognitive/3.png": {
   "title": "Gestures",
-  "description": "Swipe left to delete or right to apply active stamps",
+  "description": "Swipe right to delete or left to reveal and apply active stamps",
   "theme": "cloud"
 },
   
