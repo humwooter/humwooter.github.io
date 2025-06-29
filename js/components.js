@@ -245,7 +245,7 @@ const components = {
 
     download: () => `
         <section id="download" class="download">
-            <a href="#" class="download-button">Download Now</a>
+            <a href="https://apps.apple.com/us/app/iogs/id6480384141" class="download-button" target="_blank" rel="noopener noreferrer">Download Now</a>
             <p>Available on the App Store</p>
         </section>
     `,
@@ -415,70 +415,11 @@ function renderAllComponents() {
     // Setup animations after components are rendered
     setupSectionAnimations();
 
-    // Setup feature dropdown functionality
-    const featureLinks = document.querySelectorAll('.dropdown-content a[data-feature]');
-    featureLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            const feature = link.dataset.feature;
-            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-            if (currentPage !== 'index.html' && currentPage !== '') {
-                // Go to home page with scroll hash
-                window.location.href = `index.html#features?scroll=${feature}`;
-            } else {
-                scrollToFeature(feature);
-            }
-        });
-    });
-
-    // Setup theme dropdown functionality
-    const themeLinks = document.querySelectorAll('.dropdown-content a[data-theme]');
-    themeLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            const theme = link.dataset.theme;
-            applyTheme(theme);
-            localStorage.setItem('selectedTheme', theme);
-        });
-    });
-
     setupLogoClick();
     setupHeaderTransformation();
 
     // If loaded with a scroll hash, scroll to the feature
     handleFeatureScrollHash();
-
-    // Add click handler for download button (works on all pages)
-    document.querySelectorAll('.download-button').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.preventDefault();
-            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-            if (currentPage !== 'index.html' && currentPage !== '') {
-                window.location.href = 'index.html#download';
-            } else {
-                const downloadSection = document.getElementById('download');
-                if (downloadSection) {
-                    downloadSection.scrollIntoView({ behavior: 'smooth' });
-                }
-            }
-        });
-    });
-
-    // Add click handlers for download links in navigation (works on all pages)
-    document.querySelectorAll('a[href="#download"]').forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-            if (currentPage !== 'index.html' && currentPage !== '') {
-                window.location.href = 'index.html#download';
-            } else {
-                const downloadSection = document.getElementById('download');
-                if (downloadSection) {
-                    downloadSection.scrollIntoView({ behavior: 'smooth' });
-                }
-            }
-        });
-    });
 }
 
 function scrollToFeature(feature) {
@@ -609,19 +550,25 @@ document.addEventListener('DOMContentLoaded', () => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
             const feature = link.dataset.feature;
-            const featureElement = document.getElementById(feature);
-            if (featureElement) {
-                const headerHeight = document.querySelector('.header').offsetHeight;
-                const elementPosition = featureElement.getBoundingClientRect().top;
-                const offsetPosition = elementPosition + window.pageYOffset - headerHeight - 20;
-                window.scrollTo({
-                    top: offsetPosition,
-                    behavior: 'smooth'
-                });
-                featureElement.classList.add('highlight');
-                setTimeout(() => {
-                    featureElement.classList.remove('highlight');
-                }, 2000);
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            if (currentPage !== 'index.html' && currentPage !== '') {
+                // Go to home page with scroll hash
+                window.location.href = `index.html#features?scroll=${feature}`;
+            } else {
+                const featureElement = document.getElementById(feature);
+                if (featureElement) {
+                    const headerHeight = document.querySelector('.header').offsetHeight;
+                    const elementPosition = featureElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerHeight - 20;
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                    featureElement.classList.add('highlight');
+                    setTimeout(() => {
+                        featureElement.classList.remove('highlight');
+                    }, 2000);
+                }
             }
             mobileNav.classList.remove('active');
             ensureMenuState();
@@ -653,19 +600,25 @@ document.addEventListener('DOMContentLoaded', () => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
             const feature = link.dataset.feature;
-            const featureElement = document.getElementById(feature);
-            if (featureElement) {
-                const headerHeight = document.querySelector('.header').offsetHeight;
-                const elementPosition = featureElement.getBoundingClientRect().top;
-                const offsetPosition = elementPosition + window.pageYOffset - headerHeight;
-                window.scrollTo({
-                    top: offsetPosition,
-                    behavior: 'smooth'
-                });
-                featureElement.classList.add('highlight');
-                setTimeout(() => {
-                    featureElement.classList.remove('highlight');
-                }, 2000);
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            if (currentPage !== 'index.html' && currentPage !== '') {
+                // Go to home page with scroll hash
+                window.location.href = `index.html#features?scroll=${feature}`;
+            } else {
+                const featureElement = document.getElementById(feature);
+                if (featureElement) {
+                    const headerHeight = document.querySelector('.header').offsetHeight;
+                    const elementPosition = featureElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerHeight;
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                    featureElement.classList.add('highlight');
+                    setTimeout(() => {
+                        featureElement.classList.remove('highlight');
+                    }, 2000);
+                }
             }
         });
     });
@@ -689,5 +642,21 @@ document.addEventListener('DOMContentLoaded', () => {
             mobileNav.classList.remove('active');
             ensureMenuState();
         }
+    });
+
+    // Add click handlers for download links in navigation (works on all pages)
+    document.querySelectorAll('a[href="#download"]').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            if (currentPage !== 'index.html' && currentPage !== '') {
+                window.location.href = 'index.html#download';
+            } else {
+                const downloadSection = document.getElementById('download');
+                if (downloadSection) {
+                    downloadSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+        });
     });
 }); 
