@@ -283,7 +283,7 @@ def process_screenshots(input_dir, output_dir, target_size=TARGET_SIZE, theme_na
             create_scaled_with_text(img_file, out3, feature_folder, target_size, theme_name=theme_name, descriptions=descriptions, rel_path=mapped_path)
 
 def main():
-    input_dir = 'images/screenshots tablet'
+    input_dir = 'images/Logs/screenshots tablet'
     output_dir = 'resized_screenshots_tablet'
     process_screenshots(input_dir, output_dir)
 

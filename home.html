@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home · Portfolio</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="header-container"></div>
+
+    <main class="portfolio-main">
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Hi, I’m Katyayani</h1>
+                <p class="subtitle">
+                    This is the hub for my apps, including Logs and more projects to come.
+                </p>
+            </div>
+        </section>
+
+        <section class="apps-section">
+            <h2>My Apps</h2>
+            <div class="apps-grid">
+                <article class="app-card">
+                    <h3>Logs</h3>
+                    <p>A fully customizable and private digital pocketbook designed for minimal cognitive load.</p>
+                    <a href="index.html" class="app-link">Open Logs</a>
+                </article>
+
+                <article class="app-card">
+                    <h3>Other App</h3>
+                    <p>Placeholder for another app page under this domain.</p>
+                    <a href="other-app.html" class="app-link">View placeholder</a>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <div id="footer-container"></div>
+
+    <script src="js/themes.js"></script>
+    <script src="js/theme-selector.js"></script>
+    <script src="js/components.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeTheme();
+            const themeSelector = new ThemeSelector();
+            themeSelector.render();
+            renderAllComponents();
+        });
+    </script>
+</body>
+</html>
