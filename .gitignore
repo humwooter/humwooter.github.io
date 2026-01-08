@@ -38,3 +38,6 @@ dist-ssr
 # Ignore IDE files
 .vscode/
 .idea/
+venv/
+__pycache__/
+*.pyc
