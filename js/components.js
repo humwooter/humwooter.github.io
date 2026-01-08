@@ -86,13 +86,13 @@ const components = {
             <div class="hero-image">
                 <div class="app-icon-carousel">
                     <div class="app-icon-card" data-theme="cloud" style="transform: rotate(0deg); z-index: 3;">
-                        <img src="images/app icons/app_icon-1.png" alt="" class="app-icon">
+                        <img src="images/Logs/app icons/app_icon-1.png" alt="" class="app-icon">
                     </div>
                     <div class="app-icon-card" data-theme="chrome" style="transform: rotate(-30deg); z-index: 2;">
-                        <img src="images/app icons/app_icon-2.png" alt="" class="app-icon">
+                        <img src="images/Logs/app icons/app_icon-2.png" alt="" class="app-icon">
                     </div>
                     <div class="app-icon-card" data-theme="mocha" style="transform: rotate(-60deg); z-index: 1;">
-                        <img src="images/app icons/app_icon-3.png" alt="" class="app-icon">
+                        <img src="images/Logs/app icons/app_icon-3.png" alt="" class="app-icon">
                     </div>
                 </div>
             </div>
@@ -110,9 +110,9 @@ const components = {
                     <p>Default daily view opens directly to today's entries, minimizing clutter. Pin important entries to keep them in the main view across days. Clean, timestamped entries encourage effortless logging.</p>
                 </div>
                 <div class="feature-screenshots">
-                    <img src="images/screenshots/minimal-cognitive/1.png" alt="">
-                    <img src="images/screenshots/minimal-cognitive/2.png" alt="">
-                    <img src="images/screenshots/minimal-cognitive/3.png" alt="">
+                    <img src="images/Logs/screenshots/minimal-cognitive/1.png" alt="">
+                    <img src="images/Logs/screenshots/minimal-cognitive/2.png" alt="">
+                    <img src="images/Logs/screenshots/minimal-cognitive/3.png" alt="">
                 </div>
             </div>
 
@@ -123,11 +123,11 @@ const components = {
                     <p>Create entries effortlessly with an intuitive writing interface. Quick actions let you add tags, attach to a folder, add a title, or attach media in a single tap.</p>
                 </div>
                 <div class="feature-screenshots">
-                    <img src="images/screenshots/easy-creation/1.png" alt="">
-                    <img src="images/screenshots/easy-creation/2.png" alt="">
-                    <img src="images/screenshots/easy-creation/3.png" alt="">
-                    <img src="images/screenshots/easy-creation/4.png" alt="">
-                    <img src="images/screenshots/easy-creation/5.png" alt="">
+                    <img src="images/Logs/screenshots/easy-creation/1.png" alt="">
+                    <img src="images/Logs/screenshots/easy-creation/2.png" alt="">
+                    <img src="images/Logs/screenshots/easy-creation/3.png" alt="">
+                    <img src="images/Logs/screenshots/easy-creation/4.png" alt="">
+                    <img src="images/Logs/screenshots/easy-creation/5.png" alt="">
                 </div>
             </div>
 
@@ -138,9 +138,9 @@ const components = {
                     <p>One-tap visual annotation with customizable icons and colors. Access stamps by swiping left on any entry. Each entry can have one stamp for clear visual cues. Fully personalize your stamp library with custom names, icons, colors, and folders.</p>
                 </div>
                 <div class="feature-screenshots">
-                    <img src="images/screenshots/stamps/1.png" alt="">
-                    <img src="images/screenshots/stamps/2.png" alt="">
-                    <img src="images/screenshots/stamps/3.png" alt="">
+                    <img src="images/Logs/screenshots/stamps/1.png" alt="">
+                    <img src="images/Logs/screenshots/stamps/2.png" alt="">
+                    <img src="images/Logs/screenshots/stamps/3.png" alt="">
                 </div>
             </div>
 
@@ -151,11 +151,11 @@ const components = {
                     <p>Choose from a variety of beautiful themes or create your own. Customize fonts, colors, and spacing to match your style. Adjust the interface to your preferences with flexible layout options.</p>
                 </div>
                 <div class="feature-screenshots">
-                    <img src="images/screenshots/customization/1.png" alt="">
-                    <img src="images/screenshots/customization/2.png" alt="">
-                    <img src="images/screenshots/customization/3.png" alt="">
-                    <img src="images/screenshots/customization/4.png" alt="">
-                    <img src="images/screenshots/customization/5.png" alt="">
+                    <img src="images/Logs/screenshots/customization/1.png" alt="">
+                    <img src="images/Logs/screenshots/customization/2.png" alt="">
+                    <img src="images/Logs/screenshots/customization/3.png" alt="">
+                    <img src="images/Logs/screenshots/customization/4.png" alt="">
+                    <img src="images/Logs/screenshots/customization/5.png" alt="">
                 </div>
             </div>
 
@@ -166,13 +166,13 @@ const components = {
                     <p>Powerful search capabilities help you find entries quickly. Organize entries with custom tags and folders. Filter and sort your entries by date, stamps, or custom criteria.</p>
                 </div>
                 <div class="feature-screenshots">
-                    <img src="images/screenshots/search-organization/1.png" alt="">
-                    <img src="images/screenshots/search-organization/2.png" alt="">
-                    <img src="images/screenshots/search-organization/3.png" alt="">
-                    <img src="images/screenshots/search-organization/4.png" alt="">
-                    <img src="images/screenshots/search-organization/5.png" alt="">
-                    <img src="images/screenshots/search-organization/6.png" alt="">
-                    <img src="images/screenshots/search-organization/7.png" alt="">
+                    <img src="images/Logs/screenshots/search-organization/1.png" alt="">
+                    <img src="images/Logs/screenshots/search-organization/2.png" alt="">
+                    <img src="images/Logs/screenshots/search-organization/3.png" alt="">
+                    <img src="images/Logs/screenshots/search-organization/4.png" alt="">
+                    <img src="images/Logs/screenshots/search-organization/5.png" alt="">
+                    <img src="images/Logs/screenshots/search-organization/6.png" alt="">
+                    <img src="images/Logs/screenshots/search-organization/7.png" alt="">
                 </div>
             </div>
 
@@ -183,11 +183,11 @@ const components = {
                     <p>All entries are stored solely on your device with zero data collection. Protect access with Face ID, Touch ID, or a passcode. Export entries as JSON for safekeeping and restore only when you choose.</p>
                 </div>
                 <div class="feature-screenshots">
-                    <img src="images/screenshots/privacy/1.png" alt="">
-                    <img src="images/screenshots/privacy/2.png" alt="">
-                    <img src="images/screenshots/privacy/3.png" alt="">
-                    <img src="images/screenshots/privacy/4.png" alt="">
-                    <img src="images/screenshots/privacy/5.png" alt="">
+                    <img src="images/Logs/screenshots/privacy/1.png" alt="">
+                    <img src="images/Logs/screenshots/privacy/2.png" alt="">
+                    <img src="images/Logs/screenshots/privacy/3.png" alt="">
+                    <img src="images/Logs/screenshots/privacy/4.png" alt="">
+                    <img src="images/Logs/screenshots/privacy/5.png" alt="">
                 </div>
             </div>
 
@@ -198,11 +198,11 @@ const components = {
                     <p>Access your entries through an intuitive calendar interface. Choose between list view for a chronological overview of selected days, or switch to schedule view for a graphical representation where each day is a column and entries are plotted by time. Tap any entry to reveal its contents, making it easy to find and review past entries.</p>
                 </div>
                 <div class="feature-screenshots">
-                    <img src="images/screenshots/calendar-schedule/1.png" alt="">
-                    <img src="images/screenshots/calendar-schedule/2.png" alt="">
-                    <img src="images/screenshots/calendar-schedule/3.png" alt="">
-                    <img src="images/screenshots/calendar-schedule/4.png" alt="">
-                    <img src="images/screenshots/calendar-schedule/5.png" alt="">
+                    <img src="images/Logs/screenshots/calendar-schedule/1.png" alt="">
+                    <img src="images/Logs/screenshots/calendar-schedule/2.png" alt="">
+                    <img src="images/Logs/screenshots/calendar-schedule/3.png" alt="">
+                    <img src="images/Logs/screenshots/calendar-schedule/4.png" alt="">
+                    <img src="images/Logs/screenshots/calendar-schedule/5.png" alt="">
                 </div>
             </div>
 
@@ -213,9 +213,9 @@ const components = {
                     <p>Monitor your writing habits with detailed insights. View your current streak and longest streak to stay motivated. Analyze your entry activity through an interactive graph that shows your writing patterns over time. Perfect for building and maintaining consistent journaling habits.</p>
                 </div>
                 <div class="feature-screenshots">
-                    <img src="images/screenshots/insights/1.png" alt="">
-                    <img src="images/screenshots/insights/2.png" alt="">
-                    <img src="images/screenshots/insights/3.png" alt="">
+                    <img src="images/Logs/screenshots/insights/1.png" alt="">
+                    <img src="images/Logs/screenshots/insights/2.png" alt="">
+                    <img src="images/Logs/screenshots/insights/3.png" alt="">
                 </div>
             </div>
         </section>

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Script to resize tablet screenshots in the images/screenshots tablet folder to iPad landscape dimensions (2732x2048 px)
+Script to resize tablet screenshots in the images/Logs/screenshots tablet folder to iPad landscape dimensions (2732x2048 px)
 and save them to a new resized_screenshots_tablet folder with three variations:
 1. distorted_fit: Screenshot stretched to exactly 2732x2048 px
 2. scaled_with_space: Screenshot scaled down with space for text above
