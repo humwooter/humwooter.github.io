@@ -988,7 +988,7 @@ section {
 
 
 
-@media (max-width: 900px) {
+@media (max-width: 1200px) {
 
     .mobile-nav {
         display: block;
@@ -1091,8 +1091,9 @@ section {
 
 
     .hero-image {
-        padding-top: 1rem;
+        padding-top: 3rem;
         padding-bottom: 6rem;
+        padding-left: 3rem;
         flex: 1;
         display: flex;
         justify-content: center;
@@ -1126,14 +1127,14 @@ section {
     }
 
     .app-icon-carousel {
-        width: 90px;
-        height: 90px;
+        width: 120px;
+        height: 120px;
         padding-left: 1rem;
     }
 
     .app-icon-card img.app-icon {
-        width: 90px;
-        height: 90px;
+        width: 120px;
+        height: 120px;
         border-radius: 11.25px;
     }
 
@@ -1326,7 +1327,7 @@ section {
     text-align: center;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1200px) {
     .privacy {
         padding: 2rem 1rem 2rem 1rem;
         padding-top: 120px;
