@@ -36,8 +36,8 @@ const components = {
                     <div class="dropdown">
                         <a href="#" class="dropdown-trigger">About</a>
                         <div class="dropdown-content">
-                            <a href="contact.html">Contact</a>
-                            <a href="privacy.html">Privacy Policy</a>
+                            <a href="../logs/contact.html">Contact</a>
+                            <a href="../logs/privacy.html">Privacy Policy</a>
                         </div>
                     </div>
                     <a href="#download">Download</a>
@@ -77,8 +77,8 @@ const components = {
                     <div class="mobile-nav-section">
                         <div class="mobile-nav-header">About</div>
                         <div class="mobile-nav-items">
-                            <a href="contact.html">Contact</a>
-                            <a href="privacy.html">Privacy Policy</a>
+                            <a href="../logs/contact.html">Contact</a>
+                            <a href="../logs/privacy.html">Privacy Policy</a>
                         </div>
                     </div>
                     <div class="mobile-nav-section">
@@ -281,8 +281,8 @@ const components = {
         <footer class="footer">
             <div class="footer-content">
                 <div class="footer-links">
-                    <a href="privacy.html">Privacy Policy</a>
-                    <a href="contact.html">Contact</a>
+                    <a href="../logs/privacy.html">Privacy Policy</a>
+                    <a href="../logs/contact.html">Contact</a>
                 </div>
                 <p>&copy; ${new Date().getFullYear()} Logs. All rights reserved.</p>
             </div>
