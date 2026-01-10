@@ -1063,7 +1063,7 @@ section {
         min-height: unset !important;
         margin-top: 0;
         justify-content: flex-start !important;
-        padding-top: 10rem;
+        padding-top: 4rem;
     }
 
     .hero-content {
@@ -1093,7 +1093,7 @@ section {
 
     .hero-image {
         padding-top: 3rem;
-        padding-bottom: 6rem;
+        padding-bottom: 3rem;
         padding-left: 3rem;
         flex: 1;
         display: flex;
@@ -1128,14 +1128,14 @@ section {
     }
 
     .app-icon-carousel {
-        width: 120px;
-        height: 120px;
+        width: 100px;
+        height: 100px;
         padding-left: 1rem;
     }
 
     .app-icon-card img.app-icon {
-        width: 120px;
-        height: 120px;
+        width: 100px;
+        height: 100px;
         border-radius: 11.25px;
     }
 
