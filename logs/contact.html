@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - Logs</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/css/animations.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>    
+    <div id="header-container"></div>
+
+    <main class="contact">
+        <h2>Contact</h2>
+        <div class="contact-content">
+            <h3>Get in Touch</h3>
+            <p>Email <a href="mailto:humwooter+support@gmail.com">humwooter+support@gmail.com</a> for further questions.</p>
+        </div>
+      </main>
+
+    <div id="footer-container"></div>
+
+    <!-- Load scripts in the correct order -->
+    <script>window.__SITE_BASE__ = "/";</script>
+    <script>window.__APP_ID__ = "logs";</script>
+    <script src="/js/themes.js"></script>
+    <script src="/js/theme-selector.js"></script>
+    <script src="/js/components.js"></script>
+    <script>
+        // Initialize everything when the DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize theme
+            initializeTheme();
+            
+            // Initialize theme selector
+            const themeSelector = new ThemeSelector();
+            themeSelector.render();
+            
+            // Initialize components
+            renderAllComponents();
+        });
+    </script>
+</body>
+</html> 
