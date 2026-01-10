@@ -1,0 +1,29 @@
+/* Section fade-in animation */
+.section-hidden {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.8s ease-out;
+}
+
+.fade-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Add a slight delay for each section to create a staggered effect */
+#features {
+    transition-delay: 0.1s;
+}
+
+#screenshots {
+    transition-delay: 0.2s;
+}
+
+#download {
+    transition-delay: 0.3s;
+}
+
+/* Ensure smooth scrolling for the entire page */
+html {
+    scroll-behavior: smooth;
+} 
