@@ -1,0 +1,24 @@
+.download {
+  background-color: var(--secondary-background);
+  text-align: center;
+}
+
+.download p {
+  margin-bottom: 2rem;
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.app-store-button {
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+.app-store-button:hover {
+  transform: scale(1.05);
+}
+
+.app-store-button img {
+  height: 50px;
+  width: auto;
+} 
