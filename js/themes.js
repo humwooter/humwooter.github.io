@@ -117,7 +117,8 @@ function applyTheme(themeName) {
     const logoImg = document.querySelector('.logo img');
     if (logoImg) {
         const logoColor = isLightText(theme.textColor) ? 'white' : 'black';
-        logoImg.src = `images/logo_${logoColor}.PNG`;
+        // logoImg.src = `images/logo_${logoColor}.PNG`;
+        logoImg.src = new URL(`./images/logo_${logoColor}.PNG`, window.location.href).toString();
     }
     
     // Store the selected theme

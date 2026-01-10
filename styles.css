@@ -1089,10 +1089,21 @@ section {
         margin-bottom: 1.5rem;
     } */
 
+
+    .hero-image {
+        padding-top: 1rem;
+        padding-bottom: 6rem;
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
     .hero h1 {
         font-size: 3.5rem;
         margin-top: 2.5rem;
         margin-bottom: 1rem;
+        padding-top: 5rem;
     }
 
     /* Make Logs title bigger in mobile */

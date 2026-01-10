@@ -1,44 +1,22 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Logs</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="css/animations.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-</head>
-<body>    
-    <div id="header-container"></div>
+  <head>
+    <meta charset="utf-8" />
+    <title>Redirecting…</title>
 
-    <main>
-        <div id="hero-container"></div>
-        <div id="features-container"></div>
-        <!-- <div id="screenshots-container"></div> -->
-        <div id="download-container"></div>
-    </main>
+    <!-- instant redirect for browsers -->
+    <meta http-equiv="refresh" content="0; url=logs/" />
 
-    <div id="footer-container"></div>
-
-    <!-- Load scripts in the correct order -->
-    <script src="js/themes.js"></script>
-    <script src="js/theme-selector.js"></script>
-    <script src="js/components.js"></script>
+    <!-- JS fallback (handles hashes & github pages) -->
     <script>
-        // Initialize everything when the DOM is loaded
-        document.addEventListener('DOMContentLoaded', () => {
-            // Initialize theme
-            initializeTheme();
-            
-            // Initialize theme selector
-            const themeSelector = new ThemeSelector();
-            themeSelector.render();
-            
-            // Initialize components
-            renderAllComponents();
-        });
+      (function () {
+        var target = "logs/" + (location.search || "") + (location.hash || "");
+        location.replace(target);
+      })();
     </script>
-</body>
-</html> 
+  </head>
+
+  <body>
+    Redirecting to Logs…
+  </body>
+</html>

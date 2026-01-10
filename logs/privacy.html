@@ -4,8 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Privacy Policy - Logs</title>
-    <link rel="stylesheet" href="/styles.css">
-    <link rel="stylesheet" href="/css/animations.css">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../css/animations.css">
+    
+    <script src="../js/themes.js"></script>
+    <script src="../js/theme-selector.js"></script>
+    <script src="../js/components.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -13,37 +17,16 @@
 <body>    
     <div id="header-container"></div>
 
-    <main class="privacy">
-        <h2>Privacy Policy</h2>
-        <div class="privacy-content">
-            <h3>Your Privacy Matters</h3>
-            <p>Logs is designed with privacy at its core. No data is ever collected, transmitted, or stored on servers.</p>
-            
-            <h4>Local Storage</h4>
-            <p>All entries are stored locally on your device only.</p>
-            
-            <h4>No Data Collection</h4>
-            <p>No usage tracking, analytics, or personal information is gathered. Your journal entries remain completely private.</p>
-            
-            <h4>Authentication</h4>
-            <p>Protect your data with Face ID, Touch ID, or a passcode.</p>
-            
-            <h4>Data Control</h4>
-            <p>Export entries as JSON files for safekeeping. You have full control over your data.</p>
-            
-            <h4>No Third-Party Access</h4>
-            <p>Data is never shared with third parties.</p>
-            </div>
-      </main>
+    <main>
+        <div id="privacy-container"></div>
+    </main>
 
     <div id="footer-container"></div>
 
     <!-- Load scripts in the correct order -->
-    <script>window.__SITE_BASE__ = "/";</script>
-    <script>window.__APP_ID__ = "logs";</script>
-    <script src="/js/themes.js"></script>
-    <script src="/js/theme-selector.js"></script>
-    <script src="/js/components.js"></script>
+    <script src="../js/themes.js"></script>
+    <script src="../js/theme-selector.js"></script>
+    <script src="../js/components.js"></script>
     <script>
         // Initialize everything when the DOM is loaded
         document.addEventListener('DOMContentLoaded', () => {
