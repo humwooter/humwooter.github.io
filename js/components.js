@@ -382,25 +382,41 @@ function setupLogoClick() {
 }
 
 function setupHeaderTransformation() {
-    const header = document.querySelector('.header');
-    const subtitle = document.querySelector('.subtitle');
-    
-    if (!header || !subtitle) return;
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (!entry.isIntersecting) {
-                header.classList.add('transformed');
-            } else {
-                header.classList.remove('transformed');
-            }
-        });
-    }, {
-        threshold: 0.1 // Trigger when 10% of the subtitle is out of view
-    });
-
-    observer.observe(subtitle);
-}
+    const header = document.querySelector(".header");
+    if (!header) return;
+  
+    const subtitle = document.querySelector(".subtitle");
+  
+    const setTransformed = (on) => {
+      header.classList.toggle("transformed", on);
+    };
+  
+    // 1) always support "any scroll triggers transformed" (privacy/contact)
+    const updateFromScroll = () => {
+      setTransformed(window.scrollY > 0);
+    };
+  
+    // run once on load (covers refresh mid-page too)
+    updateFromScroll();
+  
+    window.addEventListener("scroll", updateFromScroll, { passive: true });
+  
+    // 2) on pages with subtitle, use it too (nice behavior on home)
+    // but don't break the "scrollY > 0" rule:
+    if (subtitle) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          // if subtitle is visible AND we're at top, show default
+          // otherwise show transformed
+          const subtitleVisible = entries[0].isIntersecting;
+          setTransformed(!(subtitleVisible && window.scrollY === 0));
+        },
+        { threshold: 0.1 }
+      );
+  
+      observer.observe(subtitle);
+    }
+  }
 
 // Function to render all components
 function renderAllComponents() {
