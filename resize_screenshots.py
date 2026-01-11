@@ -55,6 +55,12 @@ THEMES = {
         'bottomColor': (112, 112, 112),
         'accentColor': (204, 255, 141),
         'textColor': (255, 255, 255)
+    },
+    'hyacinth': {
+    'topColor': (128, 125, 255),
+    'bottomColor': (88, 184, 255),
+    'accentColor': (255, 189, 201),
+    'textColor': (0, 0, 0)
     }
 }
 
@@ -63,7 +69,7 @@ font = 'Fonts/Original Fonts/KatyasHandwriting-Regular.ttf'
 # Map theme fontName to system font names (no TTF files needed)
 THEME_FONT_PATHS = {
     'cloud': 'Fonts/Original Fonts/KatyasHandwriting-Regular.ttf',  # Custom handwriting font
-    'chrome': 'LucidaGrande',  # Bold monospace, safe for commercial use
+    'chrome': 'Fonts/Original Fonts/KatyasHandwriting-Regular.ttf',  
     'mocha': 'Avenir',  # Safe system font, free for commercial use
     'scarab': 'Fonts/Original Fonts/KatyasHandwriting-Regular.ttf',  # Safe system font, free for commercial use
     'wheatgrass': 'Fonts/Original Fonts/KatyasHandwriting-Regular.ttf',  # Safe system font, free for commercial use
@@ -81,7 +87,7 @@ THEME_FONT_PATHS = {
 # Map theme fontName to bold system font names for titles
 THEME_BOLD_FONT_PATHS = {
     'cloud': 'Fonts/Original Fonts/KatyasHandwriting-Regular.ttf',  # Custom handwriting font
-    'chrome': 'LucidaGrande-Bold',  # Bold monospace, safe for commercial use
+    'chrome': 'Fonts/Original Fonts/KatyasHandwriting-Regular.ttf',  # Bold monospace, safe for commercial use
     # 'chrome': 'Courier-Bold',  # Bold monospace, safe for commercial use
     'mocha': 'Avenir-Bold',  # Bold version, safe for commercial use
     'scarab': 'Fonts/Original Fonts/KatyasHandwriting-Regular.ttf',  # Bold monospace, safe for commercial use
@@ -338,7 +344,9 @@ def create_scaled_with_text(input_path, output_path, target_size=TARGET_SIZE, te
                 text_y += desc_heights[i] + int(description_font_size * 0.08)
 
         # Save the image
+        os.makedirs(os.path.dirname(output_path), exist_ok=True)
         final_img.save(output_path, 'PNG')
+        print(f"Scaled with text: {input_path} -> {output_path}")        
         print(f"Scaled with text: {input_path} -> {output_path}")
         
     except Exception as e:
@@ -445,35 +453,37 @@ def process_screenshots(input_dir, output_dir, target_size=TARGET_SIZE, theme_na
     print(f"Resized screenshots saved to: {output_dir}")
 
 def main():
-    # Define paths
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Resize phone screenshots (3 variations).")
+    parser.add_argument("--input-dir", default=None, help="Directory that contains a 'screenshots' folder")
+    parser.add_argument("--output-dir", default=None, help="Where to write resized outputs")
+    parser.add_argument("--theme-name", default="cloud")
+    args = parser.parse_args()
+
+    # defaults (original behavior)
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    input_dir = os.path.join(current_dir, 'images')
-    output_dir = os.path.join(current_dir, 'resized_screenshots')
-    
-    # Check if input directory exists
+    input_dir = args.input_dir or os.path.join(current_dir, 'images')
+    output_dir = args.output_dir or os.path.join(current_dir, 'resized_screenshots')
+
     if not os.path.exists(input_dir):
         print(f"Error: Input directory '{input_dir}' does not exist")
         sys.exit(1)
-    
-    # Default theme (can be changed)
-    theme_name = 'cloud'
-    
+
+    theme_name = args.theme_name
+
     print(f"Processing screenshots from: {input_dir}")
     print(f"Output directory: {output_dir}")
     print(f"Target size: {TARGET_SIZE[0]}x{TARGET_SIZE[1]} pixels")
     print(f"Using theme: {theme_name}")
     print(f"Bottom padding: {BOTTOM_PADDING_RATIO * 100}%")
-    print("Creating three variations:")
-    print("1. distorted_fit: Screenshot stretched to exactly 1320x2868 px")
-    print("2. scaled_with_space: Screenshot scaled down with gradient background")
-    print("3. scaled_with_text: Screenshot scaled down with feature description text overlay")
     print("-" * 80)
-    
-    # Process all screenshots
+
     process_screenshots(input_dir, output_dir, target_size=TARGET_SIZE, theme_name=theme_name)
-    
+
     print("-" * 80)
     print("Screenshot resizing completed!")
+
 
 def get_font_path(theme_name):
     return THEME_FONT_PATHS.get(theme_name, 'Helvetica')  # Safe fallback font

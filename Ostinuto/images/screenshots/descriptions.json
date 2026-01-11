@@ -1,0 +1,106 @@
+{
+  "looping/1.png": {
+    "title": "Looping",
+    "description": "Turn on loop for any track and it will repeat indefinitely, with no recommendations or auto-generated queues.",
+    "theme": "chrome"
+  },
+
+  "easy-listening/1.png": {
+    "title": "Easy Listening",
+    "description": "Manage tracks quickly with swipe gestures: swipe left to queue or edit, and swipe right to delete.",
+    "theme": "chrome"
+  },
+
+  "waveform/1.png": {
+    "title": "Live Waveform",
+    "description": "See live waveforms while recording and during playback to make loops and fine adjustments easier.",
+    "theme": "chrome"
+  },
+
+  "playlists/1.png": {
+    "title": "Playlists",
+    "description": "Create playlists for sleep, focus, practice, or any routine, and organize your tracks your way.",
+    "theme": "chrome"
+  },
+  "playlists/2.png": {
+    "title": "Queue & Shuffle",
+    "description": "Queue tracks in the order you choose or shuffle a playlist when you want variety.",
+    "theme": "chrome"
+  },
+
+  "recording/1.png": {
+    "title": "Recording",
+    "description": "Record your own loops, notes, or ambient sounds and save them as tracks you can play and organize.",
+    "theme": "chrome"
+  },
+
+  "ambient/1.png": {
+    "title": "Ambient",
+    "description": "Use white noise or ambient backgrounds to create a calm or focused space.",
+    "theme": "chrome"
+  },
+
+  "customization/1.png": {
+    "title": "Themes",
+    "description": "Choose from a variety of themes to personalize your listening experience.",
+    "theme": "chrome"
+  },
+  "customization/2.png": {
+    "title": "Light & Dark",
+    "description": "Set one theme for light mode and a different theme for dark mode to follow your device appearance.",
+    "theme": "chrome"
+  },
+  "customization/3.png": {
+    "title": "Track Details",
+    "description": "Adjust titles, descriptions, and thumbnails so tracks are easy to recognize at a glance.",
+    "theme": "chrome"
+  },
+
+  "offline/1.png": {
+    "title": "Works Offline",
+    "description": "Playback, editing, and recording run directly on your device so you can use the app without internet.",
+    "theme": "chrome"
+  },
+  "offline/2.png": {
+    "title": "No Account",
+    "description": "Use core features without signing in and keep everything tied to your device.",
+    "theme": "chrome"
+  },
+  "offline/3.png": {
+    "title": "Airplane Mode",
+    "description": "Your tracks and playlists stay available even in airplane mode.",
+    "theme": "chrome"
+  },
+
+  "backups/1.png": {
+    "title": "Full Backups",
+    "description": "Create full backups of your entire music library, including playlists, notes, thumbnails, recordings, and audio files.",
+    "theme": "chrome"
+  },
+  "backups/2.png": {
+    "title": "Restore Anytime",
+    "description": "Import a backup to restore your full library whenever you need to bring everything back.",
+    "theme": "chrome"
+  },
+  "backups/3.png": {
+    "title": "Save Playlists",
+    "description": "Save a specific playlist outside the app when you want to share or archive it separately.",
+    "theme": "chrome"
+  },
+
+  "about/1.png": {
+    "title": "Support",
+    "description": "Contact the developer at humwooter+ostinuto@gmail.com if you need help or have a question.",
+    "theme": "chrome"
+  },
+  "about/2.png": {
+    "title": "Artist-Made",
+    "description": "All default artwork and app visuals were created by the developer.",
+    "theme": "chrome"
+  },
+  "about/3.png": {
+    "title": "Default Audio",
+    "description": "Default audio tracks were sourced from FreePD (note: FreePD is no longer active).",
+    "theme": "chrome"
+  }
+}
