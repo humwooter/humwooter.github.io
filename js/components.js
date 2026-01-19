@@ -697,11 +697,18 @@ function isHomeApp() {
 let SITE = null;
 
 async function loadDetails() {
-  const url = assetPath("details.json");
+  const url = new URL("details.json", window.location.href).toString();
   const res = await fetch(url, { cache: "no-cache" });
   if (!res.ok) throw new Error(`failed to load ${url} (${res.status})`);
   return await res.json();
 }
+
+// async function loadDetails() {
+//   const url = assetPath("details.json");
+//   const res = await fetch(url, { cache: "no-cache" });
+//   if (!res.ok) throw new Error(`failed to load ${url} (${res.status})`);
+//   return await res.json();
+// }
 
 function getAppName() {
   return safeStr(SITE?.appName, safeStr(SITE?.hero?.title, "App"));
