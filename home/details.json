@@ -1,0 +1,25 @@
+{
+    "nav": {
+      "apps": [
+        { "label": "Logs", "href": "/logs/" },
+        { "label": "Ostinuto", "href": "/ostinuto/" }
+      ],
+      "resume": { "label": "Resume", "href": "/home/resume.pdf" }
+    },
+    "hero": {
+      "appsCarousel": [
+        {
+          "label": "Logs",
+          "href": "/logs/",
+          "src": "/logs/images/app icons/app_icon-1.png",
+          "theme": "cloud"
+        },
+        {
+          "label": "Ostinuto",
+          "href": "/ostinuto/",
+          "src": "/ostinuto/images/app icons/app_icon-1.png",
+          "theme": "hyacinth"
+        }
+      ]
+    }
+  }

@@ -25,6 +25,19 @@ const themes = {
         fontSize: "18px",
         lineSpacing: "1.5" // Changed from 3px to 1.5
     },
+    hyacinth: {
+        name: "Hyacinth",
+        accentColor: "rgb(255, 189, 201)",
+        textColor: "rgb(0, 0, 0)",
+        accentTextColor: "rgb(0, 0, 0)",
+        topColor: "rgb(128, 125, 255)",
+        bottomColor: "rgb(88, 184, 255)",
+        entryBackgroundColor: "rgba(255, 226, 229, 0.40)",
+        reminderColor: "rgb(255, 170, 185)",
+        fontName: "JetBrains Mono, monospace",
+        fontSize: "18px",
+        lineSpacing: "1.5"
+    },
     mocha: {
         name: "Mocha",
         accentColor: "rgb(255, 255, 255)", // Selection color

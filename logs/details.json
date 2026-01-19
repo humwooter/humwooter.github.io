@@ -1,0 +1,92 @@
+{
+  "appName": "Logs",
+
+  "logo": "images/logo_black.PNG",
+
+  "hero": {
+    "title": "Logs",
+    "subtitle": "Logs is a fully customizable and private digital pocketbook designed for minimal cognitive load. Its core experience centers around an intuitive daily view, showing only today’s entries by default to keep you focused.",
+    "icons": [
+      { "src": "images/app icons/app_icon-1.png", "theme": "cloud" },
+      { "src": "images/app icons/app_icon-2.png", "theme": "chrome" },
+      { "src": "images/app icons/app_icon-3.png", "theme": "mocha" }
+    ]
+  },
+
+  "themes": [
+    { "id": "cloud", "label": "Cloud" },
+    { "id": "chrome", "label": "Chrome" },
+    { "id": "mocha", "label": "Mocha" },
+    { "id": "mag", "label": "Mag" },
+    { "id": "wheatgrass", "label": "Wheatgrass" },
+    { "id": "scarab", "label": "Scarab" }
+  ],
+
+  "features": [
+    {
+      "id": "minimal-cognitive",
+      "label": "Minimal Cognitive Load",
+      "subtitle": "Focus on what matters today",
+      "text": "Default daily view opens directly to today’s entries, minimizing clutter. Pin important entries to keep them in the main view across days. Clean, timestamped entries encourage effortless logging.",
+      "screens": 3
+    },
+    {
+      "id": "easy-creation",
+      "label": "Easy Creation",
+      "subtitle": "Write with confidence",
+      "text": "Create entries effortlessly with an intuitive writing interface. Quick actions let you add tags, attach to a folder, add a title, or attach media in a single tap.",
+      "screens": 5
+    },
+    {
+      "id": "stamps",
+      "label": "Intuitive Stamps",
+      "subtitle": "One-tap visual organization",
+      "text": "One-tap visual annotation with customizable icons and colors. Access stamps by swiping left on any entry. Each entry can have one stamp for clear visual cues. Fully personalize your stamp library with custom names, icons, colors, and folders.",
+      "screens": 3
+    },
+    {
+      "id": "customization",
+      "label": "Extensive Customization",
+      "subtitle": "Make it your own",
+      "text": "Choose from a variety of beautiful themes or create your own. Customize fonts, colors, and spacing to match your style. Adjust the interface to your preferences with flexible layout options.",
+      "screens": 5
+    },
+    {
+      "id": "search-organization",
+      "label": "Smart Search & Organization",
+      "subtitle": "Find anything instantly",
+      "text": "Powerful search capabilities help you find entries quickly. Organize entries with custom tags and folders. Filter and sort your entries by date, stamps, or custom criteria.",
+      "screens": 7
+    },
+    {
+      "id": "privacy",
+      "label": "Complete Privacy",
+      "subtitle": "Your data stays on your device",
+      "text": "All entries are stored solely on your device with zero data collection. Protect access with Face ID, Touch ID, or a passcode. Export entries as JSON for safekeeping and restore only when you choose.",
+      "screens": 5
+    },
+    {
+      "id": "calendar-schedule",
+      "label": "Calendar & Schedule View",
+      "subtitle": "Organize your entries visually",
+      "text": "Access your entries through an intuitive calendar interface. Choose between list view for a chronological overview of selected days, or switch to schedule view for a graphical representation where each day is a column and entries are plotted by time. Tap any entry to reveal its contents, making it easy to find and review past entries.",
+      "screens": 5
+    },
+    {
+      "id": "insights",
+      "label": "Insights",
+      "subtitle": "Track your progress and patterns",
+      "text": "Monitor your writing habits with detailed insights. View your current streak and longest streak to stay motivated. Analyze your entry activity through an interactive graph that shows your writing patterns over time.",
+      "screens": 3
+    }
+  ],
+
+  "links": {
+    "appStore": "https://apps.apple.com/us/app/iogs/id6480384141",
+    "supportEmail": "humwooter+support@gmail.com"
+  },
+
+  "footer": {
+    "copyright": "Logs"
+  }
+}

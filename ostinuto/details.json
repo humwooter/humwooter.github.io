@@ -1,0 +1,79 @@
+{
+  "appName": "Ostinuto",
+
+  "hero": {
+    "title": "Ostinuto",
+"subtitle": "Ostinuto is a fully offline music player with playlists, shuffle, queueing, infinite loop mode, background playback, and built-in recording with waveform visualization.",      "icons": [
+      { "src": "images/app icons/app_icon-1.png", "theme": "hyacinth" },
+      { "src": "images/app icons/app_icon-2.png", "theme": "chrome" }
+    ]
+  },
+
+  "themes": [
+    { "id": "chrome", "label": "Chrome" },
+    { "id": "hyacinth", "label": "Hyacinth" }
+  ],
+
+  "featuresTitle": "Key Features",
+
+  "features": [
+    {
+      "id": "looping",
+      "label": "Looping",
+      "subtitle": "Repeat indefinitely",
+      "text": "Turn on loop for any track and it will repeat indefinitely, with no recommendations or auto-generated queues.",
+      "screens": 2
+    },
+    {
+      "id": "easy-listening",
+      "label": "Easy Listening",
+      "subtitle": "Fast track management",
+      "text": "Manage tracks quickly with swipe gestures: swipe left to queue or edit, and swipe right to delete.",
+      "screens": 3
+    },
+    {
+      "id": "waveform",
+      "label": "Live Waveform",
+      "subtitle": "See audio as it plays",
+      "text": "See live waveforms while recording and during playback to make loops and fine adjustments easier.",
+      "screens": 1
+    },
+    {
+      "id": "playlists",
+      "label": "Playlists",
+      "subtitle": "Organize for any routine",
+      "text": "Create playlists for sleep, focus, practice, or any routine, and organize your tracks your way.",
+      "screens": 3
+    },
+    {
+      "id": "recording",
+      "label": "Recording",
+      "subtitle": "Capture loops and notes",
+      "text": "Record your own loops, notes, or ambient sounds and save them as tracks you can play and organize.",
+      "screens": 3
+    },
+    {
+      "id": "customization",
+      "label": "Customization",
+      "subtitle": "Make it yours",
+      "text": "Choose themes, set separate light/dark themes, and fine-tune track details so everything is easy to recognize at a glance.",
+      "screens": 3
+    },
+    {
+      "id": "backups",
+      "label": "Backups",
+      "subtitle": "Export and restore anytime",
+      "text": "Create full backups of your entire library (playlists, notes, thumbnails, recordings, and audio files), restore anytime, or export a single playlist to share or archive.",
+      "screens": 3
+    }
+  ],
+
+  "links": {
+    "appStore": "#",
+    "supportEmail": "humwooter+ostinuto@gmail.com"
+  },
+
+  "footer": {
+    "copyright": "Ostinuto"
+  }
+}
