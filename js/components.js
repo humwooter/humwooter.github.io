@@ -1202,6 +1202,13 @@ function setupHeaderTransformation() {
   const header = document.querySelector(".header");
   if (!header) return;
 
+
+  const isMobile = window.matchMedia("(max-width: 1200px)").matches;
+  if (isMobile) {
+    header.classList.remove("transformed");
+    return;
+  }
+  
   const subtitle = document.querySelector(".subtitle");
   const setTransformed = (on) => header.classList.toggle("transformed", on);
 
