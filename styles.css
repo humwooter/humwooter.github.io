@@ -990,6 +990,16 @@ section {
 
 
 @media (max-width: 1200px) {
+    /* .logo { outline: 2px solid red; }
+    .logo img { outline: 2px solid lime; }
+    .mobile-menu-button { outline: 2px solid cyan; } */
+
+    .logo {
+        margin-left: -1rem;
+      }
+    .nav-left {
+        flex: 0 0 auto; /* key fix */
+      }
 
     .header,
     .header.transformed {
