@@ -34,10 +34,23 @@ const themes = {
         bottomColor: "rgb(88, 184, 255)",
         entryBackgroundColor: "rgba(255, 226, 229, 0.40)",
         reminderColor: "rgb(255, 170, 185)",
-        fontName: "JetBrains Mono, monospace",
+        fontName: "Quicksand, sans-serif",
         fontSize: "18px",
         lineSpacing: "1.5"
     },
+    lilac: {
+        name: "Lilac",
+        accentColor: "rgb(161, 150, 255)",
+        textColor: "rgb(0, 0, 0)",
+        accentTextColor: "rgb(0, 0, 0)",
+        topColor: "rgb(255, 255, 220)",
+        bottomColor: "rgb(255, 235, 255)",
+        entryBackgroundColor: "rgba(103, 212, 144, 0.40)",
+        reminderColor: "rgb(161, 150, 255)",
+        fontName: "Playfair Display, serif",
+        fontSize: "18px",
+        lineSpacing: "1.5"
+      },
     mocha: {
         name: "Mocha",
         accentColor: "rgb(255, 255, 255)", // Selection color
