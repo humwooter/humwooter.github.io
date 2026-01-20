@@ -6,6 +6,16 @@
       ],
       "resume": { "label": "Resume", "href": "/home/resume.pdf" }
     },
+
+    "themes": [
+        { "id": "chrome", "label": "Chrome" },
+        { "id": "mocha", "label": "Mocha" },
+        { "id": "hyacinth", "label": "Hyacinth" },
+        { "id": "lilac", "label": "Lilac" },
+        { "id": "scarab", "label": "Scarab" },
+        { "id": "wheatgrass", "label": "Wheatgrass" }
+      ],
+
     "hero": {
       "appsCarousel": [
         {

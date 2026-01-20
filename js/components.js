@@ -641,13 +641,10 @@
 //   });
 // });
 
-// components.js
-// comment: universal renderer for all apps; data comes from `${APP_BASE}/details.json`
 
 // -----------------------------
 // app base + paths
 // -----------------------------
-// components.js
 
 const EXPLICIT_APP_ID = (window.__APP_ID__ || document.documentElement.dataset.appId || "")
   .toString()
@@ -702,13 +699,6 @@ async function loadDetails() {
   if (!res.ok) throw new Error(`failed to load ${url} (${res.status})`);
   return await res.json();
 }
-
-// async function loadDetails() {
-//   const url = assetPath("details.json");
-//   const res = await fetch(url, { cache: "no-cache" });
-//   if (!res.ok) throw new Error(`failed to load ${url} (${res.status})`);
-//   return await res.json();
-// }
 
 function getAppName() {
   return safeStr(SITE?.appName, safeStr(SITE?.hero?.title, "App"));
@@ -930,28 +920,28 @@ function renderFeatureRows() {
 
 const components = {
   header: () => {
-    const isHome = isHomeApp();
+    const home = isHomeApp();
 
-    const themes = isHome ? "" : renderThemeLinks();
-    const features = isHome ? "" : renderFeatureLinks();
+    const themes = renderThemeLinks();
+    const features = home ? "" : renderFeatureLinks();
 
-    const apps = isHome ? renderAppsLinks() : "";
-    const resume = isHome ? renderResumeLink() : "";
-
-    const appsDropdown = apps
-      ? `
-        <div class="dropdown desktop-only">
-          <a href="#" class="dropdown-trigger">My Apps</a>
-          <div class="dropdown-content">${apps}</div>
-        </div>
-      `
-      : "";
+    const apps = home ? renderAppsLinks() : "";
+    const resume = home ? renderResumeLink() : "";
 
     const themesDropdown = themes
       ? `
         <div class="dropdown desktop-only">
           <a href="#" class="dropdown-trigger">Themes</a>
           <div class="dropdown-content">${themes}</div>
+        </div>
+      `
+      : "";
+
+    const appsDropdownRight = apps
+      ? `
+        <div class="dropdown desktop-only">
+          <a href="#" class="dropdown-trigger">My Apps</a>
+          <div class="dropdown-content">${apps}</div>
         </div>
       `
       : "";
@@ -992,7 +982,10 @@ const components = {
       `
       : "";
 
-    const resumeDesktop = resume ? `<a href="${safeStr(SITE?.nav?.resume?.href)}">${safeStr(SITE?.nav?.resume?.label)}</a>` : "";
+    const resumeDesktop = resume
+      ? `<a href="${safeStr(SITE?.nav?.resume?.href)}">${safeStr(SITE?.nav?.resume?.label)}</a>`
+      : "";
+
     const resumeMobile = resume
       ? `
         <div class="mobile-nav-section">
@@ -1001,6 +994,9 @@ const components = {
       `
       : "";
 
+    const aboutPrivacyDesktop = home ? "" : `<a href="${pagePath("privacy.html")}">Privacy Policy</a>`;
+    const aboutPrivacyMobile = home ? "" : `<a href="${pagePath("privacy.html")}">Privacy Policy</a>`;
+
     return `
       <header class="header">
         <nav class="nav">
@@ -1008,23 +1004,22 @@ const components = {
             <div class="logo">
               <img src="${getLogoPath()}" alt="" width="120" height="120">
             </div>
-            ${appsDropdown}
             ${themesDropdown}
           </div>
 
           <div class="nav-links desktop-only">
-            ${isHome ? "" : featuresDropdown}
+            ${home ? appsDropdownRight : featuresDropdown}
 
             <div class="dropdown">
               <a href="#" class="dropdown-trigger">About</a>
               <div class="dropdown-content">
                 <a href="${pagePath("contact.html")}">Contact</a>
-                <a href="${pagePath("privacy.html")}">Privacy Policy</a>
+                ${aboutPrivacyDesktop}
               </div>
             </div>
 
-            ${isHome ? "" : `<a href="#download">Download</a>`}
-            ${isHome ? resumeDesktop : ""}
+            ${home ? "" : `<a href="#download">Download</a>`}
+            ${home ? resumeDesktop : ""}
           </div>
 
           <button class="mobile-menu-button">
@@ -1042,13 +1037,12 @@ const components = {
               <div class="mobile-nav-header">About</div>
               <div class="mobile-nav-items">
                 <a href="${pagePath("contact.html")}">Contact</a>
-                <a href="${pagePath("privacy.html")}">Privacy Policy</a>
+                ${aboutPrivacyMobile}
               </div>
             </div>
 
-            ${isHome ? resumeMobile : ""}
-
-            ${isHome ? "" : `<div class="mobile-nav-section"><a href="#download">Download</a></div>`}
+            ${home ? resumeMobile : ""}
+            ${home ? "" : `<div class="mobile-nav-section"><a href="#download">Download</a></div>`}
           </div>
         </div>
       </header>
@@ -1202,13 +1196,12 @@ function setupHeaderTransformation() {
   const header = document.querySelector(".header");
   if (!header) return;
 
-
   const isMobile = window.matchMedia("(max-width: 1200px)").matches;
   if (isMobile) {
     header.classList.remove("transformed");
     return;
   }
-  
+
   const subtitle = document.querySelector(".subtitle");
   const setTransformed = (on) => header.classList.toggle("transformed", on);
 
@@ -1422,25 +1415,25 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
+  document.querySelectorAll(".mobile-nav [data-theme]").forEach((link) => {
+    link.addEventListener("click", (e) => {
+      e.preventDefault();
+      const theme = safeStr(link.dataset.theme, "");
+      if (typeof applyTheme === "function" && theme) applyTheme(theme);
+      if (theme) localStorage.setItem("selectedTheme", theme);
+    });
+  });
+
+  document.querySelectorAll(".desktop-only .dropdown-content a[data-theme]").forEach((link) => {
+    link.addEventListener("click", (e) => {
+      e.preventDefault();
+      const theme = safeStr(link.dataset.theme, "");
+      if (typeof applyTheme === "function" && theme) applyTheme(theme);
+      if (theme) localStorage.setItem("selectedTheme", theme);
+    });
+  });
+
   if (!home) {
-    document.querySelectorAll(".mobile-nav [data-theme]").forEach((link) => {
-      link.addEventListener("click", (e) => {
-        e.preventDefault();
-        const theme = safeStr(link.dataset.theme, "");
-        if (typeof applyTheme === "function" && theme) applyTheme(theme);
-        if (theme) localStorage.setItem("selectedTheme", theme);
-      });
-    });
-
-    document.querySelectorAll(".desktop-only .dropdown-content a[data-theme]").forEach((link) => {
-      link.addEventListener("click", (e) => {
-        e.preventDefault();
-        const theme = safeStr(link.dataset.theme, "");
-        if (typeof applyTheme === "function" && theme) applyTheme(theme);
-        if (theme) localStorage.setItem("selectedTheme", theme);
-      });
-    });
-
     document.querySelectorAll(".mobile-nav [data-feature]").forEach((link) => {
       link.addEventListener("click", (e) => {
         e.preventDefault();
