@@ -14,7 +14,8 @@
         { "id": "hyacinth", "label": "Hyacinth" },
         { "id": "lilac", "label": "Lilac" },
         { "id": "scarab", "label": "Scarab" },
-        { "id": "wheatgrass", "label": "Wheatgrass" }
+        { "id": "wheatgrass", "label": "Wheatgrass" },
+        { "id": "lotus", "label": "Lotus" }
       ],
 
     "hero": {
@@ -35,7 +36,7 @@
             "label": "Avarana",
             "href": "/avarana/",
             "src": "/avarana/images/app icons/app_icon-3.png",
-            "theme": "hyacinth"
+            "theme": "lotus"
           }
       ]
     },

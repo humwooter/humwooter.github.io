@@ -51,6 +51,24 @@ const themes = {
         fontSize: "18px",
         lineSpacing: "1.5"
       },
+      lotus: {
+        name: "Lotus",
+        accentColor: "rgb(255, 165, 185)",
+        textColor: "rgb(0, 0, 0)",
+        accentTextColor: "rgb(0, 0, 0)",
+      
+        // override per your note
+        topColor: "rgb(255, 255, 255)",          // white
+        bottomColor: "rgb(188, 200, 198)",       // BCC8C6
+      
+        entryBackgroundColor: "rgba(255, 215, 185, 0.45)",
+        pinColor: "rgb(170, 137, 255)",
+        reminderColor: "rgb(255, 227, 112)",
+      
+        fontName: "Playfair Display, serif",
+        fontSize: "16px",
+        lineSpacing: "1.0"
+      },
     mocha: {
         name: "Mocha",
         accentColor: "rgb(255, 255, 255)", // Selection color

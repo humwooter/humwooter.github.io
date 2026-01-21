@@ -19,9 +19,9 @@
         "title": "Avarana",
         "subtitle": "Coming soon.",      
         "icons": [
-          { "src": "images/app icons/app_icon-1.png", "theme": "hyacinth" },
-          { "src": "images/app icons/app_icon-2.png", "theme": "chrome" },
-          { "src": "images/app icons/app_icon-3.png", "theme": "cloud" }
+          { "src": "images/app icons/app_icon-1.png", "theme": "chrome" },
+          { "src": "images/app icons/app_icon-2.png", "theme": "mocha" },
+          { "src": "images/app icons/app_icon-3.png", "theme": "lotus" }
     
         ]
       }
