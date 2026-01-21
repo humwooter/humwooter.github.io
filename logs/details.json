@@ -2,7 +2,13 @@
   "appName": "Logs",
 
   "logo": "images/logo_black.PNG",
-
+  "nav": {
+    "showAbout": true,
+    "showContact": true,
+    "showPortfolio": true,
+    "portfolioHref": "/home/",
+    "showDownload": true
+  },
   "hero": {
     "title": "Logs",
     "subtitle": "Logs is a fully customizable and private digital pocketbook designed for minimal cognitive load. Its core experience centers around an intuitive daily view, showing only today’s entries by default to keep you focused.",

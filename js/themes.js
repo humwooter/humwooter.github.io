@@ -89,7 +89,7 @@ const themes = {
         reminderColor: "rgb(255, 255, 255)",
         fontName: "IBM Plex Mono, monospace",
         fontSize: "18px",
-        lineSpacing: "1.5"
+        lineSpacing: "1.3"
     },
     scarab: {
         name: "Scarab",

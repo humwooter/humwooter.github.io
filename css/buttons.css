@@ -1,0 +1,33 @@
+/* buttons: fixed-size, hard reset */
+#buttons-container .buttons-row {
+    display: flex !important;
+    gap: 10px !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    margin: 16px 16px 16px 16px !important;
+    padding: 0 !important;
+  }
+  
+  /* remove inherited link styling completely */
+  #buttons-container a.button-link {
+    all: unset !important;
+    width: 50px !important;
+    height: 50px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 10px !important;
+    overflow: hidden !important;
+    cursor: pointer !important;
+  }
+  
+  #buttons-container a.button-link img {
+    width: 50px !important;
+    height: 50px !important;
+    object-fit: contain !important;
+    display: block !important;
+  }
+  
+  #buttons-container a.button-link span {
+    display: none !important;
+  }

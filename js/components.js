@@ -646,6 +646,9 @@
 // app base + paths
 // -----------------------------
 
+// build tag for cache-busting / sanity checks
+console.log("[components] build:", "2026-01-20 details-root+navflags+portfoliooverride+downloadhash-v6");
+
 const EXPLICIT_APP_ID = (window.__APP_ID__ || document.documentElement.dataset.appId || "")
   .toString()
   .trim();
@@ -667,7 +670,8 @@ function computeAppBase() {
   return `/${parts[0]}`;
 }
 
-const APP_BASE = computeAppBase();
+// must be mutable so the real app base can be discovered from details.json location
+let APP_BASE = computeAppBase();
 
 const pagePath = (filename) => `${APP_BASE}/${String(filename || "").replace(/^\/+/, "")}`;
 const assetPath = (relativePath) => `${APP_BASE}/${String(relativePath || "").replace(/^\/+/, "")}`;
@@ -680,8 +684,6 @@ function resolveAsset(src) {
   return assetPath(s);
 }
 
-const currentFile = () => window.location.pathname.split("/").pop() || "index.html";
-
 const isHomePage = () => {
   const p = window.location.pathname.replace(/\/+$/, "");
   return p === APP_BASE || p === `${APP_BASE}/index.html`;
@@ -693,11 +695,100 @@ function isHomeApp() {
 
 let SITE = null;
 
+// tolerate boolean flags stored as true/false or "true"/"false"
+const asBool = (v, fallback = false) => {
+  if (typeof v === "boolean") return v;
+  if (typeof v === "string") {
+    const s = v.trim().toLowerCase();
+    if (s === "true") return true;
+    if (s === "false") return false;
+  }
+  return fallback;
+};
+
+// nav flags (each is independently controllable)
+function shouldShowAbout() {
+  return asBool(SITE?.nav?.showAbout, false);
+}
+
+function shouldShowContact() {
+  return asBool(SITE?.nav?.showContact, false);
+}
+
+function shouldShowPortfolio() {
+  return asBool(SITE?.nav?.showPortfolio, false);
+}
+
+function shouldShowDownload() {
+  return asBool(SITE?.nav?.showDownload, false);
+}
+
+function getPortfolioHref() {
+  return safeStr(SITE?.nav?.portfolioHref, "/home/");
+}
+
+// portfolio replaces download when portfolio is the only nav action enabled
+function shouldUsePortfolioAsPrimaryAction() {
+  const about = shouldShowAbout();
+  const contact = shouldShowContact();
+  const portfolio = shouldShowPortfolio();
+  const download = shouldShowDownload();
+
+  // portfolio wins only when it is the only enabled action and about is disabled
+  return portfolio && !about && !contact && !download;
+}
+
+// progressively try parent directories to find the app-level details.json
+function getDetailsCandidates() {
+  const origin = window.location.origin;
+  const path = window.location.pathname;
+
+  // current directory, without the filename
+  const parts = path.split("/").filter(Boolean);
+  if (parts.length && parts[parts.length - 1].includes(".")) parts.pop();
+
+  const bases = [];
+  for (let i = parts.length; i >= 0; i--) {
+    const basePath = "/" + parts.slice(0, i).join("/");
+    const normalized = basePath === "/" ? "" : basePath;
+    bases.push(`${origin}${normalized}/details.json`);
+  }
+
+  // also try the computed app base path explicitly (covers cases where url nesting is weird)
+  const computed = `${origin}${APP_BASE}/details.json`;
+  if (!bases.includes(computed)) bases.unshift(computed);
+
+  // de-dupe while preserving order
+  return Array.from(new Set(bases));
+}
+
 async function loadDetails() {
-  const url = new URL("details.json", window.location.href).toString();
-  const res = await fetch(url, { cache: "no-cache" });
-  if (!res.ok) throw new Error(`failed to load ${url} (${res.status})`);
-  return await res.json();
+  const bust = `v=${Date.now()}`;
+  const candidates = getDetailsCandidates().map((u) => `${u}?${bust}`);
+
+  let lastErr = null;
+
+  for (const url of candidates) {
+    try {
+      console.log("[details] try:", url);
+      const res = await fetch(url, { cache: "no-cache" });
+      if (!res.ok) throw new Error(`failed to load ${url} (${res.status})`);
+      const json = await res.json();
+
+      // lock app base to the directory that actually contains details.json
+      const baseDir = new URL("./", url);
+      APP_BASE = baseDir.pathname.replace(/\/+$/, "");
+
+      console.log("[details] loaded from:", url);
+      console.log("[details] resolved app base:", APP_BASE);
+      return json;
+    } catch (e) {
+      lastErr = e;
+      console.warn("[details] failed:", url, e);
+    }
+  }
+
+  throw lastErr || new Error("failed to load details.json");
 }
 
 function getAppName() {
@@ -797,6 +888,35 @@ function renderFeatureLinks() {
     })
     .join("");
 }
+
+
+function renderButtons() {
+  const buttons = Array.isArray(SITE?.buttons) ? SITE.buttons : [];
+  if (!buttons.length) return "";
+
+  const items = buttons
+    .map((b) => {
+      const label = safeStr(b?.label, "");
+      const href = safeStr(b?.href, "");
+      const src = safeStr(b?.src, "");
+      if (!href || !src) return "";
+
+      const newTab = asBool(b?.newTab, true);
+      const targetAttr = newTab ? ` target="_blank" rel="noopener noreferrer"` : "";
+
+      return `
+        <a class="button-link" href="${href}"${targetAttr} aria-label="${label}">
+          <img src="${resolveAsset(src)}" alt="${label}">
+          ${label ? `<span>${label}</span>` : ""}
+        </a>
+      `;
+    })
+    .join("");
+
+  if (!items) return "";
+  return `<section id="buttons" class="buttons-row">${items}</section>`;
+}
+
 
 function getHeroIconsList() {
   const icons = Array.isArray(SITE?.hero?.icons) ? SITE.hero.icons : [];
@@ -922,6 +1042,14 @@ const components = {
   header: () => {
     const home = isHomeApp();
 
+    // About/Download/Portfolio are for non-home apps
+    const showAbout = !home && shouldShowAbout();
+    const showDownload = !home && shouldShowDownload();
+    const showPortfolio = !home && shouldShowPortfolio();
+
+    // portfolio primary action replaces download when portfolio is the only enabled action
+    const usePortfolioPrimary = !home && shouldUsePortfolioAsPrimaryAction();
+
     const themes = renderThemeLinks();
     const features = home ? "" : renderFeatureLinks();
 
@@ -994,8 +1122,65 @@ const components = {
       `
       : "";
 
-    const aboutPrivacyDesktop = home ? "" : `<a href="${pagePath("privacy.html")}">Privacy Policy</a>`;
-    const aboutPrivacyMobile = home ? "" : `<a href="${pagePath("privacy.html")}">Privacy Policy</a>`;
+    const aboutLinksDesktop = (() => {
+      if (!showAbout) return "";
+
+      const items = [];
+
+      if (shouldShowContact()) items.push(`<a href="${pagePath("contact.html")}">Contact</a>`);
+      items.push(`<a href="${pagePath("privacy.html")}">Privacy Policy</a>`);
+      if (showPortfolio) items.push(`<a href="${getPortfolioHref()}">Other works</a>`);
+
+      const content = items.join("");
+      if (!content) return "";
+
+      return `
+        <div class="dropdown">
+          <a href="#" class="dropdown-trigger">About</a>
+          <div class="dropdown-content">${content}</div>
+        </div>
+      `;
+    })();
+
+    const aboutLinksMobile = (() => {
+      if (!showAbout) return "";
+
+      const items = [];
+
+      if (shouldShowContact()) items.push(`<a href="${pagePath("contact.html")}">Contact</a>`);
+      if (showPortfolio) items.push(`<a href="${getPortfolioHref()}">Other works</a>`);
+      items.push(`<a href="${pagePath("privacy.html")}">Privacy Policy</a>`);
+
+      const content = items.join("");
+      if (!content) return "";
+
+      return `
+        <div class="mobile-nav-section">
+          <div class="mobile-nav-header">About</div>
+          <div class="mobile-nav-items">${content}</div>
+        </div>
+      `;
+    })();
+
+    // download must always target index.html#download so it works from any page
+    const downloadHref = `${pagePath("index.html")}#download`;
+
+    // primary action slot (download or portfolio)
+    const primaryDesktop = (() => {
+      if (usePortfolioPrimary) return `<a href="${getPortfolioHref()}" data-nav="page">Portfolio</a>`;
+      if (showDownload) return `<a href="${downloadHref}" data-nav-download="1">Download</a>`;
+      return "";
+    })();
+
+    const primaryMobile = (() => {
+      if (usePortfolioPrimary) {
+        return `<div class="mobile-nav-section"><a href="${getPortfolioHref()}" data-nav="page">Portfolio</a></div>`;
+      }
+      if (showDownload) {
+        return `<div class="mobile-nav-section"><a href="${downloadHref}" data-nav-download="1">Download</a></div>`;
+      }
+      return "";
+    })();
 
     return `
       <header class="header">
@@ -1009,16 +1194,8 @@ const components = {
 
           <div class="nav-links desktop-only">
             ${home ? appsDropdownRight : featuresDropdown}
-
-            <div class="dropdown">
-              <a href="#" class="dropdown-trigger">About</a>
-              <div class="dropdown-content">
-                <a href="${pagePath("contact.html")}">Contact</a>
-                ${aboutPrivacyDesktop}
-              </div>
-            </div>
-
-            ${home ? "" : `<a href="#download">Download</a>`}
+            ${aboutLinksDesktop}
+            ${primaryDesktop}
             ${home ? resumeDesktop : ""}
           </div>
 
@@ -1032,17 +1209,9 @@ const components = {
             ${mobileApps}
             ${mobileThemes}
             ${mobileFeatures}
-
-            <div class="mobile-nav-section">
-              <div class="mobile-nav-header">About</div>
-              <div class="mobile-nav-items">
-                <a href="${pagePath("contact.html")}">Contact</a>
-                ${aboutPrivacyMobile}
-              </div>
-            </div>
-
+            ${aboutLinksMobile}
             ${home ? resumeMobile : ""}
-            ${home ? "" : `<div class="mobile-nav-section"><a href="#download">Download</a></div>`}
+            ${primaryMobile}
           </div>
         </div>
       </header>
@@ -1063,6 +1232,10 @@ const components = {
         </div>
       </section>
     `;
+  },
+
+  buttons: () => {
+    return renderButtons();
   },
 
   features: () => {
@@ -1090,8 +1263,10 @@ const components = {
     </section>
   `,
 
+  // hide entire download section unless explicitly enabled
   download: () => {
     if (isHomeApp()) return "";
+    if (!shouldShowDownload()) return "";
 
     const storeLabel = getStoreLabel();
 
@@ -1196,7 +1371,7 @@ function setupHeaderTransformation() {
   const header = document.querySelector(".header");
   if (!header) return;
 
-  const isMobile = window.matchMedia("(max-width: 1200px)").matches;
+  const isMobile = window.matchMedia("(2000px)").matches;
   if (isMobile) {
     header.classList.remove("transformed");
     return;
@@ -1240,6 +1415,48 @@ function handleFeatureScrollHash() {
   setTimeout(() => scrollToFeature(feature), 300);
 }
 
+// ensure clicking Download works from any page; also smooth-scroll when already on index
+function setupDownloadNav() {
+  const downloadHref = `${pagePath("index.html")}#download`;
+
+  // normalize any legacy links to the absolute index#download target
+  document.querySelectorAll('a[href="#download"]').forEach((a) => {
+    a.setAttribute("href", downloadHref);
+    a.setAttribute("data-nav-download", "1");
+  });
+
+  document.querySelectorAll('a[data-nav-download="1"]').forEach((link) => {
+    // hard-set to the correct target in case templates/caching left an old href
+    link.setAttribute("href", downloadHref);
+
+    link.addEventListener("click", (e) => {
+      // only intercept when already on index to smooth scroll
+      if (!isHomePage()) return;
+
+      e.preventDefault();
+      const el = document.getElementById("download");
+      if (el) el.scrollIntoView({ behavior: "smooth" });
+      else window.location.hash = "#download";
+    });
+  });
+}
+
+// if page loads with #download, scroll after render (handles direct navigation from other pages)
+function handleDownloadOnLoad() {
+  if (!window.location.hash || window.location.hash.toLowerCase() !== "#download") return;
+
+  // only attempt scroll on index; on other pages, redirect to index#download
+  if (!isHomePage()) {
+    window.location.href = `${pagePath("index.html")}#download`;
+    return;
+  }
+
+  setTimeout(() => {
+    const download = document.getElementById("download");
+    download?.scrollIntoView({ behavior: "smooth" });
+  }, 150);
+}
+
 function renderAllComponents() {
   Object.keys(components).forEach((name) => {
     const container = document.getElementById(`${name}-container`);
@@ -1253,6 +1470,8 @@ function renderAllComponents() {
   setupLogoClick();
   setupHeaderTransformation();
   handleFeatureScrollHash();
+  setupDownloadNav();
+  handleDownloadOnLoad();
 
   if (isHomeApp()) {
     const heroSection = document.querySelector(".hero");
@@ -1273,8 +1492,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     SITE = await loadDetails();
   } catch (e) {
     console.error(e);
+    console.warn("[details] details.json failed to load; using empty config");
     SITE = {};
   }
+
+  console.log("[details] nav flags:", SITE?.nav || null);
 
   renderAllComponents();
 
@@ -1462,18 +1684,5 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
       });
     });
-
-    document.querySelectorAll('a[href="#download"]').forEach((link) => {
-      link.addEventListener("click", (e) => {
-        e.preventDefault();
-
-        if (!isHomePage()) {
-          window.location.href = `${pagePath("index.html")}#download`;
-        } else {
-          const download = document.getElementById("download");
-          download?.scrollIntoView({ behavior: "smooth" });
-        }
-      });
-    });
   }
-});
+}); 

@@ -1,6 +1,12 @@
 {
   "appName": "Ostinuto",
-
+  "nav": {
+    "showAbout": true,
+    "showContact": true,
+    "showPortfolio": true,
+    "portfolioHref": "/home/",
+    "showDownload": true
+  },
   "hero": {
     "title": "Ostinuto",
     "subtitle": "Ostinuto is a fully offline music player with playlists, shuffle, queueing, infinite loop mode, background playback, and built-in recording with waveform visualization.",      "icons": [

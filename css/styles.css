@@ -991,7 +991,7 @@ section {
 
 
 
-@media (max-width: 1200px) {
+@media (max-width: 2000px) {
     /* .logo { outline: 2px solid red; }
     .logo img { outline: 2px solid lime; }
     .mobile-menu-button { outline: 2px solid cyan; } */
@@ -1389,7 +1389,3 @@ section {
         line-height: 1.5;
     }
 }
-
-
-
-

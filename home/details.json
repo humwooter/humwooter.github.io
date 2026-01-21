@@ -1,5 +1,6 @@
 {
     "nav": {
+        "showAbout": true,
       "apps": [
         { "label": "Logs", "href": "/logs/" },
         { "label": "Ostinuto", "href": "/ostinuto/" }
@@ -29,7 +30,22 @@
           "href": "/ostinuto/",
           "src": "/ostinuto/images/app icons/app_icon-1.png",
           "theme": "hyacinth"
-        }
+        },
+        {
+            "label": "Avarana",
+            "href": "/avarana/",
+            "src": "/avarana/images/app icons/app_icon-3.png",
+            "theme": "hyacinth"
+          }
       ]
+    },
+    "buttons": [
+    {
+      "id": "github",
+      "label": "",
+      "href": "https://github.com/humwooter",
+      "src": "images/buttons/github.png",
+      "newTab": true
     }
+  ]
   }
