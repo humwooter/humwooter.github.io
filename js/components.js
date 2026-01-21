@@ -1148,8 +1148,8 @@ const components = {
       const items = [];
 
       if (shouldShowContact()) items.push(`<a href="${pagePath("contact.html")}">Contact</a>`);
-      if (showPortfolio) items.push(`<a href="${getPortfolioHref()}">Other works</a>`);
       items.push(`<a href="${pagePath("privacy.html")}">Privacy Policy</a>`);
+      if (showPortfolio) items.push(`<a href="${getPortfolioHref()}">Other works</a>`);
 
       const content = items.join("");
       if (!content) return "";
