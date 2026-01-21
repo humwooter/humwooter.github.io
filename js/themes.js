@@ -67,7 +67,7 @@ const themes = {
       
         fontName: "Playfair Display, serif",
         fontSize: "16px",
-        lineSpacing: "1.0"
+        lineSpacing: "1.7"
       },
     mocha: {
         name: "Mocha",
