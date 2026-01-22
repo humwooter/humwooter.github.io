@@ -909,15 +909,19 @@ function setupMobileScreenshotCarousels() {
 
     const dots = Array.from(pager.querySelectorAll(".fsc-dot"));
 
-    
     // track current slide (driven by nearest-to-center)
     let activeIndex = -1;
 
-    const setDots = (idx) => {
-      dots.forEach((d, i) => d.setAttribute("aria-current", i === idx ? "true" : "false"));
-    };
+    // lock pager during programmatic scroll to avoid wavering
+    let isProgrammatic = false;
+    let targetIndex = -1;
+    let settleTimer = 0;
 
-    
+    const setDots = (idx) => {
+      dots.forEach((d, i) =>
+        d.setAttribute("aria-current", i === idx ? "true" : "false")
+      );
+    };
 
     const setCurrentClass = (idx) => {
       slides.forEach((img, i) => img.classList.toggle("is-current", i === idx));
@@ -931,7 +935,28 @@ function setupMobileScreenshotCarousels() {
       viewport.classList.toggle("has-next", left < max - eps);
     };
 
+    const beginProgrammatic = (idx) => {
+      isProgrammatic = true;
+      targetIndex = idx;
+    };
+
+    const endProgrammatic = () => {
+      isProgrammatic = false;
+      targetIndex = -1;
+    };
+
     const computeActiveIndex = () => {
+      // keep dots stable while smooth scrolling to a target
+      if (isProgrammatic && targetIndex >= 0) {
+        if (targetIndex !== activeIndex) {
+          activeIndex = targetIndex;
+          setDots(activeIndex);
+          setCurrentClass(activeIndex);
+        }
+        updateEdgeFade();
+        return;
+      }
+
       const center = viewport.scrollLeft + viewport.clientWidth / 2;
 
       let bestIdx = 0;
@@ -961,6 +986,8 @@ function setupMobileScreenshotCarousels() {
       const el = slides[idx];
       const x = el.offsetLeft - (viewport.clientWidth - el.clientWidth) / 2;
 
+      beginProgrammatic(idx);
+
       // update immediately so dot animates during scroll
       activeIndex = idx;
       setDots(activeIndex);
@@ -968,9 +995,16 @@ function setupMobileScreenshotCarousels() {
 
       viewport.scrollTo({ left: x, behavior: "smooth" });
 
+      // release the lock after scroll settles (no scroll events briefly)
+      clearTimeout(settleTimer);
+      settleTimer = setTimeout(() => {
+        endProgrammatic();
+        computeActiveIndex(); // final snap-correct update
+        updateEdgeFade();
+      }, 220);
+
       // keep edge fade responsive
       updateEdgeFade();
-      setTimeout(updateEdgeFade, 350);
     };
 
     // dot clicks
@@ -1034,6 +1068,16 @@ function setupMobileScreenshotCarousels() {
     viewport.addEventListener(
       "scroll",
       () => {
+        // extend settle window while programmatic scrolling continues
+        if (isProgrammatic) {
+          clearTimeout(settleTimer);
+          settleTimer = setTimeout(() => {
+            endProgrammatic();
+            computeActiveIndex();
+            updateEdgeFade();
+          }, 220);
+        }
+
         if (raf) return;
         raf = requestAnimationFrame(() => {
           raf = 0;
@@ -1064,6 +1108,190 @@ function setupMobileScreenshotCarousels() {
     if (e.matches) initAll();
   });
 }
+
+// function setupMobileScreenshotCarousels() {
+//   const mql = window.matchMedia("(max-width: 1200px)");
+
+//   const initOne = (root) => {
+//     // avoid double-init if renderAllComponents runs again
+//     if (root.__fsc_inited) return;
+//     root.__fsc_inited = true;
+
+//     const viewport = root.querySelector(".fsc-viewport");
+//     const track = root.querySelector(".fsc-track");
+//     const pager = root.querySelector(".fsc-pager");
+//     if (!viewport || !track || !pager) return;
+
+//     const slides = Array.from(track.querySelectorAll("img"));
+//     if (slides.length <= 1) return;
+
+//     // build dots
+//     pager.innerHTML = "";
+//     slides.forEach((_, i) => {
+//       const b = document.createElement("button");
+//       b.className = "fsc-dot";
+//       b.type = "button";
+//       b.setAttribute("aria-label", `Go to screenshot ${i + 1}`);
+//       pager.appendChild(b);
+//     });
+
+//     const dots = Array.from(pager.querySelectorAll(".fsc-dot"));
+
+    
+//     // track current slide (driven by nearest-to-center)
+//     let activeIndex = -1;
+
+//     const setDots = (idx) => {
+//       dots.forEach((d, i) => d.setAttribute("aria-current", i === idx ? "true" : "false"));
+//     };
+
+    
+
+//     const setCurrentClass = (idx) => {
+//       slides.forEach((img, i) => img.classList.toggle("is-current", i === idx));
+//     };
+
+//     const updateEdgeFade = () => {
+//       const max = viewport.scrollWidth - viewport.clientWidth;
+//       const left = viewport.scrollLeft;
+//       const eps = 1;
+//       viewport.classList.toggle("has-prev", left > eps);
+//       viewport.classList.toggle("has-next", left < max - eps);
+//     };
+
+//     const computeActiveIndex = () => {
+//       const center = viewport.scrollLeft + viewport.clientWidth / 2;
+
+//       let bestIdx = 0;
+//       let bestDist = Infinity;
+
+//       slides.forEach((el, i) => {
+//         const elCenter = el.offsetLeft + el.clientWidth / 2;
+//         const d = Math.abs(elCenter - center);
+//         if (d < bestDist) {
+//           bestDist = d;
+//           bestIdx = i;
+//         }
+//       });
+
+//       if (bestIdx !== activeIndex) {
+//         activeIndex = bestIdx;
+//         setDots(activeIndex);
+//         setCurrentClass(activeIndex);
+//       }
+
+//       updateEdgeFade();
+//     };
+
+//     // scroll helper (centers slide)
+//     const scrollToIndex = (idx) => {
+//       idx = Math.max(0, Math.min(slides.length - 1, idx));
+//       const el = slides[idx];
+//       const x = el.offsetLeft - (viewport.clientWidth - el.clientWidth) / 2;
+
+//       // update immediately so dot animates during scroll
+//       activeIndex = idx;
+//       setDots(activeIndex);
+//       setCurrentClass(activeIndex);
+
+//       viewport.scrollTo({ left: x, behavior: "smooth" });
+
+//       // keep edge fade responsive
+//       updateEdgeFade();
+//       setTimeout(updateEdgeFade, 350);
+//     };
+
+//     // dot clicks
+//     dots.forEach((b, i) => {
+//       b.addEventListener("click", (e) => {
+//         e.preventDefault();
+//         scrollToIndex(i);
+//       });
+//     });
+
+//     // prevent tap-to-advance firing during a swipe
+//     let dragStartX = 0;
+//     let dragStartY = 0;
+//     let dragMoved = false;
+
+//     viewport.addEventListener(
+//       "pointerdown",
+//       (e) => {
+//         dragMoved = false;
+//         dragStartX = e.clientX;
+//         dragStartY = e.clientY;
+//       },
+//       { passive: true }
+//     );
+
+//     viewport.addEventListener(
+//       "pointermove",
+//       (e) => {
+//         const dx = Math.abs(e.clientX - dragStartX);
+//         const dy = Math.abs(e.clientY - dragStartY);
+//         if (dx > 10 || dy > 10) dragMoved = true;
+//       },
+//       { passive: true }
+//     );
+
+//     // click behavior: click neighbor -> go to it, click active edges -> prev/next
+//     slides.forEach((img, clickedIndex) => {
+//       img.style.cursor = "pointer";
+//       img.addEventListener("click", (e) => {
+//         if (dragMoved) return;
+
+//         if (clickedIndex !== activeIndex) {
+//           scrollToIndex(clickedIndex);
+//           return;
+//         }
+
+//         const rect = img.getBoundingClientRect();
+//         const x = e.clientX - rect.left;
+//         const edge = rect.width * 0.25;
+
+//         if (x <= edge) {
+//           scrollToIndex(activeIndex - 1);
+//         } else if (x >= rect.width - edge) {
+//           scrollToIndex(activeIndex + 1);
+//         }
+//       });
+//     });
+
+//     // rAF-throttled scroll sync (stable with scroll-snap)
+//     let raf = 0;
+//     viewport.addEventListener(
+//       "scroll",
+//       () => {
+//         if (raf) return;
+//         raf = requestAnimationFrame(() => {
+//           raf = 0;
+//           computeActiveIndex();
+//         });
+//       },
+//       { passive: true }
+//     );
+
+//     // initial state + handle restored scroll positions
+//     requestAnimationFrame(() => {
+//       computeActiveIndex();
+//     });
+
+//     // keep state correct on resize (orientation changes, etc.)
+//     window.addEventListener("resize", computeActiveIndex);
+//   };
+
+//   const initAll = () => {
+//     document.querySelectorAll(".feature-screenshots-carousel").forEach(initOne);
+//   };
+
+//   // only initialize on mobile widths
+//   if (mql.matches) initAll();
+
+//   mql.addEventListener("change", (e) => {
+//     // on entering mobile width, init any not-yet-inited carousels
+//     if (e.matches) initAll();
+//   });
+// }
 // function setupMobileScreenshotCarousels() {
 //   const mql = window.matchMedia("(max-width: 1200px)");
 
