@@ -1250,6 +1250,37 @@ function renderHeroIcons() {
   return `<div class="app-icon-carousel">${cards}</div>`;
 }
 
+function getHomeCarouselFrontKey() {
+  return "homeCarouselFrontHref";
+}
+
+function saveHomeCarouselFront(href) {
+  const h = safeStr(href, "");
+  if (!h) return;
+  localStorage.setItem(getHomeCarouselFrontKey(), h);
+}
+
+function getHomeCarouselFront() {
+  return safeStr(localStorage.getItem(getHomeCarouselFrontKey()), "");
+}
+
+function bringHomeCardToFront(carousel, card) {
+  if (!carousel || !card) return;
+
+  // move clicked card to the front of the DOM
+  if (carousel.firstElementChild !== card) {
+    carousel.insertBefore(card, carousel.firstElementChild);
+  }
+
+  // recompute transforms/z-index so it fully snaps (no partial/stuck)
+  const cards = Array.from(carousel.children).filter((n) => n.classList?.contains("app-icon-card"));
+  const count = cards.length;
+  cards.forEach((c, i) => {
+    c.style.transform = `rotate(${-30 * i}deg)`;
+    c.style.zIndex = String(count - i);
+  });
+}
+
 function getHomeAppsCarouselList() {
   const items = Array.isArray(SITE?.hero?.appsCarousel) ? SITE.hero.appsCarousel : [];
   return items
@@ -1267,6 +1298,16 @@ function setupHomeAppsCarouselNav() {
   if (!isHomeApp()) return;
 
   const carousel = document.querySelector(".home-apps-carousel");
+  const savedFront = getHomeCarouselFront();
+  if (savedFront) {
+    const match = carousel.querySelector(`.app-icon-card[data-href="${CSS.escape(savedFront)}"]`);
+    if (match) bringHomeCardToFront(carousel, match);
+  } else {
+    // ensure transforms are applied at least once
+    const first = carousel.querySelector(".app-icon-card");
+    if (first) bringHomeCardToFront(carousel, first);
+  }
+  
   if (!carousel || carousel.__navBound) return;
   carousel.__navBound = true;
 
@@ -1282,12 +1323,17 @@ function setupHomeAppsCarouselNav() {
     const theme = safeStr(card?.dataset?.theme, "");
     const newTab = card?.dataset?.newTab === "1"; // data-new-tab="1"
 
-    if (theme && href) localStorage.setItem(themeKeyForHref(href), theme);
     if (!href) return;
+
+    // reorder immediately so if user returns, Home shows last app in front
+    bringHomeCardToFront(carousel, card);
+    saveHomeCarouselFront(href);
+
+    if (theme) localStorage.setItem(themeKeyForHref(href), theme);
 
     if (newTab) {
       window.open(href, "_blank", "noopener,noreferrer");
-      return; // important: do not fall through
+      return;
     }
 
     window.location.href = href;

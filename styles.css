@@ -598,7 +598,7 @@ section {
     filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.2));
 }
 
-.app-icon-card:nth-child(1) {
+/* .app-icon-card:nth-child(1) {
     transform: rotate(0deg);
     z-index: 3;
 }
@@ -611,7 +611,7 @@ section {
 .app-icon-card:nth-child(3) {
     transform: rotate(-60deg);
     z-index: 1;
-}
+} */
 
 .app-icon-card:hover {
     transform: rotate(0deg) translateY(-20px) !important;
@@ -1492,7 +1492,7 @@ section {
     scroll-snap-stop: always;
     touch-action: pan-x;
     overscroll-behavior-x: contain;
-    --edge-fade: 14%;
+    --edge-fade: 20%;
   }
   
   /* fade left edge only */
