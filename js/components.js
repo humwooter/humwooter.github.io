@@ -908,10 +908,20 @@ function setupMobileScreenshotCarousels() {
     if (slides.length <= 1) return;
 
     // scroll helper (centers slide)
-    const scrollToIndex = (i) => {
-      const idx = Math.max(0, Math.min(slides.length - 1, i));
+    const setActive = (idx) => {
+      dots.forEach((d, i) => d.setAttribute("aria-current", i === idx ? "true" : "false"));
+      slides.forEach((img, i) => img.classList.toggle("is-current", i === idx));
+    };
+    
+    const scrollToIndex = (idx) => {
+      idx = Math.max(0, Math.min(slides.length - 1, idx));
       const el = slides[idx];
       const x = el.offsetLeft - (viewport.clientWidth - el.clientWidth) / 2;
+    
+      // key: update immediately so the dot animates during the scroll
+      activeIndex = idx;
+      setActive(idx);
+    
       viewport.scrollTo({ left: x, behavior: "smooth" });
     };
 
@@ -931,12 +941,12 @@ function setupMobileScreenshotCarousels() {
 
     const dots = Array.from(pager.querySelectorAll(".fsc-dot"));
 
-    const setActive = (idx) => {
-      dots.forEach((d, j) => {
-        if (j === idx) d.setAttribute("aria-current", "true");
-        else d.removeAttribute("aria-current");
-      });
-    };
+    // const setActive = (idx) => {
+    //   dots.forEach((d, j) => {
+    //     if (j === idx) d.setAttribute("aria-current", "true");
+    //     else d.removeAttribute("aria-current");
+    //   });
+    // };
 
     // track current slide (driven by observer)
     let activeIndex = 0;

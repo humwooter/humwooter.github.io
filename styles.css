@@ -1082,8 +1082,8 @@ section {
         width: fit-content;
         color: var(--text-color);
         text-decoration: none;
-        font-size: 1.4rem;
-        padding: 0.8rem 0;
+        font-size: 1.0rem;
+        padding: 0.6rem 0;
         transition: color 0.3s ease;
     }
 
@@ -1492,14 +1492,17 @@ section {
     }
     
     .fsc-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: var(--accent-color);
-      opacity: 0.35;
-      border: 0;
-      padding: 0;
-    }
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: var(--accent-color);
+        opacity: 0.35;
+        border: 0;
+        padding: 0;
+      
+        transition: width 220ms ease, opacity 220ms ease;
+        will-change: width, opacity;
+      }
     
     .fsc-dot[aria-current="true"] {
       opacity: 1;
