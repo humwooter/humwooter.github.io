@@ -840,6 +840,218 @@ function getStoreLabel() {
   return "the App Store";
 }
 
+
+// Add this JavaScript for selective edge fading
+function updateScreenshotFades() {
+  const viewport = document.querySelector('.fsc-viewport');
+  const images = document.querySelectorAll('.feature-screenshots-carousel img');
+  
+  if (!viewport || !images.length) return;
+  
+  const viewportRect = viewport.getBoundingClientRect();
+  const viewportCenter = viewportRect.left + viewportRect.width / 2;
+  
+  images.forEach(img => {
+    const imgRect = img.getBoundingClientRect();
+    const imgCenter = imgRect.left + imgRect.width / 2;
+    
+    // Remove all fade classes first
+    img.classList.remove('fade-left', 'fade-right', 'is-current');
+    
+    // Determine if this is the centered image
+    const distanceFromCenter = Math.abs(imgCenter - viewportCenter);
+    
+    if (distanceFromCenter < 50) {
+      // This is the current/centered image - no fade
+      img.classList.add('is-current');
+    } else if (imgCenter < viewportCenter) {
+      // Image is to the left - fade its left edge
+      img.classList.add('fade-left');
+    } else {
+      // Image is to the right - fade its right edge
+      img.classList.add('fade-right');
+    }
+  });
+}
+
+// Update on scroll and initial load
+const viewport = document.querySelector('.fsc-viewport');
+if (viewport) {
+  viewport.addEventListener('scroll', updateScreenshotFades);
+  updateScreenshotFades();
+}
+
+function setupMobileScreenshotCarousels() {
+  const mql = window.matchMedia("(max-width: 1200px)");
+
+  const initOne = (root) => {
+    // avoid double-init if renderAllComponents runs again
+    if (root.__fsc_inited) return;
+    root.__fsc_inited = true;
+
+    const viewport = root.querySelector(".fsc-viewport");
+    const track = root.querySelector(".fsc-track");
+    const pager = root.querySelector(".fsc-pager");
+    if (!viewport || !track || !pager) return;
+
+    const slides = Array.from(track.querySelectorAll("img"));
+    const updateFadeClasses = () => {
+      // optional: keep your "is-current" for debugging or other styling
+      slides.forEach((img, i) => {
+        img.classList.toggle("is-current", i === activeIndex);
+      });
+    
+      viewport.classList.toggle("has-prev", activeIndex > 0);
+      viewport.classList.toggle("has-next", activeIndex < slides.length - 1);
+    };
+
+    if (slides.length <= 1) return;
+
+    // scroll helper (centers slide)
+    const scrollToIndex = (i) => {
+      const idx = Math.max(0, Math.min(slides.length - 1, i));
+      const el = slides[idx];
+      const x = el.offsetLeft - (viewport.clientWidth - el.clientWidth) / 2;
+      viewport.scrollTo({ left: x, behavior: "smooth" });
+    };
+
+    // build dots
+    pager.innerHTML = "";
+    slides.forEach((_, i) => {
+      const b = document.createElement("button");
+      b.className = "fsc-dot";
+      b.type = "button";
+      b.setAttribute("aria-label", `Go to screenshot ${i + 1}`);
+      b.addEventListener("click", (e) => {
+        e.preventDefault();
+        scrollToIndex(i);
+      });
+      pager.appendChild(b);
+    });
+
+    const dots = Array.from(pager.querySelectorAll(".fsc-dot"));
+
+    const setActive = (idx) => {
+      dots.forEach((d, j) => {
+        if (j === idx) d.setAttribute("aria-current", "true");
+        else d.removeAttribute("aria-current");
+      });
+    };
+
+    // track current slide (driven by observer)
+    let activeIndex = 0;
+
+    // prevent tap-to-advance firing during a swipe
+    let dragStartX = 0;
+    let dragStartY = 0;
+    let dragMoved = false;
+
+    viewport.addEventListener(
+      "pointerdown",
+      (e) => {
+        dragMoved = false;
+        dragStartX = e.clientX;
+        dragStartY = e.clientY;
+      },
+      { passive: true }
+    );
+
+    viewport.addEventListener(
+      "pointermove",
+      (e) => {
+        const dx = Math.abs(e.clientX - dragStartX);
+        const dy = Math.abs(e.clientY - dragStartY);
+        if (dx > 10 || dy > 10) dragMoved = true;
+      },
+      { passive: true }
+    );
+
+    // tap left/right edge zones to go prev/next
+    slides.forEach((img, clickedIndex) => {
+      img.style.cursor = "pointer";
+      img.addEventListener("click", (e) => {
+        // ignore click if it was a swipe
+        if (dragMoved) return;
+    
+        // if user clicked a neighboring (peek) slide, navigate by index
+        if (clickedIndex !== activeIndex) {
+          scrollToIndex(clickedIndex);
+          return;
+        }
+    
+        // active slide edge-zones nav
+        const rect = img.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const edge = rect.width * 0.25;
+    
+        if (x <= edge) {
+          scrollToIndex(activeIndex - 1); // left edge -> previous (left)
+        } else if (x >= rect.width - edge) {
+          scrollToIndex(activeIndex + 1); // right edge -> next (right)
+        }
+      });
+    });
+
+    // observe which slide is most visible
+    const io = new IntersectionObserver(
+      (entries) => {
+        const best = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+        if (!best) return;
+
+        const idx = slides.indexOf(best.target);
+        if (idx >= 0) {
+          activeIndex = idx;
+          setActive(idx);
+          updateFadeClasses();
+        }
+      },
+      { root: viewport, threshold: [0.55] }
+    );
+
+    slides.forEach((s) => io.observe(s));
+
+    // initial state
+    setActive(0);
+    updateFadeClasses();
+
+    // if browser restores scroll position, sync active dot shortly after layout
+    requestAnimationFrame(() => {
+      // try to pick closest slide to current scrollLeft
+      const center = viewport.scrollLeft + viewport.clientWidth / 2;
+      let bestIdx = 0;
+      let bestDist = Infinity;
+
+      slides.forEach((el, i) => {
+        const elCenter = el.offsetLeft + el.clientWidth / 2;
+        const d = Math.abs(elCenter - center);
+        if (d < bestDist) {
+          bestDist = d;
+          bestIdx = i;
+        }
+      });
+
+      activeIndex = bestIdx;
+      setActive(bestIdx);
+      updateFadeClasses();
+    });
+  };
+
+  const initAll = () => {
+    document.querySelectorAll(".feature-screenshots-carousel").forEach(initOne);
+  };
+
+  // only initialize on mobile widths
+  if (mql.matches) initAll();
+
+  mql.addEventListener("change", (e) => {
+    // on entering mobile width, init any not-yet-inited carousels
+    if (e.matches) initAll();
+  });
+}
+
 function renderAppsLinks() {
   const apps = Array.isArray(SITE?.nav?.apps) ? SITE.nav.apps : [];
   if (!apps.length) return "";
@@ -997,6 +1209,7 @@ function renderHomeAppsCarousel() {
   return `<div class="app-icon-carousel home-apps-carousel">${cards}</div>`;
 }
 
+
 function renderFeatureRows() {
   if (isHomeApp()) return "";
 
@@ -1031,8 +1244,20 @@ function renderFeatureRows() {
             ${subtitle ? `<p class="feature-subtitle">${subtitle}</p>` : ""}
             ${text ? `<p>${text}</p>` : ""}
           </div>
-          ${screens > 0 ? `<div class="feature-screenshots">${screenshotsFor(id, screens)}</div>` : ""}
-        </div>
+          ${screens > 0 ? `
+            <div class="feature-screenshots feature-screenshots--desktop">
+              ${screenshotsFor(id, screens)}
+            </div>
+          
+            <div class="feature-screenshots-carousel feature-screenshots--mobile" data-feature-carousel="${id}">
+              <div class="fsc-viewport">
+                <div class="fsc-track">
+                  ${screenshotsFor(id, screens)}
+                </div>
+              </div>
+              <div class="fsc-pager" aria-hidden="true"></div>
+            </div>
+          ` : ""}        </div>
       `;
     })
     .join("");
@@ -1129,7 +1354,7 @@ const components = {
 
       if (shouldShowContact()) items.push(`<a href="${pagePath("contact.html")}">Contact</a>`);
       items.push(`<a href="${pagePath("privacy.html")}">Privacy Policy</a>`);
-      if (showPortfolio) items.push(`<a href="${getPortfolioHref()}">Other works</a>`);
+      if (showPortfolio) items.push(`<a href="${getPortfolioHref()}">Portfolio</a>`);
 
       const content = items.join("");
       if (!content) return "";
@@ -1149,7 +1374,7 @@ const components = {
 
       if (shouldShowContact()) items.push(`<a href="${pagePath("contact.html")}">Contact</a>`);
       items.push(`<a href="${pagePath("privacy.html")}">Privacy Policy</a>`);
-      if (showPortfolio) items.push(`<a href="${getPortfolioHref()}">Other works</a>`);
+      // if (showPortfolio) items.push(`<a href="${getPortfolioHref()}">Other works</a>`);
 
       const content = items.join("");
       if (!content) return "";
@@ -1172,13 +1397,44 @@ const components = {
       return "";
     })();
 
+    // const primaryMobile = (() => {
+    //   if (usePortfolioPrimary) {
+    //     return `<div class="mobile-nav-section"><a href="${getPortfolioHref()}" data-nav="page">Portfolio</a></div>`;
+    //   }
+    //   if (showDownload) {
+    //     return `<div class="mobile-nav-section"><a href="${downloadHref}" data-nav-download="1">Download</a></div>`;
+    //   }
+    //   return "";
+    // })();
+
     const primaryMobile = (() => {
+      // case: portfolio is the only enabled primary action
       if (usePortfolioPrimary) {
-        return `<div class="mobile-nav-section"><a href="${getPortfolioHref()}" data-nav="page">Portfolio</a></div>`;
+        return `
+          <div class="mobile-nav-section">
+            <a href="${getPortfolioHref()}" data-nav="page">Portfolio</a>
+          </div>
+        `;
       }
-      if (showDownload) {
-        return `<div class="mobile-nav-section"><a href="${downloadHref}" data-nav-download="1">Download</a></div>`;
+    
+      // otherwise, show Download (if enabled) and put Portfolio right under it (if enabled)
+      if (showDownload || showPortfolio) {
+        const downloadLink = showDownload
+        ? `<div class="mobile-nav-row"><a href="${downloadHref}" data-nav-download="1">Download</a></div>`
+        : "";
+      
+        const portfolioLink = showPortfolio
+          ? `<div class="mobile-nav-row"><a href="${getPortfolioHref()}" data-nav="page" class="portfolio-link">Portfolio</a></div>`
+          : "";
+        
+        return `
+          <div class="mobile-nav-section">
+            ${downloadLink}
+            ${portfolioLink}
+          </div>
+        `;
       }
+    
       return "";
     })();
 
@@ -1467,6 +1723,7 @@ function renderAllComponents() {
   });
 
   setupSectionAnimations();
+  setupMobileScreenshotCarousels(); 
   setupLogoClick();
   setupHeaderTransformation();
   handleFeatureScrollHash();
