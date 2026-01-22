@@ -192,12 +192,14 @@ section {
 
 .features {
     background-color: transparent;
+    color: var(--text-color);
 }
 
 .features h2 {
     text-align: center;
     font-size: 2.5rem;
     margin-bottom: 3rem;
+    color: var(--text-color);
 }
 
 .features-grid {
@@ -867,6 +869,7 @@ section {
     right: -100%;
     /* min-width: 250px;
     max-width: 400px; */
+    width: 40%;
     height: 100vh;
     background: var(--mobile-nav-gradient);
     backdrop-filter: blur(10px);
@@ -911,17 +914,36 @@ section {
 
 }
 
-
-
 .mobile-nav-section {
     margin-bottom: 1rem;
 }
 
+.mobile-nav-items.active {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.2rem;
+}
+
+/* all nav links */
+.mobile-nav-section a {
+    position: relative;
+    display: inline-block;
+    width: fit-content;
+    color: var(--text-color);
+    text-decoration: none;
+    padding: 0.5rem 0;
+    transition: color 0.3s ease;
+}
+
 .mobile-nav-header {
-    font-size: 1.8rem;
+    font-size: 1.4rem;
     font-weight: 600;
     color: var(--text-color);
     /* margin-bottom: 1rem; */
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+
     padding-bottom: 0.0rem;
     transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
@@ -989,8 +1011,8 @@ section {
     display: block;
     color: var(--text-color);
     text-decoration: none;
-    font-size: 1.4rem;
-    padding: 0.8rem 0;
+    font-size: 1.2rem;
+    padding: 0.5rem 0;
     transition: color 0.3s ease;
 }
 
