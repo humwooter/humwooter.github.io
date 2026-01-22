@@ -1450,7 +1450,7 @@ section {
     .feature-screenshots--mobile { display: block; }
     
     .feature-screenshots-carousel {
-      width: 90%;
+      width: 85%;
       margin: 1rem auto 0;
     }
     
@@ -1493,6 +1493,7 @@ section {
     touch-action: pan-x;
     overscroll-behavior-x: contain;
     --edge-fade: 20%;
+    --edge-ramp: 16%; 
   }
   
   /* fade left edge only */
@@ -1516,7 +1517,7 @@ section {
   }
   
   /* fade both edges */
-  .fsc-viewport.has-prev.has-next {
+  /* .fsc-viewport.has-prev.has-next {
     -webkit-mask-image: linear-gradient(
       to right,
       transparent 0%,
@@ -1535,6 +1536,40 @@ section {
     mask-size: 100% 100%;
     -webkit-mask-repeat: no-repeat;
     mask-repeat: no-repeat;
+  } */
+
+  .fsc-viewport.has-prev.has-next {
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      rgba(0,0,0,0.10) calc(var(--edge-fade) * 0.25),
+      rgba(0,0,0,0.45) calc(var(--edge-fade) * 0.65),
+      rgba(0,0,0,0.85) var(--edge-fade),
+      #000 calc(var(--edge-fade) + var(--edge-ramp)),
+      #000 calc(100% - (var(--edge-fade) + var(--edge-ramp))),
+      rgba(0,0,0,0.85) calc(100% - var(--edge-fade)),
+      rgba(0,0,0,0.45) calc(100% - (var(--edge-fade) * 0.65)),
+      rgba(0,0,0,0.10) calc(100% - (var(--edge-fade) * 0.25)),
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      rgba(0,0,0,0.10) calc(var(--edge-fade) * 0.25),
+      rgba(0,0,0,0.45) calc(var(--edge-fade) * 0.65),
+      rgba(0,0,0,0.85) var(--edge-fade),
+      #000 calc(var(--edge-fade) + var(--edge-ramp)),
+      #000 calc(100% - (var(--edge-fade) + var(--edge-ramp))),
+      rgba(0,0,0,0.85) calc(100% - var(--edge-fade)),
+      rgba(0,0,0,0.45) calc(100% - (var(--edge-fade) * 0.65)),
+      rgba(0,0,0,0.10) calc(100% - (var(--edge-fade) * 0.25)),
+      transparent 100%
+    );
+  
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
   }
   
   /* no fades */
