@@ -865,7 +865,6 @@ section {
     position: fixed;
     top: 0;
     right: -100%;
-    width: 30%;
     /* min-width: 250px;
     max-width: 400px; */
     height: 100vh;
@@ -896,17 +895,21 @@ section {
     font-weight: 600;
     color: var(--text-color);
     /* margin-bottom: 1rem; */
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid color-mix(in srgb, var(--text-color) 20%, transparent);
+    padding-bottom: 0.0rem;
     transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     display: inline-block;
 }
 
+.mobile-nav-header:not(:hover) {
+    border-bottom: 1px solid
+      color-mix(in srgb, var(--text-color) 20%, transparent);
+}
+
 .mobile-nav-header::after {
     content: '';
     position: absolute;
-    bottom: -0.5rem;
+    bottom: 0rem;
     left: 0;
     width: 0;
     height: 2px;
@@ -1044,7 +1047,7 @@ section {
         position: fixed;
         top: 0;
         right: -100%;
-        width: 60%;
+        width: 65%;
         height: 100vh;
         background: var(--mobile-nav-gradient);
         backdrop-filter: blur(10px);
@@ -1058,7 +1061,7 @@ section {
         font-size: 1.2rem;
         font-weight: 600;
         color: var(--text-color);
-        border-bottom: 1px solid color-mix(in srgb, var(--text-color) 20%, transparent);
+        /* border-bottom: 1px solid color-mix(in srgb, var(--text-color) 20%, transparent); */
         padding-bottom: 0.0rem;
         margin-bottom: 0.5rem;
         margin-top: 1rem;
@@ -1417,8 +1420,8 @@ section {
     }
     
     .feature-screenshots-carousel img {
-      flex: 0 0 60%;
-      max-width: 60%;
+      flex: 0 0 70%;
+      max-width: 70%;
       height: auto;
       border-radius: 14px;
       scroll-snap-align: center;
@@ -1433,6 +1436,8 @@ section {
 /* fade only the neighbor images (never the current) */
 /* optional tweak: control how wide the fade zone is */
 .fsc-viewport {
+    scroll-snap-type: x mandatory;
+    scroll-snap-stop: always;
     touch-action: pan-x;
     overscroll-behavior-x: contain;
     --edge-fade: 14%;
