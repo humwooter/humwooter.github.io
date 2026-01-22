@@ -874,6 +874,7 @@ section {
     transition: right 0.3s ease;
     overflow-y: auto; /* Changed from 'none' to 'auto' */
     border-left: 2px solid color-mix(in srgb, var(--text-color) 30%, transparent);
+    overflow: hidden;
 }
 
 .mobile-nav.active {
@@ -884,7 +885,33 @@ section {
     padding: 80px 20px 20px;
     height: 100%;
     overflow-y: auto; /* Added to ensure content is scrollable */
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: calc(28px + env(safe-area-inset-bottom));
+    overscroll-behavior: contain;
+
+    --nav-fade: 100px; /* fade height; */
+
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      transparent 0px,
+      #000 var(--nav-fade),
+      #000 100%
+    );
+    mask-image: linear-gradient(
+      to bottom,
+      transparent 0px,
+      #000 var(--nav-fade),
+      #000 100%
+    );
+  
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+
 }
+
+
 
 .mobile-nav-section {
     margin-bottom: 1rem;

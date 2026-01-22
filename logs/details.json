@@ -52,14 +52,14 @@
     },
     {
       "id": "customization",
-      "label": "Extensive Customization",
+      "label": "Customization",
       "subtitle": "Make it your own",
       "text": "Choose from a variety of beautiful themes or create your own. Customize fonts, colors, and spacing to match your style. Adjust the interface to your preferences with flexible layout options.",
       "screens": 5
     },
     {
       "id": "search-organization",
-      "label": "Smart Search & Organization",
+      "label": "Organization",
       "subtitle": "Find anything instantly",
       "text": "Powerful search capabilities help you find entries quickly. Organize entries with custom tags and folders. Filter and sort your entries by date, stamps, or custom criteria.",
       "screens": 7
@@ -73,7 +73,7 @@
     },
     {
       "id": "calendar-schedule",
-      "label": "Calendar & Schedule View",
+      "label": "Calendar & Schedule",
       "subtitle": "Organize your entries visually",
       "text": "Access your entries through an intuitive calendar interface. Choose between list view for a chronological overview of selected days, or switch to schedule view for a graphical representation where each day is a column and entries are plotted by time. Tap any entry to reveal its contents, making it easy to find and review past entries.",
       "screens": 5
