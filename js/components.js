@@ -895,35 +895,7 @@ function setupMobileScreenshotCarousels() {
     if (!viewport || !track || !pager) return;
 
     const slides = Array.from(track.querySelectorAll("img"));
-    const updateFadeClasses = () => {
-      // optional: keep your "is-current" for debugging or other styling
-      slides.forEach((img, i) => {
-        img.classList.toggle("is-current", i === activeIndex);
-      });
-    
-      viewport.classList.toggle("has-prev", activeIndex > 0);
-      viewport.classList.toggle("has-next", activeIndex < slides.length - 1);
-    };
-
     if (slides.length <= 1) return;
-
-    // scroll helper (centers slide)
-    const setActive = (idx) => {
-      dots.forEach((d, i) => d.setAttribute("aria-current", i === idx ? "true" : "false"));
-      slides.forEach((img, i) => img.classList.toggle("is-current", i === idx));
-    };
-    
-    const scrollToIndex = (idx) => {
-      idx = Math.max(0, Math.min(slides.length - 1, idx));
-      const el = slides[idx];
-      const x = el.offsetLeft - (viewport.clientWidth - el.clientWidth) / 2;
-    
-      // key: update immediately so the dot animates during the scroll
-      activeIndex = idx;
-      setActive(idx);
-    
-      viewport.scrollTo({ left: x, behavior: "smooth" });
-    };
 
     // build dots
     pager.innerHTML = "";
@@ -932,24 +904,82 @@ function setupMobileScreenshotCarousels() {
       b.className = "fsc-dot";
       b.type = "button";
       b.setAttribute("aria-label", `Go to screenshot ${i + 1}`);
-      b.addEventListener("click", (e) => {
-        e.preventDefault();
-        scrollToIndex(i);
-      });
       pager.appendChild(b);
     });
 
     const dots = Array.from(pager.querySelectorAll(".fsc-dot"));
 
-    // const setActive = (idx) => {
-    //   dots.forEach((d, j) => {
-    //     if (j === idx) d.setAttribute("aria-current", "true");
-    //     else d.removeAttribute("aria-current");
-    //   });
-    // };
+    
+    // track current slide (driven by nearest-to-center)
+    let activeIndex = -1;
 
-    // track current slide (driven by observer)
-    let activeIndex = 0;
+    const setDots = (idx) => {
+      dots.forEach((d, i) => d.setAttribute("aria-current", i === idx ? "true" : "false"));
+    };
+
+    
+
+    const setCurrentClass = (idx) => {
+      slides.forEach((img, i) => img.classList.toggle("is-current", i === idx));
+    };
+
+    const updateEdgeFade = () => {
+      const max = viewport.scrollWidth - viewport.clientWidth;
+      const left = viewport.scrollLeft;
+      const eps = 1;
+      viewport.classList.toggle("has-prev", left > eps);
+      viewport.classList.toggle("has-next", left < max - eps);
+    };
+
+    const computeActiveIndex = () => {
+      const center = viewport.scrollLeft + viewport.clientWidth / 2;
+
+      let bestIdx = 0;
+      let bestDist = Infinity;
+
+      slides.forEach((el, i) => {
+        const elCenter = el.offsetLeft + el.clientWidth / 2;
+        const d = Math.abs(elCenter - center);
+        if (d < bestDist) {
+          bestDist = d;
+          bestIdx = i;
+        }
+      });
+
+      if (bestIdx !== activeIndex) {
+        activeIndex = bestIdx;
+        setDots(activeIndex);
+        setCurrentClass(activeIndex);
+      }
+
+      updateEdgeFade();
+    };
+
+    // scroll helper (centers slide)
+    const scrollToIndex = (idx) => {
+      idx = Math.max(0, Math.min(slides.length - 1, idx));
+      const el = slides[idx];
+      const x = el.offsetLeft - (viewport.clientWidth - el.clientWidth) / 2;
+
+      // update immediately so dot animates during scroll
+      activeIndex = idx;
+      setDots(activeIndex);
+      setCurrentClass(activeIndex);
+
+      viewport.scrollTo({ left: x, behavior: "smooth" });
+
+      // keep edge fade responsive
+      updateEdgeFade();
+      setTimeout(updateEdgeFade, 350);
+    };
+
+    // dot clicks
+    dots.forEach((b, i) => {
+      b.addEventListener("click", (e) => {
+        e.preventDefault();
+        scrollToIndex(i);
+      });
+    });
 
     // prevent tap-to-advance firing during a swipe
     let dragStartX = 0;
@@ -976,77 +1006,50 @@ function setupMobileScreenshotCarousels() {
       { passive: true }
     );
 
-    // tap left/right edge zones to go prev/next
+    // click behavior: click neighbor -> go to it, click active edges -> prev/next
     slides.forEach((img, clickedIndex) => {
       img.style.cursor = "pointer";
       img.addEventListener("click", (e) => {
-        // ignore click if it was a swipe
         if (dragMoved) return;
-    
-        // if user clicked a neighboring (peek) slide, navigate by index
+
         if (clickedIndex !== activeIndex) {
           scrollToIndex(clickedIndex);
           return;
         }
-    
-        // active slide edge-zones nav
+
         const rect = img.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const edge = rect.width * 0.25;
-    
+
         if (x <= edge) {
-          scrollToIndex(activeIndex - 1); // left edge -> previous (left)
+          scrollToIndex(activeIndex - 1);
         } else if (x >= rect.width - edge) {
-          scrollToIndex(activeIndex + 1); // right edge -> next (right)
+          scrollToIndex(activeIndex + 1);
         }
       });
     });
 
-    // observe which slide is most visible
-    const io = new IntersectionObserver(
-      (entries) => {
-        const best = entries
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-
-        if (!best) return;
-
-        const idx = slides.indexOf(best.target);
-        if (idx >= 0) {
-          activeIndex = idx;
-          setActive(idx);
-          updateFadeClasses();
-        }
+    // rAF-throttled scroll sync (stable with scroll-snap)
+    let raf = 0;
+    viewport.addEventListener(
+      "scroll",
+      () => {
+        if (raf) return;
+        raf = requestAnimationFrame(() => {
+          raf = 0;
+          computeActiveIndex();
+        });
       },
-      { root: viewport, threshold: [0.55] }
+      { passive: true }
     );
 
-    slides.forEach((s) => io.observe(s));
-
-    // initial state
-    setActive(0);
-    updateFadeClasses();
-
-    // if browser restores scroll position, sync active dot shortly after layout
+    // initial state + handle restored scroll positions
     requestAnimationFrame(() => {
-      // try to pick closest slide to current scrollLeft
-      const center = viewport.scrollLeft + viewport.clientWidth / 2;
-      let bestIdx = 0;
-      let bestDist = Infinity;
-
-      slides.forEach((el, i) => {
-        const elCenter = el.offsetLeft + el.clientWidth / 2;
-        const d = Math.abs(elCenter - center);
-        if (d < bestDist) {
-          bestDist = d;
-          bestIdx = i;
-        }
-      });
-
-      activeIndex = bestIdx;
-      setActive(bestIdx);
-      updateFadeClasses();
+      computeActiveIndex();
     });
+
+    // keep state correct on resize (orientation changes, etc.)
+    window.addEventListener("resize", computeActiveIndex);
   };
 
   const initAll = () => {
@@ -1061,6 +1064,186 @@ function setupMobileScreenshotCarousels() {
     if (e.matches) initAll();
   });
 }
+// function setupMobileScreenshotCarousels() {
+//   const mql = window.matchMedia("(max-width: 1200px)");
+
+//   const initOne = (root) => {
+//     // avoid double-init if renderAllComponents runs again
+//     if (root.__fsc_inited) return;
+//     root.__fsc_inited = true;
+
+//     const viewport = root.querySelector(".fsc-viewport");
+//     const track = root.querySelector(".fsc-track");
+//     const pager = root.querySelector(".fsc-pager");
+//     if (!viewport || !track || !pager) return;
+
+//     const slides = Array.from(track.querySelectorAll("img"));
+//     const updateFadeClasses = () => {
+//       // optional: keep your "is-current" for debugging or other styling
+//       slides.forEach((img, i) => {
+//         img.classList.toggle("is-current", i === activeIndex);
+//       });
+    
+//       viewport.classList.toggle("has-prev", activeIndex > 0);
+//       viewport.classList.toggle("has-next", activeIndex < slides.length - 1);
+//     };
+
+//     if (slides.length <= 1) return;
+
+//     // scroll helper (centers slide)
+//     const setActive = (idx) => {
+//       dots.forEach((d, i) => d.setAttribute("aria-current", i === idx ? "true" : "false"));
+//       slides.forEach((img, i) => img.classList.toggle("is-current", i === idx));
+//     };
+    
+//     const scrollToIndex = (idx) => {
+//       idx = Math.max(0, Math.min(slides.length - 1, idx));
+//       const el = slides[idx];
+//       const x = el.offsetLeft - (viewport.clientWidth - el.clientWidth) / 2;
+    
+//       // key: update immediately so the dot animates during the scroll
+//       activeIndex = idx;
+//       setActive(idx);
+    
+//       viewport.scrollTo({ left: x, behavior: "smooth" });
+//     };
+
+//     // build dots
+//     pager.innerHTML = "";
+//     slides.forEach((_, i) => {
+//       const b = document.createElement("button");
+//       b.className = "fsc-dot";
+//       b.type = "button";
+//       b.setAttribute("aria-label", `Go to screenshot ${i + 1}`);
+//       b.addEventListener("click", (e) => {
+//         e.preventDefault();
+//         scrollToIndex(i);
+//       });
+//       pager.appendChild(b);
+//     });
+
+//     const dots = Array.from(pager.querySelectorAll(".fsc-dot"));
+
+//     // const setActive = (idx) => {
+//     //   dots.forEach((d, j) => {
+//     //     if (j === idx) d.setAttribute("aria-current", "true");
+//     //     else d.removeAttribute("aria-current");
+//     //   });
+//     // };
+
+//     // track current slide (driven by observer)
+//     let activeIndex = 0;
+
+//     // prevent tap-to-advance firing during a swipe
+//     let dragStartX = 0;
+//     let dragStartY = 0;
+//     let dragMoved = false;
+
+//     viewport.addEventListener(
+//       "pointerdown",
+//       (e) => {
+//         dragMoved = false;
+//         dragStartX = e.clientX;
+//         dragStartY = e.clientY;
+//       },
+//       { passive: true }
+//     );
+
+//     viewport.addEventListener(
+//       "pointermove",
+//       (e) => {
+//         const dx = Math.abs(e.clientX - dragStartX);
+//         const dy = Math.abs(e.clientY - dragStartY);
+//         if (dx > 10 || dy > 10) dragMoved = true;
+//       },
+//       { passive: true }
+//     );
+
+//     // tap left/right edge zones to go prev/next
+//     slides.forEach((img, clickedIndex) => {
+//       img.style.cursor = "pointer";
+//       img.addEventListener("click", (e) => {
+//         // ignore click if it was a swipe
+//         if (dragMoved) return;
+    
+//         // if user clicked a neighboring (peek) slide, navigate by index
+//         if (clickedIndex !== activeIndex) {
+//           scrollToIndex(clickedIndex);
+//           return;
+//         }
+    
+//         // active slide edge-zones nav
+//         const rect = img.getBoundingClientRect();
+//         const x = e.clientX - rect.left;
+//         const edge = rect.width * 0.25;
+    
+//         if (x <= edge) {
+//           scrollToIndex(activeIndex - 1); // left edge -> previous (left)
+//         } else if (x >= rect.width - edge) {
+//           scrollToIndex(activeIndex + 1); // right edge -> next (right)
+//         }
+//       });
+//     });
+
+//     // observe which slide is most visible
+//     const io = new IntersectionObserver(
+//       (entries) => {
+//         const best = entries
+//           .filter((e) => e.isIntersecting)
+//           .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+//         if (!best) return;
+
+//         const idx = slides.indexOf(best.target);
+//         if (idx >= 0) {
+//           activeIndex = idx;
+//           setActive(idx);
+//           updateFadeClasses();
+//         }
+//       },
+//       { root: viewport, threshold: [0.55] }
+//     );
+
+//     slides.forEach((s) => io.observe(s));
+
+//     // initial state
+//     setActive(0);
+//     updateFadeClasses();
+
+//     // if browser restores scroll position, sync active dot shortly after layout
+//     requestAnimationFrame(() => {
+//       // try to pick closest slide to current scrollLeft
+//       const center = viewport.scrollLeft + viewport.clientWidth / 2;
+//       let bestIdx = 0;
+//       let bestDist = Infinity;
+
+//       slides.forEach((el, i) => {
+//         const elCenter = el.offsetLeft + el.clientWidth / 2;
+//         const d = Math.abs(elCenter - center);
+//         if (d < bestDist) {
+//           bestDist = d;
+//           bestIdx = i;
+//         }
+//       });
+
+//       activeIndex = bestIdx;
+//       setActive(bestIdx);
+//       updateFadeClasses();
+//     });
+//   };
+
+//   const initAll = () => {
+//     document.querySelectorAll(".feature-screenshots-carousel").forEach(initOne);
+//   };
+
+//   // only initialize on mobile widths
+//   if (mql.matches) initAll();
+
+//   mql.addEventListener("change", (e) => {
+//     // on entering mobile width, init any not-yet-inited carousels
+//     if (e.matches) initAll();
+//   });
+// }
 
 function renderAppsLinks() {
   const apps = Array.isArray(SITE?.nav?.apps) ? SITE.nav.apps : [];
