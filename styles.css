@@ -1477,7 +1477,7 @@ section {
       height: auto;
       border-radius: 14px;
       scroll-snap-align: center;
-      box-shadow: 0 10px 20px color-mix(in srgb, var(--text-color) 10%, transparent);
+      /* box-shadow: 0 10px 20px color-mix(in srgb, var(--text-color) 10%, transparent); */
       opacity: 1 !important;
       transform: none !important;
       position: relative !important;
