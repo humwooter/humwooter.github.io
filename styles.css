@@ -1198,6 +1198,9 @@ section {
 
     .feature-subtitle {
         font-size: 1rem;
+        font-style: italic;
+        opacity: 0.85;              /* softer emphasis */
+        letter-spacing: 0.05em;    
     }
 
     .feature-card p {
