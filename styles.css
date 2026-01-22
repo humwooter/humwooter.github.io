@@ -1128,7 +1128,7 @@ section {
     }
 
     .subtitle {
-        font-size: calc(0.7 * var(--font-size));
+        font-size: 0.7 * var(--font-size);
         padding-left: 2.5rem;
         padding-right: 2.5rem;
         margin-left: 1rem;
@@ -1391,7 +1391,7 @@ section {
     .feature-screenshots--mobile { display: block; }
     
     .feature-screenshots-carousel {
-      width: 70%;
+      width: 80%;
       margin: 1rem auto 0;
     }
     
@@ -1413,8 +1413,8 @@ section {
     }
     
     .feature-screenshots-carousel img {
-      flex: 0 0 75%;
-      max-width: 75%;
+      flex: 0 0 60%;
+      max-width: 60%;
       height: auto;
       border-radius: 14px;
       scroll-snap-align: center;
