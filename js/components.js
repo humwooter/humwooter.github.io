@@ -554,7 +554,7 @@
 //       e.preventDefault();
 //       const theme = link.dataset.theme;
 //       if (typeof applyTheme === "function" && theme) applyTheme(theme);
-//       if (theme) localStorage.setItem("selectedTheme", theme);
+//       if (theme) saveTheme(theme);
 //       mobileNav?.classList.remove("active");
 //       ensureMenuState();
 //     });
@@ -591,7 +591,7 @@
 //       e.preventDefault();
 //       const theme = link.dataset.theme;
 //       if (typeof applyTheme === "function" && theme) applyTheme(theme);
-//       if (theme) localStorage.setItem("selectedTheme", theme);
+//       if (theme) saveTheme(theme);
 //     });
 //   });
 
@@ -646,7 +646,6 @@
 // app base + paths
 // -----------------------------
 
-// build tag for cache-busting / sanity checks
 console.log("[components] build:", "2026-01-20 details-root+navflags+portfoliooverride+downloadhash-v6");
 
 const EXPLICIT_APP_ID = (window.__APP_ID__ || document.documentElement.dataset.appId || "")
@@ -705,6 +704,25 @@ const asBool = (v, fallback = false) => {
   }
   return fallback;
 };
+
+function getThemeStorageKey() {
+  const appId = safeStr(EXPLICIT_APP_ID, "").toLowerCase();
+  if (appId) return `selectedTheme:${appId}`;
+
+  // fallback: stable per-app key based on APP_BASE
+  const base = safeStr(APP_BASE, "").replace(/\W+/g, "_");
+  return `selectedTheme:${base || "default"}`;
+}
+
+function getSavedTheme() {
+  return safeStr(localStorage.getItem(getThemeStorageKey()), "");
+}
+
+function saveTheme(theme) {
+  const t = safeStr(theme, "");
+  if (!t) return;
+  localStorage.setItem(getThemeStorageKey(), t);
+}
 
 // nav flags (each is independently controllable)
 function shouldShowAbout() {
@@ -820,7 +838,10 @@ function getFooterName() {
 }
 
 function getDefaultTheme() {
-  const saved = safeStr(localStorage.getItem("selectedTheme"), "");
+  // const saved = safeStr(localStorage.getItem("selectedTheme"), "");
+  // if (saved) return saved;
+
+  const saved = getSavedTheme();
   if (saved) return saved;
 
   const siteThemes = Array.isArray(SITE?.themes) ? SITE.themes : [];
@@ -1118,7 +1139,9 @@ function renderAppsLinks() {
       const label = safeStr(a?.label);
       const href = safeStr(a?.href);
       if (!label || !href) return "";
-      return `<a href="${href}" data-nav="page">${label}</a>`;
+      const newTab = asBool(a?.newTab, false);
+      const targetAttr = newTab ? ` target="_blank" rel="noopener noreferrer"` : "";
+      return `<a href="${href}" data-nav="page"${targetAttr}>${label}</a>`;
     })
     .join("");
 }
@@ -1235,8 +1258,72 @@ function getHomeAppsCarouselList() {
       href: safeStr(it?.href, ""),
       label: safeStr(it?.label, ""),
       theme: safeStr(it?.theme, ""),
+      newTab: asBool(it?.newTab, false), // <-- add
     }))
     .filter((it) => !!it.src && !!it.href);
+}
+
+function setupHomeAppsCarouselNav() {
+  if (!isHomeApp()) return;
+
+  const carousel = document.querySelector(".home-apps-carousel");
+  if (!carousel || carousel.__navBound) return;
+  carousel.__navBound = true;
+
+  function themeKeyForHref(href) {
+    const u = new URL(href, window.location.origin);
+    const parts = u.pathname.split("/").filter(Boolean);
+    const appId = (parts[0] || "").toLowerCase();
+    return appId ? `selectedTheme:${appId}` : "selectedTheme:default";
+  }
+
+  function navigateFromCard(card) {
+    const href = safeStr(card?.dataset?.href, "");
+    const theme = safeStr(card?.dataset?.theme, "");
+    const newTab = card?.dataset?.newTab === "1"; // data-new-tab="1"
+
+    if (theme && href) localStorage.setItem(themeKeyForHref(href), theme);
+    if (!href) return;
+
+    if (newTab) {
+      window.open(href, "_blank", "noopener,noreferrer");
+      return; // important: do not fall through
+    }
+
+    window.location.href = href;
+  }
+
+  // capture = true so this runs before any bubble listeners
+  carousel.addEventListener(
+    "click",
+    (e) => {
+      const card = e.target.closest(".app-icon-card");
+      if (!card || !carousel.contains(card)) return;
+
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation(); // blocks other click listeners that would navigate
+
+      navigateFromCard(card);
+    },
+    true
+  );
+
+  carousel.addEventListener(
+    "keydown",
+    (e) => {
+      if (e.key !== "Enter" && e.key !== " ") return;
+      const card = e.target.closest(".app-icon-card");
+      if (!card || !carousel.contains(card)) return;
+
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+
+      navigateFromCard(card);
+    },
+    true
+  );
 }
 
 function renderHomeAppsCarousel() {
@@ -1251,10 +1338,11 @@ function renderHomeAppsCarousel() {
       const z = items.length - index;
       const hrefAttr = `data-href="${it.href}"`;
       const themeAttr = it.theme ? `data-theme="${it.theme}"` : "";
+      const newTabAttr = it.newTab ? `data-new-tab="1"` : ""; // <-- add
       const labelAttr = it.label ? `aria-label="${it.label}"` : `aria-label="Open app"`;
 
       return `
-        <div class="app-icon-card" ${hrefAttr} ${themeAttr}
+        <div class="app-icon-card" ${hrefAttr} ${themeAttr} ${newTabAttr}
              style="transform: rotate(${rotation}deg); z-index: ${z};"
              role="link" tabindex="0" ${labelAttr}>
           <img src="${resolveAsset(it.src)}" alt="" class="app-icon">
@@ -1797,6 +1885,7 @@ function renderAllComponents() {
         heroSection.appendChild(heroImage);
       }
       heroImage.innerHTML = renderHomeAppsCarousel() || "";
+      setupHomeAppsCarouselNav();
     }
   }
 }
@@ -1843,7 +1932,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         carousel.insertBefore(icon, carousel.firstChild);
         updateCardPositions();
 
-        if (theme) localStorage.setItem("selectedTheme", theme);
+        if (theme) saveTheme(theme);
         if (typeof applyTheme === "function" && theme) applyTheme(theme);
       });
     });
@@ -1874,12 +1963,30 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
     }
 
+    function themeKeyForHref(href) {
+      const u = new URL(href, window.location.origin);
+      const parts = u.pathname.split("/").filter(Boolean);
+      const appId = (parts[0] || "").toLowerCase();
+      return appId ? `selectedTheme:${appId}` : "selectedTheme:default";
+    }
+    
     function navigateTo(card) {
       const href = safeStr(card?.dataset?.href, "");
       const theme = safeStr(card?.dataset?.theme, "");
-      if (theme) localStorage.setItem("selectedTheme", theme);
+      const newTab = asBool(card?.dataset?.newtab, false);
+    
+      if (theme && href) {
+        // write the theme for the destination app, not "home"
+        localStorage.setItem(themeKeyForHref(href), theme);
+      }
+    
       if (!href) return;
-      window.location.href = href;
+    
+      if (newTab) {
+        window.open(href, "_blank", "noopener,noreferrer");
+      } else {
+        window.location.href = href;
+      }
     }
 
     cards.forEach((card) => {
@@ -1956,7 +2063,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       e.preventDefault();
       const theme = safeStr(link.dataset.theme, "");
       if (typeof applyTheme === "function" && theme) applyTheme(theme);
-      if (theme) localStorage.setItem("selectedTheme", theme);
+      if (theme) saveTheme(theme);
     });
   });
 
@@ -1965,7 +2072,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       e.preventDefault();
       const theme = safeStr(link.dataset.theme, "");
       if (typeof applyTheme === "function" && theme) applyTheme(theme);
-      if (theme) localStorage.setItem("selectedTheme", theme);
+      if (theme) saveTheme(theme);
     });
   });
 

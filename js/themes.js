@@ -133,6 +133,20 @@ function isLightText(textColor) {
     return luminance > 0.5;
 }
 
+function getThemeStorageKey() {
+    const explicit =
+      (window.__APP_ID__ || document.documentElement.dataset.appId || "")
+        .toString()
+        .trim()
+        .toLowerCase();
+  
+    if (explicit) return `selectedTheme:${explicit}`;
+  
+    const parts = window.location.pathname.split("/").filter(Boolean);
+    const first = (parts[0] || "default").toLowerCase();
+    return `selectedTheme:${first}`;
+}
+
 // Function to apply a theme
 function applyTheme(themeName) {
     const theme = themes[themeName];
@@ -166,14 +180,14 @@ function applyTheme(themeName) {
     }
     
     // Store the selected theme
-    localStorage.setItem('selectedTheme', themeName);
+    localStorage.setItem(getThemeStorageKey(), themeName);
 }
 
 // Function to initialize theme
 function initializeTheme() {
-    const savedTheme = localStorage.getItem('selectedTheme') || 'cloud';
+    const savedTheme = localStorage.getItem(getThemeStorageKey()) || "cloud";
     applyTheme(savedTheme);
-}
+  }
 
 // Initialize theme when the page loads
 document.addEventListener('DOMContentLoaded', initializeTheme); 

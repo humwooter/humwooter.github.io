@@ -2,8 +2,8 @@
     "nav": {
         "showAbout": true,
       "apps": [
-        { "label": "Logs", "href": "/logs/" },
-        { "label": "Ostinuto", "href": "/ostinuto/" }
+        { "label": "Logs", "href": "/logs/", "newTab": true },
+        { "label": "Ostinuto", "href": "/ostinuto/", "newTab": true }
       ],
       "resume": { "label": "Resume", "href": "/home/resume.pdf" }
     },
@@ -24,19 +24,22 @@
           "label": "Logs",
           "href": "/logs/",
           "src": "/logs/images/app icons/app_icon-1.png",
-          "theme": "cloud"
+          "theme": "cloud",
+          "newTab": true
         },
         {
           "label": "Ostinuto",
           "href": "/ostinuto/",
           "src": "/ostinuto/images/app icons/app_icon-1.png",
-          "theme": "hyacinth"
+          "theme": "hyacinth",
+          "newTab": true
         },
         {
             "label": "Avarana",
             "href": "/avarana/",
             "src": "/avarana/images/app icons/app_icon-3.png",
-            "theme": "lotus"
+            "theme": "lotus",
+            "newTab": true
           }
       ]
     },

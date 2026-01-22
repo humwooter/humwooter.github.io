@@ -1,8 +1,8 @@
 
 
 :root {
-    --primary-color: var(--accent-color);
-    --text-color: var(--text-color);
+    /* --primary-color: var(--accent-color);
+    --text-color: var(--text-color); */
     --background-color: transparent;
     --secondary-background: transparent;
     --accent-color: var(--accent-color);
