@@ -831,6 +831,21 @@ function themeKeyForHref(href) {
   return appId ? `selectedTheme:${appId}` : "selectedTheme:default";
 }
 
+function setThemeForHrefIfUnset(href, theme) {
+  const h = safeStr(href, "");
+  const t = safeStr(theme, "");
+  if (!h || !t) return false;
+
+  const key = themeKeyForHref(h);
+  const existing = safeStr(localStorage.getItem(key), "");
+
+  // only set if not already set
+  if (existing) return false;
+
+  localStorage.setItem(key, t);
+  return true;
+}
+
 function persistThemeForDestinationHref(href, theme) {
   const h = safeStr(href, "");
   const t = safeStr(theme, "");
@@ -857,18 +872,55 @@ function saveTheme(theme) {
   localStorage.setItem(getThemeStorageKey(), t);
 }
 
+const APP_DEFAULT_THEMES = {
+  home: "midna",
+  ostinuto: "hyacinth",
+  logs: "cloud",
+  avarana: "lotus"
+  // add others:
+  // logs: "chrome",
+};
+
+function getCurrentAppId() {
+  const explicit = safeStr(EXPLICIT_APP_ID, "").toLowerCase();
+  if (explicit) return explicit;
+
+  const parts = window.location.pathname.split("/").filter(Boolean);
+  return safeStr(parts[0], "default").toLowerCase();
+}
+
+// Function to initialize theme
+function initializeTheme() {
+  const key = getThemeStorageKey();
+  const saved = safeStr(localStorage.getItem(key), "");
+
+  const appId = getCurrentAppId();
+  const mappedDefault = safeStr(APP_DEFAULT_THEMES?.[appId], "");
+
+  const theme = saved || mappedDefault || "scarab";
+
+  if (typeof applyTheme === "function" && theme) applyTheme(theme);
+
+  // persist the first-launch default so next load is stable
+  if (!saved && theme) localStorage.setItem(key, theme);
+}
+
 
 function getDefaultTheme() {
-  // const saved = safeStr(localStorage.getItem("selectedTheme"), "");
-  // if (saved) return saved;
-
   const saved = getSavedTheme();
   if (saved) return saved;
 
+  // first-launch default per app
+  const appId = getCurrentAppId();
+  const mapped = safeStr(APP_DEFAULT_THEMES?.[appId], "");
+  if (mapped) return mapped;
+
+  // fallback: first theme listed in details.json
   const siteThemes = Array.isArray(SITE?.themes) ? SITE.themes : [];
   const firstTheme = safeStr(siteThemes?.[0]?.id, "");
   if (firstTheme) return firstTheme;
 
+  // fallback: first hero icon theme
   const heroIcons = Array.isArray(SITE?.hero?.icons) ? SITE.hero.icons : [];
   const firstIconTheme = safeStr(heroIcons?.[0]?.theme, "");
   if (firstIconTheme) return firstIconTheme;

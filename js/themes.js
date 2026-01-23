@@ -198,11 +198,29 @@ function applyTheme(themeName) {
     localStorage.setItem(getThemeStorageKey(), themeName);
 }
 
-// Function to initialize theme
-function initializeTheme() {
-    const savedTheme = localStorage.getItem(getThemeStorageKey()) || "scarab";
-    applyTheme(savedTheme);
-  }
+
+// const APP_DEFAULT_THEMES = {
+//     home: "midna",
+//     ostinuto: "hyacinth",
+//     logs: "cloud",
+//     avarana: "lotus"
+//     // add others:
+//     // logs: "chrome",
+//   };
+
+//   function getCurrentAppId() {
+//     const explicit = safeStr(EXPLICIT_APP_ID, "").toLowerCase();
+//     if (explicit) return explicit;
+  
+//     const parts = window.location.pathname.split("/").filter(Boolean);
+//     return safeStr(parts[0], "default").toLowerCase();
+//   }
+
+// // Function to initialize theme
+// function initializeTheme() {
+//     const savedTheme = localStorage.getItem(getThemeStorageKey()) || "scarab";
+//     applyTheme(savedTheme);
+//   }
 
 // // Initialize theme when the page loads
 // document.addEventListener('DOMContentLoaded', initializeTheme); 
