@@ -881,6 +881,7 @@ const APP_DEFAULT_THEMES = {
   // logs: "chrome",
 };
 
+
 function getCurrentAppId() {
   const explicit = safeStr(EXPLICIT_APP_ID, "").toLowerCase();
   if (explicit) return explicit;

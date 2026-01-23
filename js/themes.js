@@ -161,6 +161,12 @@ function getThemeStorageKey() {
     return `selectedTheme:${first}`;
 }
 
+function logoUrl(color) {
+    // APP_BASE like "/home" or "/ostinuto"
+    const base = (window.APP_BASE || "").replace(/\/+$/, "");
+    return `./images/logo_${color}.PNG`;
+  }
+
 // Function to apply a theme
 function applyTheme(themeName) {
     const theme = themes[themeName];
@@ -191,12 +197,25 @@ function applyTheme(themeName) {
     if (logoImg) {
         const logoColor = isLightText(theme.textColor) ? 'white' : 'black';
         // logoImg.src = `images/logo_${logoColor}.PNG`;
-        logoImg.src = new URL(`./images/logo_${logoColor}.PNG`, window.location.href).toString();
+        logoImg.src = logoUrl(logoColor);
+        // logoImg.src = new URL(`./images/logo_${logoColor}.PNG`, window.location.href).toString();
     }
     
-    // Store the selected theme
-    localStorage.setItem(getThemeStorageKey(), themeName);
+    // // Store the selected theme
+    // localStorage.setItem(getThemeStorageKey(), themeName);
+    // syncLogoToCurrentTheme(themeName); //added
 }
+
+function syncLogoToCurrentTheme(themeName) {
+    const theme = themes?.[themeName];
+    if (!theme) return;
+  
+    const logoImg = document.querySelector(".logo img");
+    if (!logoImg) return;
+  
+    const logoColor = isLightText(theme.textColor) ? "white" : "black";
+    logoImg.src = new URL(`./images/logo_${logoColor}.PNG`, window.location.href).toString();
+  }
 
 
 // const APP_DEFAULT_THEMES = {
