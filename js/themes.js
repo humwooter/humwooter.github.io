@@ -121,7 +121,21 @@ const themes = {
         fontName: "Source Code Pro, monospace",
         fontSize: "18px",
         lineSpacing: "1.5"
-    }
+    },
+    midna: {
+        name: "midna",
+        accentColor: "rgb(0, 255, 255)",
+        textColor: "rgb(255, 255, 255)",
+        accentTextColor: "rgb(0, 0, 0)",
+        topColor: "rgb(0, 4, 10)",
+        bottomColor: "rgb(105, 140, 142)",
+        entryBackgroundColor: "rgba(255, 59, 0, 0.38)",
+        reminderColor: "rgba(255, 0, 0, 0.80)",
+        pinColor: "rgb(97, 65, 255)",
+        fontName: "Avenir Next, AvenirNext-Regular, system-ui, sans-serif",
+        fontSize: "15px",
+        lineSpacing: "1.2"
+      }
 };
 
 // Function to determine if text is light or dark
@@ -186,9 +200,9 @@ function applyTheme(themeName) {
 
 // Function to initialize theme
 function initializeTheme() {
-    const savedTheme = localStorage.getItem(getThemeStorageKey()) || "cloud";
+    const savedTheme = localStorage.getItem(getThemeStorageKey()) || "scarab";
     applyTheme(savedTheme);
   }
 
-// Initialize theme when the page loads
-document.addEventListener('DOMContentLoaded', initializeTheme); 
+// // Initialize theme when the page loads
+// document.addEventListener('DOMContentLoaded', initializeTheme); 

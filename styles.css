@@ -614,7 +614,7 @@ section {
 } */
 
 .app-icon-card:hover {
-    transform: rotate(0deg) translateY(-20px) !important;
+    transform: rotate(0deg) translateY(-0px) !important;
     z-index: 10 !important;
     filter: drop-shadow(0 25px 50px rgba(0, 0, 0, 0.3));
 }
@@ -630,6 +630,7 @@ section {
     border-radius: 22.5px;
     transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
 
 /* Dropdown styles */
 .dropdown {
@@ -1450,7 +1451,8 @@ section {
     .feature-screenshots--mobile { display: block; }
     
     .feature-screenshots-carousel {
-      width: 85%;
+      max-width: 85%;
+      max-height: 50%;
       margin: 1rem auto 0;
     }
     
@@ -1473,7 +1475,7 @@ section {
     
     .feature-screenshots-carousel img {
       flex: 0 0 70%;
-      max-width: 70%;
+      max-width: 60%;
       height: auto;
       border-radius: 14px;
       scroll-snap-align: center;

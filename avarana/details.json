@@ -4,6 +4,7 @@
         "showContact": false,
         "showPortfolio": true,
         "portfolioHref": "/home/",
+        "portfolioTheme": "midna",
         "showDownload": false
       },
     "themes": [

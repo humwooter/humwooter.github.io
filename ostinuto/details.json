@@ -5,6 +5,7 @@
     "showContact": true,
     "showPortfolio": true,
     "portfolioHref": "/home/",
+    "portfolioTheme": "midna",
     "showDownload": true
   },
   "hero": {

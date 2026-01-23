@@ -15,7 +15,8 @@
         { "id": "lilac", "label": "Lilac" },
         { "id": "scarab", "label": "Scarab" },
         { "id": "wheatgrass", "label": "Wheatgrass" },
-        { "id": "lotus", "label": "Lotus" }
+        { "id": "lotus", "label": "Lotus" },
+        { "id": "mida", "label": "Midna" }
       ],
 
     "hero": {

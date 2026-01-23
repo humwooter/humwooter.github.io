@@ -705,24 +705,6 @@ const asBool = (v, fallback = false) => {
   return fallback;
 };
 
-function getThemeStorageKey() {
-  const appId = safeStr(EXPLICIT_APP_ID, "").toLowerCase();
-  if (appId) return `selectedTheme:${appId}`;
-
-  // fallback: stable per-app key based on APP_BASE
-  const base = safeStr(APP_BASE, "").replace(/\W+/g, "_");
-  return `selectedTheme:${base || "default"}`;
-}
-
-function getSavedTheme() {
-  return safeStr(localStorage.getItem(getThemeStorageKey()), "");
-}
-
-function saveTheme(theme) {
-  const t = safeStr(theme, "");
-  if (!t) return;
-  localStorage.setItem(getThemeStorageKey(), t);
-}
 
 // nav flags (each is independently controllable)
 function shouldShowAbout() {
@@ -837,6 +819,45 @@ function getFooterName() {
   return safeStr(SITE?.footerName, safeStr(SITE?.footer?.copyright, getAppName()));
 }
 
+function getPortfolioTheme() {
+  // theme to apply when landing on /home/ via Portfolio
+  return safeStr(SITE?.nav?.portfolioTheme, "");
+}
+
+function themeKeyForHref(href) {
+  const u = new URL(href, window.location.origin);
+  const parts = u.pathname.split("/").filter(Boolean);
+  const appId = (parts[0] || "").toLowerCase();
+  return appId ? `selectedTheme:${appId}` : "selectedTheme:default";
+}
+
+function persistThemeForDestinationHref(href, theme) {
+  const h = safeStr(href, "");
+  const t = safeStr(theme, "");
+  if (!h || !t) return;
+  localStorage.setItem(themeKeyForHref(h), t);
+}
+
+function getThemeStorageKey() {
+  const appId = safeStr(EXPLICIT_APP_ID, "").toLowerCase();
+  if (appId) return `selectedTheme:${appId}`;
+
+  // fallback: stable per-app key based on APP_BASE
+  const base = safeStr(APP_BASE, "").replace(/\W+/g, "_");
+  return `selectedTheme:${base || "default"}`;
+}
+
+function getSavedTheme() {
+  return safeStr(localStorage.getItem(getThemeStorageKey()), "");
+}
+
+function saveTheme(theme) {
+  const t = safeStr(theme, "");
+  if (!t) return;
+  localStorage.setItem(getThemeStorageKey(), t);
+}
+
+
 function getDefaultTheme() {
   // const saved = safeStr(localStorage.getItem("selectedTheme"), "");
   // if (saved) return saved;
@@ -852,7 +873,7 @@ function getDefaultTheme() {
   const firstIconTheme = safeStr(heroIcons?.[0]?.theme, "");
   if (firstIconTheme) return firstIconTheme;
 
-  return "cloud";
+  return "scarab";
 }
 
 function getStoreLabel() {
@@ -900,6 +921,33 @@ const viewport = document.querySelector('.fsc-viewport');
 if (viewport) {
   viewport.addEventListener('scroll', updateScreenshotFades);
   updateScreenshotFades();
+}
+
+function setupPortfolioNavThemePersistence() {
+  const selector = 'a[data-nav-portfolio="1"]';
+  const links = document.querySelectorAll(selector);
+  if (!links.length) return;
+
+  links.forEach((link) => {
+    // avoid double-binding if you ever re-render
+    if (link.__portfolioBound) return;
+    link.__portfolioBound = true;
+
+    link.addEventListener(
+      "click",
+      (e) => {
+        const href = safeStr(link.getAttribute("href"), "");
+        if (!href) return;
+
+        const t = getPortfolioTheme();
+        if (t) persistThemeForDestinationHref(href, t);
+
+        // let the anchor do its normal behavior (new tab if target=_blank, etc.)
+        // do NOT preventDefault
+      },
+      true // capture: run before other handlers
+    );
+  });
 }
 
 function setupMobileScreenshotCarousels() {
@@ -1311,13 +1359,6 @@ function setupHomeAppsCarouselNav() {
   if (!carousel || carousel.__navBound) return;
   carousel.__navBound = true;
 
-  function themeKeyForHref(href) {
-    const u = new URL(href, window.location.origin);
-    const parts = u.pathname.split("/").filter(Boolean);
-    const appId = (parts[0] || "").toLowerCase();
-    return appId ? `selectedTheme:${appId}` : "selectedTheme:default";
-  }
-
   function navigateFromCard(card) {
     const href = safeStr(card?.dataset?.href, "");
     const theme = safeStr(card?.dataset?.theme, "");
@@ -1545,7 +1586,11 @@ const components = {
 
       if (shouldShowContact()) items.push(`<a href="${pagePath("contact.html")}">Contact</a>`);
       items.push(`<a href="${pagePath("privacy.html")}">Privacy Policy</a>`);
-      if (showPortfolio) items.push(`<a href="${getPortfolioHref()}">Portfolio</a>`);
+      // if (showPortfolio) items.push(`<a href="${getPortfolioHref()}">Portfolio</a>`);
+      if (showPortfolio)
+        items.push(
+          `<a href="${getPortfolioHref()}" data-nav-portfolio="1" target="_blank" rel="noopener noreferrer">Portfolio</a>`
+        );
 
       const content = items.join("");
       if (!content) return "";
@@ -1565,7 +1610,6 @@ const components = {
 
       if (shouldShowContact()) items.push(`<a href="${pagePath("contact.html")}">Contact</a>`);
       items.push(`<a href="${pagePath("privacy.html")}">Privacy Policy</a>`);
-      // if (showPortfolio) items.push(`<a href="${getPortfolioHref()}">Other works</a>`);
 
       const content = items.join("");
       if (!content) return "";
@@ -1614,10 +1658,13 @@ const components = {
         ? `<div class="mobile-nav-row"><a href="${downloadHref}" data-nav-download="1">Download</a></div>`
         : "";
       
-        const portfolioLink = showPortfolio
-          ? `<div class="mobile-nav-row"><a href="${getPortfolioHref()}" data-nav="page" class="portfolio-link">Portfolio</a></div>`
-          : "";
+        // const portfolioLink = showPortfolio
+        //   ? `<div class="mobile-nav-row"><a href="${getPortfolioHref()}" data-nav="page" class="portfolio-link">Portfolio</a></div>`
+        //   : "";
         
+          const portfolioLink = showPortfolio
+          ? `<div class="mobile-nav-row"><a href="${getPortfolioHref()}" data-nav="page" data-nav-portfolio="1" class="portfolio-link" target="_blank" rel="noopener noreferrer">Portfolio</a></div>`
+          : "";
         return `
           <div class="mobile-nav-section">
             ${downloadLink}
@@ -1936,6 +1983,7 @@ function renderAllComponents() {
   }
 }
 
+
 document.addEventListener("DOMContentLoaded", async () => {
   try {
     SITE = await loadDetails();
@@ -1948,10 +1996,15 @@ document.addEventListener("DOMContentLoaded", async () => {
   console.log("[details] nav flags:", SITE?.nav || null);
 
   renderAllComponents();
-
-  if (typeof initializeTheme === "function") initializeTheme();
-
+  setupPortfolioNavThemePersistence();
   const home = isHomeApp();
+
+  // initialize theme, then ensure home header reflects the saved/default theme too
+  if (typeof initializeTheme === "function") initializeTheme();
+  // if (home) {
+  //   const t = getDefaultTheme();
+  //   if (typeof applyTheme === "function" && t) applyTheme(t);
+  // }
 
   if (!home) {
     const carousel = document.querySelector(".app-icon-carousel");
@@ -1959,7 +2012,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     function updateCardPositions() {
       if (!carousel) return;
-      const cards = Array.from(carousel.children).filter((n) => n.classList?.contains("app-icon-card"));
+      const cards = Array.from(carousel.children).filter((n) =>
+        n.classList?.contains("app-icon-card")
+      );
       const count = cards.length;
 
       cards.forEach((card, index) => {
@@ -1968,7 +2023,17 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
     }
 
+    let lastActive = null;
+
     appIcons.forEach((icon) => {
+      icon.addEventListener("mouseenter", () => {
+        if (lastActive && lastActive !== icon) {
+          lastActive.classList.remove("active");
+        }
+        icon.classList.add("active");
+        lastActive = icon;
+      });
+
       icon.addEventListener("click", () => {
         if (!carousel) return;
 
@@ -1986,7 +2051,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     updateCardPositions();
 
     const initialTheme = getDefaultTheme();
-    const activeIcon = initialTheme ? document.querySelector(`.app-icon-card[data-theme="${initialTheme}"]`) : null;
+    const activeIcon = initialTheme
+      ? document.querySelector(`.app-icon-card[data-theme="${initialTheme}"]`)
+      : null;
+
     if (activeIcon && carousel) {
       activeIcon.remove();
       carousel.insertBefore(activeIcon, carousel.firstChild);
@@ -2000,39 +2068,76 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     function updateCardPositions() {
       if (!carousel) return;
-      const list = Array.from(carousel.children).filter((n) => n.classList?.contains("app-icon-card"));
+      const list = Array.from(carousel.children).filter((n) =>
+        n.classList?.contains("app-icon-card")
+      );
       const count = list.length;
 
       list.forEach((card, index) => {
-        card.style.transform = `rotate(${-30 * index}deg)`;
+        // card.style.transform = `rotate(${-30 * index}deg)`;
+        card.style.setProperty("--rot", `${-30 * index}deg`);
         card.style.zIndex = String(count - index);
       });
     }
 
-    function themeKeyForHref(href) {
-      const u = new URL(href, window.location.origin);
-      const parts = u.pathname.split("/").filter(Boolean);
-      const appId = (parts[0] || "").toLowerCase();
-      return appId ? `selectedTheme:${appId}` : "selectedTheme:default";
+    function themeForAppHref(href) {
+      const list = Array.isArray(SITE?.hero?.appsCarousel) ? SITE.hero.appsCarousel : [];
+      const target = new URL(href, window.location.origin);
+      const targetPath = target.pathname.replace(/\/+$/, "").toLowerCase();
+
+      for (const it of list) {
+        const itHref = safeStr(it?.href, "");
+        if (!itHref) continue;
+
+        const u = new URL(itHref, window.location.origin);
+        const p = u.pathname.replace(/\/+$/, "").toLowerCase();
+        if (p === targetPath) return safeStr(it?.theme, "");
+      }
+
+      return "";
     }
-    
+
     function navigateTo(card) {
       const href = safeStr(card?.dataset?.href, "");
       const theme = safeStr(card?.dataset?.theme, "");
       const newTab = asBool(card?.dataset?.newtab, false);
-    
-      if (theme && href) {
-        // write the theme for the destination app, not "home"
-        localStorage.setItem(themeKeyForHref(href), theme);
+
+      if (href) {
+        const t = theme || themeForAppHref(href);
+        if (t) {
+          // write the theme for the destination app, not "home"
+          localStorage.setItem(themeKeyForHref(href), t);
+        }
       }
-    
+
       if (!href) return;
-    
+
       if (newTab) {
         window.open(href, "_blank", "noopener,noreferrer");
       } else {
         window.location.href = href;
       }
+    }
+
+    // make nav/dropdown "My Apps" behave like clicking the home app cards:
+    // before navigation, write selectedTheme:<destAppId> based on the destination href
+    function setupHomeNavAppThemePersistence() {
+      const selector = 'a[data-nav="page"]';
+
+      document.querySelectorAll(selector).forEach((link) => {
+        link.addEventListener(
+          "click",
+          (e) => {
+            const href = safeStr(link.getAttribute("href"), "");
+            if (!href) return;
+
+            const t = themeForAppHref(href);
+            if (t) localStorage.setItem(themeKeyForHref(href), t);
+            // allow default navigation/new tab behavior
+          },
+          true
+        );
+      });
     }
 
     cards.forEach((card) => {
@@ -2046,6 +2151,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     updateCardPositions();
+    setupHomeNavAppThemePersistence();
   }
 
   const mobileMenuButton = document.querySelector(".mobile-menu-button");
@@ -2113,14 +2219,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   });
 
-  document.querySelectorAll(".desktop-only .dropdown-content a[data-theme]").forEach((link) => {
-    link.addEventListener("click", (e) => {
-      e.preventDefault();
-      const theme = safeStr(link.dataset.theme, "");
-      if (typeof applyTheme === "function" && theme) applyTheme(theme);
-      if (theme) saveTheme(theme);
+  document
+    .querySelectorAll(".desktop-only .dropdown-content a[data-theme]")
+    .forEach((link) => {
+      link.addEventListener("click", (e) => {
+        e.preventDefault();
+        const theme = safeStr(link.dataset.theme, "");
+        if (typeof applyTheme === "function" && theme) applyTheme(theme);
+        if (theme) saveTheme(theme);
+      });
     });
-  });
 
   if (!home) {
     document.querySelectorAll(".mobile-nav [data-feature]").forEach((link) => {
@@ -2139,17 +2247,19 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
     });
 
-    document.querySelectorAll(".desktop-only .dropdown-content a[data-feature]").forEach((link) => {
-      link.addEventListener("click", (e) => {
-        e.preventDefault();
-        const feature = safeStr(link.dataset.feature, "");
+    document
+      .querySelectorAll(".desktop-only .dropdown-content a[data-feature]")
+      .forEach((link) => {
+        link.addEventListener("click", (e) => {
+          e.preventDefault();
+          const feature = safeStr(link.dataset.feature, "");
 
-        if (!isHomePage()) {
-          window.location.href = `${pagePath("index.html")}#features?scroll=${feature}`;
-        } else {
-          if (feature) scrollToFeature(feature);
-        }
+          if (!isHomePage()) {
+            window.location.href = `${pagePath("index.html")}#features?scroll=${feature}`;
+          } else {
+            if (feature) scrollToFeature(feature);
+          }
+        });
       });
-    });
   }
-}); 
+});
