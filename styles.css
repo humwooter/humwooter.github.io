@@ -1,6 +1,11 @@
+/* =========================
+   globals
+   ========================= */
 
+   :root {
+    /* responsive */
+    --maxWidthMobile: 1300px;
 
-:root {
     /* --primary-color: var(--accent-color);
     --text-color: var(--text-color); */
     --background-color: transparent;
@@ -10,6 +15,9 @@
     --font-size: var(--font-size);
     --line-height: var(--line-spacing);
     --line-spacing: 1.5;
+
+    --overlay-blur: 10px;
+    --overlay-dim: rgba(0, 0, 0, 0.10);
 }
 
 * {
@@ -18,6 +26,25 @@
     box-sizing: border-box;
 }
 
+/* .nav { outline: 2px solid red; }
+.nav-left { outline: 2px solid green; }
+.nav-links { outline: 2px solid blue; }
+.nav {
+    position: relative;
+  } */
+  
+  /*
+  .nav::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+  
+    top: 80px;            
+    height: 5px;
+    background: yellow;
+  } */
+  
 /* title {
     color: var(--text-color);
 } */
@@ -32,6 +59,39 @@ body {
     transition: all 0.3s ease;
 }
 
+
+/* =========================
+   global blur overlay (for dropdowns + mobile nav)
+   ========================= */
+
+.page-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 999; /* below header (1000) and mobile nav (1001), above page content */
+    background: var(--overlay-dim);
+    backdrop-filter: blur(var(--overlay-blur));
+    -webkit-backdrop-filter: blur(var(--overlay-blur));
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 220ms ease;
+}
+
+/* when active, show + intercept clicks */
+.page-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* keep header + nav always above overlay */
+.header { z-index: 1000; }
+.mobile-nav { z-index: 1001; }
+.mobile-menu-button { z-index: 1002; }
+
+
+/* =========================
+   header + nav (desktop base)
+   ========================= */
+
 .header {
     position: fixed;
     top: 0;
@@ -44,12 +104,19 @@ body {
     box-shadow: 0 1px 0 color-mix(in srgb, var(--text-color) 10%, transparent);
 }
 
+.logo {
+    display: flex;
+    align-items: center;
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
 .nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 1rem;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     min-width: 0;
 }
 
@@ -60,11 +127,6 @@ body {
     flex: 1;
 }
 
-.logo {
-    display: flex;
-    align-items: center;
-}
-
 .nav-links {
     display: flex;
     gap: 2rem;
@@ -72,13 +134,23 @@ body {
     margin-left: auto;
 }
 
-.logo {
-    font-size: 2.5rem;
-    font-weight: 700;
+
+/* =========================
+   top nav links + underline
+   ========================= */
+
+.nav-links a,
+.dropdown-trigger {
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 2.0rem;
+    font-weight: 500;
     display: flex;
     align-items: center;
+    padding: 0 1rem;
+    position: relative;
+    transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
 
 .nav-links a:hover,
 .dropdown-trigger:hover {
@@ -88,7 +160,7 @@ body {
 .nav-links a::after {
     content: '';
     position: absolute;
-    bottom: -5px;
+    bottom: 2px;
     left: 0;
     width: 0;
     height: 2px;
@@ -100,6 +172,11 @@ body {
     width: 100%;
 }
 
+
+/* =========================
+   main layout
+   ========================= */
+
 main {
     margin-top: 80px;
 }
@@ -108,11 +185,16 @@ section {
     padding: 5rem 2rem;
 }
 
+
+/* =========================
+   hero
+   ========================= */
+
 .hero {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    max-width: 1200px;
+    max-width: 1300px;
     margin: 0 auto;
     min-height: calc(100vh - 80px);
     color: var(--text-color);
@@ -142,12 +224,10 @@ section {
 .subtitle {
     font-size: 1.25rem;
     color: color-mix(in srgb, var(--text-color) 40%, transparent);
-    margin-bottom: 2rem;   
+    margin-bottom: 2rem;
     margin-top: 1.5rem;
 }
 
-
-  
 .cta-button {
     display: inline-block;
     background-color: var(--accent-color);
@@ -190,6 +270,11 @@ section {
     transform: scale(1.05);
 }
 
+
+/* =========================
+   features
+   ========================= */
+
 .features {
     background-color: transparent;
     color: var(--text-color);
@@ -206,12 +291,12 @@ section {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
-    max-width: 1200px;
+    max-width: 1300px;
     margin: 0 auto;
 }
 
 .feature-row {
-    max-width: 1200px;
+    max-width: 1300px;
     margin: 0 auto 6rem;
     padding: 0 2rem;
     opacity: 0;
@@ -252,6 +337,9 @@ section {
 }
 
 
+/* =========================
+   feature screenshots (desktop + fanning)
+   ========================= */
 
 .feature-screenshots {
     display: flex;
@@ -261,6 +349,16 @@ section {
     margin-top: 2rem;
     position: relative;
     min-height: 300px;
+}
+
+/* ===== desktop feature screenshots: single-image special case ===== */
+.feature-screenshots:has(> img:only-child) {
+    justify-content: center;
+}
+
+.feature-screenshots > img:only-child {
+    width: min(520px, 70vw); /* bigger than the 3-up rule */
+    max-width: 100%;
 }
 
 .feature-screenshots img {
@@ -411,6 +509,17 @@ section {
     transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+@media (max-width: 1024px) {
+    .feature-screenshots img {
+        width: 250px;
+    }
+}
+
+
+/* =========================
+   screenshots section
+   ========================= */
+
 .screenshots {
     text-align: center;
 }
@@ -424,7 +533,7 @@ section {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
-    max-width: 1200px;
+    max-width: 1300px;
     margin: 0 auto;
 }
 
@@ -439,6 +548,11 @@ section {
 .screenshot img:hover {
     transform: scale(1.02);
 }
+
+
+/* =========================
+   download section
+   ========================= */
 
 .download {
     background-color: transparent;
@@ -458,6 +572,30 @@ section {
     color: var(--text-color);
 }
 
+.download-button {
+    display: inline-block;
+    background-color: var(--accent-color);
+    color: var(--accentTextColor);
+    padding: 1rem 2rem;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.download-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--text-color) 10%, transparent);
+}
+
+.download-button img {
+    height: 40px;
+    width: auto;
+    vertical-align: middle;
+}
+
 .app-store-button img {
     height: 60px;
     transition: transform 0.3s ease;
@@ -467,13 +605,18 @@ section {
     transform: scale(1.05);
 }
 
+
+/* =========================
+   footer
+   ========================= */
+
 .footer {
     background-color: transparent;
     padding: 3rem 2rem;
 }
 
 .footer-content {
-    max-width: 1200px;
+    max-width: 1300px;
     margin: 0 auto;
     text-align: center;
 }
@@ -494,13 +637,10 @@ section {
 }
 
 
-@media (max-width: 1024px) {
-    .feature-screenshots img {
-        width: 250px;
-    }
-}
+/* =========================
+   theme selector
+   ========================= */
 
-/* Theme Selector Styles */
 #theme-selector {
     position: fixed;
     top: 20px;
@@ -554,29 +694,10 @@ section {
     left: 0;
 }
 
-.download-button {
-    display: inline-block;
-    background-color: var(--accent-color);
-    color: var(--accentTextColor);
-    padding: 1rem 2rem;
-    border-radius: 30px;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
 
-.download-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px color-mix(in srgb, var(--text-color) 10%, transparent);
-}
-
-.download-button img {
-    height: 40px;
-    width: auto;
-    vertical-align: middle;
-}
+/* =========================
+   app icon carousel
+   ========================= */
 
 .app-icon-carousel {
     position: relative;
@@ -598,21 +719,6 @@ section {
     filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.2));
 }
 
-/* .app-icon-card:nth-child(1) {
-    transform: rotate(0deg);
-    z-index: 3;
-}
-
-.app-icon-card:nth-child(2) {
-    transform: rotate(-30deg);
-    z-index: 2;
-}
-
-.app-icon-card:nth-child(3) {
-    transform: rotate(-60deg);
-    z-index: 1;
-} */
-
 .app-icon-card:hover {
     transform: rotate(0deg) translateY(-0px) !important;
     z-index: 10 !important;
@@ -620,7 +726,7 @@ section {
 }
 
 /* Add a subtle hover effect to the entire app icon deck */
-.app-icon-carousel:hover { 
+.app-icon-carousel:hover {
     transform: translateY(-5px);
 }
 
@@ -632,40 +738,30 @@ section {
 }
 
 
+/* =========================
+   dropdowns (desktop)
+   ========================= */
+
+/* Desktop-only class */
+.desktop-only {
+    display: flex;
+}
+
+/* Add more space above the first theme in the theme dropdown */
+.header .nav-left .dropdown-content a:first-child {
+    margin-top: 0rem; /* Adjust as needed to match features spacing */
+}
+
 /* Dropdown styles */
 .dropdown {
     position: relative;
     display: inline-block;
-
 }
 
-
-.nav-links a,
+/* Specific overrides for dropdown trigger */
 .dropdown-trigger {
-    color: var(--text-color);
-    text-decoration: none;
-    font-size: 2.0rem;
-    transition: opacity 0.2s;
-    font-weight: 500;
-    line-height: 1;
-    display: flex;
-    align-items: center;
-    padding: 0 1rem;
-    position: relative;
-    top: 0;
-}
-
-.dropdown-trigger {
-    position: relative;
     display: inline-flex;
-    align-items: center;
-    padding: 0 1rem;
-    font-size: 2.0rem;
-    font-weight: 500;
-    line-height: 1;
     z-index: 2;
-    color: var(--text-color);
-    transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .dropdown-trigger:hover {
@@ -677,7 +773,7 @@ section {
     position: absolute;
     left: 0;
     right: 0;
-    bottom: -5px;
+    bottom: 2px;
     width: 0;
     height: 2px;
     background-color: var(--accent-color);
@@ -690,17 +786,20 @@ section {
 
 .dropdown-content {
     display: none;
+    line-height: 1;
     position: absolute;
     background: linear-gradient(to bottom, transparent, color-mix(in srgb, var(--entry-background) 50%, transparent));
     min-width: 200px;
     max-height: 80vh; /* Limit height to 80% of viewport height */
     overflow-y: auto; /* Enable vertical scrolling */
+    overscroll-behavior: contain;
+
     box-shadow: 0 2px 4px color-mix(in srgb, var(--text-color) 5%, transparent);
     z-index: 1;
     border: 1px solid color-mix(in srgb, var(--text-color) 30%, transparent);
     border-top: none;
     border-radius: 0 0 20px 20px;
-    padding: 0.5rem 0;
+    padding: 0.0rem 0;
     margin-top: 0;
     top: 100%;
 }
@@ -715,13 +814,13 @@ section {
     top: 100%;
     left: 0;
     right: 0;
-    height: 10px;
     background: transparent;
 }
 
 .dropdown-content a {
     color: var(--text-color);
-    padding: 1rem 1.2rem;
+    padding: 0.5rem 1.2rem;
+    /* top: 0.1rem; */
     text-decoration: none;
     display: block;
     font-size: 1.5rem;
@@ -733,7 +832,7 @@ section {
 .dropdown-content a::after {
     content: '';
     position: absolute;
-    bottom: 0;
+    bottom: 0.25rem;
     left: 1.2rem;
     width: 0;
     height: 2px;
@@ -745,7 +844,11 @@ section {
     width: calc(100% - 2.4rem);
 }
 
-/* Feature highlight animation */
+
+/* =========================
+   feature highlight animation
+   ========================= */
+
 .feature-row.highlight {
     animation: highlight-pulse 2s ease-out;
 }
@@ -762,7 +865,11 @@ section {
     }
 }
 
-/* Contact Form Styles */
+
+/* =========================
+   contact
+   ========================= */
+
 .contact {
     max-width: 800px;
     margin: 0 auto;
@@ -811,7 +918,67 @@ section {
     opacity: 0.8;
 }
 
-/* Mobile Navigation Styles */
+
+/* =========================
+   privacy
+   ========================= */
+
+.privacy {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 5rem 2rem 5rem 2rem;
+    padding-top: 160px;
+    min-height: calc(100vh - 80px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.privacy h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 3rem;
+    color: var(--accent-color);
+}
+
+.privacy-content {
+    background-color: var(--entry-background);
+    padding: 3rem;
+    border-radius: 20px;
+    border: 1px solid color-mix(in srgb, var(--text-color) 20%, transparent);
+    box-shadow: 0 10px 30px color-mix(in srgb, var(--text-color) 5%, transparent);
+}
+
+.privacy-content h3 {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    color: var(--accent-color);
+}
+
+.privacy-content h4 {
+    font-size: 1.3rem;
+    margin: 2rem 0 1rem 0;
+    color: var(--accent-color);
+}
+
+.privacy-content p {
+    margin-bottom: 1rem;
+    line-height: 1.6;
+    color: var(--text-color);
+}
+
+.privacy-content .last-updated {
+    margin-top: 2rem;
+    font-style: italic;
+    color: color-mix(in srgb, var(--text-color) 60%, transparent);
+    text-align: center;
+}
+
+
+/* =========================
+   mobile navigation
+   ========================= */
+
 .mobile-menu-button {
     display: none;
     flex-direction: column;
@@ -837,18 +1004,9 @@ section {
     left: 0;
 }
 
-.mobile-menu-button span:nth-child(1) {
-    top: 0;
-}
-
-.mobile-menu-button span:nth-child(2) {
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.mobile-menu-button span:nth-child(3) {
-    bottom: 0;
-}
+.mobile-menu-button span:nth-child(1) { top: 0; }
+.mobile-menu-button span:nth-child(2) { top: 50%; transform: translateY(-50%); }
+.mobile-menu-button span:nth-child(3) { bottom: 0; }
 
 /* Menu button animation */
 .mobile-menu-button.active span:nth-child(1) {
@@ -907,34 +1065,15 @@ section {
       #000 var(--nav-fade),
       #000 100%
     );
-  
+
     -webkit-mask-size: 100% 100%;
     mask-size: 100% 100%;
     -webkit-mask-repeat: no-repeat;
     mask-repeat: no-repeat;
-
 }
 
 .mobile-nav-section {
     margin-bottom: 1rem;
-}
-
-.mobile-nav-items.active {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.2rem;
-}
-
-/* all nav links */
-.mobile-nav-section a {
-    position: relative;
-    display: inline-block;
-    width: fit-content;
-    color: var(--text-color);
-    text-decoration: none;
-    padding: 0.5rem 0;
-    transition: color 0.3s ease;
 }
 
 .mobile-nav-header {
@@ -975,7 +1114,62 @@ section {
     width: 100%;
 }
 
-/* Add styles for the transformed header */
+.mobile-nav-items {
+    display: none;
+    padding-left: 1rem;
+}
+
+.mobile-nav-items.active {
+    display: block;
+}
+
+.mobile-nav-items.active {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.2rem;
+}
+
+/* all nav links */
+.mobile-nav-section a {
+    position: relative;
+    display: block;
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 1.2rem;
+    padding: 0.5rem 0;
+    transition: color 0.3s ease;
+}
+
+.mobile-nav-section a::after {
+    content: '';
+    position: absolute;
+    bottom: 0.2em;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--accent-color);
+    transition: width 0.3s ease;
+}
+
+.mobile-nav-section a:hover::after {
+    width: 100%;
+}
+
+/* Add hover effect for mobile nav dropdowns */
+.mobile-nav-section .dropdown-trigger:hover {
+    color: var(--accent-color);
+}
+
+.mobile-nav-section .dropdown-content a:hover {
+    color: var(--accent-color);
+}
+
+
+/* =========================
+   transformed header behavior
+   ========================= */
+
 .header.transformed {
     padding: 1rem;
 }
@@ -992,71 +1186,29 @@ section {
     display: flex;
 }
 
-/* Ensure the mobile menu button is always visible when header is transformed */
-/* .header.transformed .mobile-menu-button {
-    opacity: 1;
-    visibility: visible;
-} */
 
-.mobile-nav-items {
-    display: none;
-    padding-left: 1rem;
-}
+/* =========================
+   feature screenshots visibility (desktop vs mobile carousel)
+   ========================= */
 
-.mobile-nav-items.active {
-    display: block;
-}
-
-.mobile-nav-section a {
-    position: relative;
-    display: block;
-    color: var(--text-color);
-    text-decoration: none;
-    font-size: 1.2rem;
-    padding: 0.5rem 0;
-    transition: color 0.3s ease;
-}
+/* default (desktop): show existing layout, hide mobile carousel */
+.feature-screenshots--desktop { display: flex; }
+.feature-screenshots--mobile { display: none; }
 
 
-.mobile-nav-section a::after {
-    content: '';
-    position: absolute;
-    bottom: 0.2em;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background-color: var(--accent-color);
-    transition: width 0.3s ease;
-}
+/* =========================================================
+   mobile/tablet (single unified block)
+   note: css cannot interpolate var() into media queries yet,
+   so this stays hard-coded. keep in sync with --maxWidthMobile.
+   ========================================================= */
 
+@media (max-width: 1300px) {
 
-
-.mobile-nav-section a:hover::after {
-    width: 100%;
-}
-
-/* Add hover effect for mobile nav dropdowns */
-.mobile-nav-section .dropdown-trigger:hover {
-    color: var(--accent-color);
-}
-
-.mobile-nav-section .dropdown-content a:hover {
-    color: var(--accent-color);
-}
-
-/* Desktop-only class */
-.desktop-only {
-    display: flex;
-}
-
-
-
-@media (max-width: 1200px) {
     /* ===== header & navigation ===== */
     .logo {
         margin-left: -1rem;
     }
-    
+
     .nav-left {
         flex: 0 0 auto;
         gap: 1rem;
@@ -1223,7 +1375,7 @@ section {
         font-size: 1rem;
         font-style: italic;
         opacity: 0.85;              /* softer emphasis */
-        letter-spacing: 0.05em;    
+        letter-spacing: 0.05em;
     }
 
     .feature-card p {
@@ -1234,6 +1386,9 @@ section {
     .app-icon-carousel {
         width: 100px;
         height: 100px;
+    }
+
+    .app-icon-carousel:has(.app-icon-card + .app-icon-card) {
         padding-left: 2rem;
     }
 
@@ -1243,7 +1398,7 @@ section {
         border-radius: 11.25px;
     }
 
-    /* feature screenshots - stack vertically */
+    /* feature screenshots - stack vertically (non-carousel legacy) */
     .feature-screenshots {
         flex-direction: column;
         align-items: center;
@@ -1307,257 +1462,149 @@ section {
 
     /* ===== privacy page ===== */
     .privacy {
-        padding: 2rem 1rem;
-        padding-top: 120px;
-        min-height: calc(100vh - 60px);
-        justify-content: flex-start;
-    }
-
-    .privacy h2 {
-        font-size: 2rem;
-        margin-bottom: 2rem;
-    }
-
-    .privacy-content {
-        padding: 2rem;
-    }
-
-    .privacy-content h3 {
-        font-size: 1.5rem;
-        margin-bottom: 1rem;
-    }
-
-    .privacy-content h4 {
-        font-size: 1.2rem;
-        margin: 1.5rem 0 0.75rem 0;
-    }
-
-    .privacy-content p {
-        font-size: 0.95rem;
-        line-height: 1.5;
-    }
-}
-
-/* Add more space above the first theme in the theme dropdown */
-.header .nav-left .dropdown-content a:first-child {
-    margin-top: 1rem; /* Adjust as needed to match features spacing */
-}
-
-.theme-dropdown .dropdown-content a:first-child {
-    margin-top: 1rem;
-}
-
-.header .dropdown-trigger::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: -5px;
-    width: 0;
-    height: 2px;
-    background-color: var(--accent-color);
-    transition: width 0.3s ease;
-}
-.header .dropdown-trigger:hover::after {
-    width: 100%;
-} 
-
-/* Desktop styles (outside media query) */
-.privacy {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 5rem 2rem 5rem 2rem;
-    padding-top: 160px;
-    min-height: calc(100vh - 80px);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.privacy h2 {
-    text-align: center;
-    font-size: 2.5rem;
-    margin-bottom: 3rem;
-    color: var(--accent-color);
-}
-
-.privacy-content {
-    background-color: var(--entry-background);
-    padding: 3rem;
-    border-radius: 20px;
-    border: 1px solid color-mix(in srgb, var(--text-color) 20%, transparent);
-    box-shadow: 0 10px 30px color-mix(in srgb, var(--text-color) 5%, transparent);
-}
-
-.privacy-content h3 {
-    font-size: 1.8rem;
-    margin-bottom: 1.5rem;
-    color: var(--accent-color);
-}
-
-.privacy-content h4 {
-    font-size: 1.3rem;
-    margin: 2rem 0 1rem 0;
-    color: var(--accent-color);
-}
-
-.privacy-content p {
-    margin-bottom: 1rem;
-    line-height: 1.6;
-    color: var(--text-color);
-}
-
-.privacy-content .last-updated {
-    margin-top: 2rem;
-    font-style: italic;
-    color: color-mix(in srgb, var(--text-color) 60%, transparent);
-    text-align: center;
-}
-
-@media (max-width: 1200px) {
-    .privacy {
         padding: 2rem 1rem 2rem 1rem;
         padding-top: 120px;
         min-height: calc(100vh - 60px);
         justify-content: flex-start;
     }
+
     .privacy h2 {
         font-size: 2rem;
         margin-bottom: 2rem;
     }
+
     .privacy-content {
         padding: 2rem;
     }
+
     .privacy-content h3 {
         font-size: 1.5rem;
         margin-bottom: 1rem;
     }
+
     .privacy-content h4 {
         font-size: 1.2rem;
         margin: 1.5rem 0 0.75rem 0;
     }
+
     .privacy-content p {
         font-size: 0.95rem;
         line-height: 1.5;
     }
-}
 
-/* default (desktop): show existing layout, hide mobile carousel */
-.feature-screenshots--desktop { display: flex; }
-.feature-screenshots--mobile { display: none; }
-/* mobile/tablet */
-@media (max-width: 1200px) {
+    /* ===== feature screenshot carousel ===== */
     .feature-screenshots--desktop { display: none !important; }
     .feature-screenshots--mobile { display: block; }
-    
+
     .feature-screenshots-carousel {
-      max-width: 85%;
-      max-height: 50%;
-      margin: 1rem auto 0;
+        max-width: 60%;
+        max-height: 50%;
+        margin: 1rem auto 0;
     }
-    
+
     .fsc-viewport {
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-      border-radius: 16px;
-      position: relative;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        border-radius: 16px;
+        position: relative;
     }
-    
+
     .fsc-viewport::-webkit-scrollbar { display: none; }
-    
+
     .fsc-track {
-      display: flex;
-      gap: 12px;
-      padding: 6px 10px 14px;
+        display: flex;
+        gap: 12px;
+        padding: 6px 10px 14px;
     }
-    
+
     .feature-screenshots-carousel img {
-      flex: 0 0 70%;
-      max-width: 60%;
-      height: auto;
-      border-radius: 14px;
-      scroll-snap-align: center;
-      /* box-shadow: 0 10px 20px color-mix(in srgb, var(--text-color) 10%, transparent); */
-      opacity: 1 !important;
-      transform: none !important;
-      position: relative !important;
-      cursor: grab;
-      scroll-snap-stop: always;
+        flex: 0 0 70%;
+        max-width: 60%;
+        height: auto;
+        border-radius: 14px;
+        scroll-snap-align: center;
+        /* box-shadow: 0 10px 20px color-mix(in srgb, var(--text-color) 10%, transparent); */
+        opacity: 1 !important;
+        transform: none !important;
+        position: relative !important;
+        cursor: grab;
+        scroll-snap-stop: always;
     }
-    
-/* fade only the neighbor images (never the current) */
-/* optional tweak: control how wide the fade zone is */
-.fsc-viewport {
-    scroll-snap-type: x mandatory;
-    scroll-snap-stop: always;
-    touch-action: pan-x;
-    overscroll-behavior-x: contain;
-    --edge-fade: 18%;
-    --edge-ramp: 10%; 
-  }
-  
-  /* fade left edge only */
-  .fsc-viewport.has-prev:not(.has-next) {
-    -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 var(--edge-fade), #000 100%);
-    mask-image: linear-gradient(to right, transparent 0%, #000 var(--edge-fade), #000 100%);
-    -webkit-mask-size: 100% 100%;
-    mask-size: 100% 100%;
-    -webkit-mask-repeat: no-repeat;
-    mask-repeat: no-repeat;
-  }
-  
-  /* fade right edge only */
-  .fsc-viewport.has-next:not(.has-prev) {
-    -webkit-mask-image: linear-gradient(to left, transparent 0%, #000 var(--edge-fade), #000 100%);
-    mask-image: linear-gradient(to left, transparent 0%, #000 var(--edge-fade), #000 100%);
-    -webkit-mask-size: 100% 100%;
-    mask-size: 100% 100%;
-    -webkit-mask-repeat: no-repeat;
-    mask-repeat: no-repeat;
-  }
-  
-  /* fade both edges */
-  .fsc-viewport.has-prev.has-next {
-    -webkit-mask-image: linear-gradient(
-      to right,
-      transparent 0%,
-      #000 var(--edge-fade),
-      #000 calc(100% - var(--edge-fade)),
-      transparent 100%
-    );
-    mask-image: linear-gradient(
-      to right,
-      transparent 0%,
-      #000 var(--edge-fade),
-      #000 calc(100% - var(--edge-fade)),
-      transparent 100%
-    );
-    -webkit-mask-size: 100% 100%;
-    mask-size: 100% 100%;
-    -webkit-mask-repeat: no-repeat;
-    mask-repeat: no-repeat;
-  }
-  
-  /* no fades */
-  .fsc-viewport:not(.has-prev):not(.has-next) {
-    -webkit-mask-image: none;
-    mask-image: none;
-  }
-  /* current slide must never be masked */
-  .feature-screenshots-carousel img.is-current {
-    mask-image: none !important;
-    -webkit-mask-image: none !important;
-  }
+
+    /* fade only the neighbor images (never the current) */
+    .fsc-viewport {
+        scroll-snap-type: x mandatory;
+        scroll-snap-stop: always;
+        touch-action: pan-x;
+        overscroll-behavior-x: contain;
+        --edge-fade: 18%;
+        --edge-ramp: 10%;
+    }
+
+    /* fade left edge only */
+    .fsc-viewport.has-prev:not(.has-next) {
+        -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 var(--edge-fade), #000 100%);
+        mask-image: linear-gradient(to right, transparent 0%, #000 var(--edge-fade), #000 100%);
+        -webkit-mask-size: 100% 100%;
+        mask-size: 100% 100%;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+    }
+
+    /* fade right edge only */
+    .fsc-viewport.has-next:not(.has-prev) {
+        -webkit-mask-image: linear-gradient(to left, transparent 0%, #000 var(--edge-fade), #000 100%);
+        mask-image: linear-gradient(to left, transparent 0%, #000 var(--edge-fade), #000 100%);
+        -webkit-mask-size: 100% 100%;
+        mask-size: 100% 100%;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+    }
+
+    /* fade both edges */
+    .fsc-viewport.has-prev.has-next {
+        -webkit-mask-image: linear-gradient(
+            to right,
+            transparent 0%,
+            #000 var(--edge-fade),
+            #000 calc(100% - var(--edge-fade)),
+            transparent 100%
+        );
+        mask-image: linear-gradient(
+            to right,
+            transparent 0%,
+            #000 var(--edge-fade),
+            #000 calc(100% - var(--edge-fade)),
+            transparent 100%
+        );
+        -webkit-mask-size: 100% 100%;
+        mask-size: 100% 100%;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+    }
+
+    /* no fades */
+    .fsc-viewport:not(.has-prev):not(.has-next) {
+        -webkit-mask-image: none;
+        mask-image: none;
+    }
+
+    /* current slide must never be masked */
+    .feature-screenshots-carousel img.is-current {
+        mask-image: none !important;
+        -webkit-mask-image: none !important;
+    }
+
     /* pager dots */
     .fsc-pager {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      padding: 10px 0 0;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        padding: 10px 0 0;
     }
-    
+
     .fsc-dot {
         width: 8px;
         height: 8px;
@@ -1566,14 +1613,32 @@ section {
         opacity: 0.35;
         border: 0;
         padding: 0;
-      
         transition: width 220ms ease, opacity 220ms ease;
         will-change: width, opacity;
-      }
-    
-    .fsc-dot[aria-current="true"] {
-      opacity: 1;
-      width: 26px;
-      height: 8px;
     }
-  }
+
+    .fsc-dot[aria-current="true"] {
+        opacity: 1;
+        width: 26px;
+        height: 8px;
+    }
+    .fsc-track:has(> img:only-child) {
+        justify-content: center;
+    }
+    
+    .fsc-track:has(> img:only-child) img {
+        flex-basis: 85%;
+        max-width: 85%;
+    }
+}
+
+
+/* =========================
+   dropdown overrides (must stay after dropdown base)
+   ========================= */
+
+.header .dropdown-content > a {
+    display: block !important;
+    margin: 0 !important;
+    white-space: nowrap;
+}

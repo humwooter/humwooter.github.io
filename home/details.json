@@ -3,20 +3,21 @@
         "showAbout": true,
       "apps": [
         { "label": "Logs", "href": "/logs/", "newTab": true },
-        { "label": "Ostinuto", "href": "/ostinuto/", "newTab": true }
+        { "label": "Ostinuto", "href": "/ostinuto/", "newTab": true },
+        { "label": "Anidex", "href": "/anidex/", "newTab": true },
+        { "label": "Avarana", "href": "/avarana/", "newTab": true }
       ],
       "resume": { "label": "Resume", "href": "/home/resume.pdf" }
     },
 
     "themes": [
+      { "id": "dusk", "label": "Dusk" },
+      { "id": "dawn", "label": "Dawn" },
         { "id": "chrome", "label": "Chrome" },
-        { "id": "mocha", "label": "Mocha" },
-        { "id": "hyacinth", "label": "Hyacinth" },
         { "id": "lilac", "label": "Lilac" },
         { "id": "scarab", "label": "Scarab" },
-        { "id": "wheatgrass", "label": "Wheatgrass" },
-        { "id": "lotus", "label": "Lotus" },
-        { "id": "midna", "label": "Midna" }
+        { "id": "wheatgrass", "label": "Wheatgrass" }
+
       ],
 
     "hero": {
@@ -36,12 +37,12 @@
           "newTab": true
         },
         {
-            "label": "Avarana",
-            "href": "/avarana/",
-            "src": "/avarana/images/app icons/app_icon-3.png",
-            "theme": "lotus",
-            "newTab": true
-          }
+          "label": "Anidex",
+          "href": "/anidex/",
+          "src": "/anidex/images/app icons/app_icon-1.png",
+          "theme": "fern",
+          "newTab": true
+        }
       ]
     },
     "buttons": [

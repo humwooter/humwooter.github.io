@@ -122,8 +122,22 @@ const themes = {
         fontSize: "18px",
         lineSpacing: "1.5"
     },
-    midna: {
-        name: "midna",
+    dawn: {
+        name: "Dawn",
+        accentColor: "rgb(255, 204, 84)",
+        textColor: "rgb(0, 0, 0)",
+        accentTextColor: "rgb(0, 0, 0)",
+        topColor: "rgb(210, 162, 255)",
+        bottomColor: "rgb(98, 69, 85)",
+        entryBackgroundColor: "rgba(0, 123, 210, 0.3300423026)",
+        reminderColor: "rgba(254, 0, 71, 0.9873060584)",
+        pinColor: "rgb(157, 217, 255)",
+        fontName: "Snell Roundhand, cursive",
+        fontSize: "20.5px",
+        lineSpacing: "1.2"
+      },
+    dusk: {
+        name: "Dusk",
         accentColor: "rgb(0, 255, 255)",
         textColor: "rgb(255, 255, 255)",
         accentTextColor: "rgb(0, 0, 0)",
@@ -134,7 +148,36 @@ const themes = {
         pinColor: "rgb(97, 65, 255)",
         fontName: "Avenir Next, AvenirNext-Regular, system-ui, sans-serif",
         fontSize: "15px",
-        lineSpacing: "1.2"
+        lineSpacing: "1.5"
+      },
+      froggie: {
+        name: "Froggie",
+        accentColor: "rgb(236, 109, 15)",
+        textColor: "rgb(0, 0, 0)",
+        accentTextColor: "rgb(0, 0, 0)",
+        topColor: "rgb(212, 213, 113)",
+        bottomColor: "rgb(114, 160, 37)",
+        entryBackgroundColor: "rgba(235, 235, 235, 0.5162200282)",
+        reminderColor: "rgba(254, 0, 71, 0.9873060584)",
+        pinColor: "rgb(157, 217, 255)",
+        fontName: "Niramit, Niramit-Regular, system-ui, -apple-system, sans-serif",
+        fontSize: "17.5px",
+        lineSpacing: "1.5"
+      },
+      
+      fern: {
+        name: "Fern",
+        accentColor: "rgb(2, 58, 29)",
+        textColor: "rgb(255, 255, 255)",
+        accentTextColor: "rgb(255, 255, 255)",
+        topColor: "rgb(141, 179, 118)",
+        bottomColor: "rgb(77, 143, 109)",
+        entryBackgroundColor: "rgba(255, 255, 255, 0.2087870025)",
+        reminderColor: "rgba(255, 0, 0, 0.7644569278)",
+        pinColor: "rgba(125, 57, 255, 0.8645979762)",
+        fontName: "Menlo, Menlo-Regular, ui-monospace, SFMono-Regular, monospace",
+        fontSize: "12.5px",
+        lineSpacing: "1.5"
       }
 };
 
@@ -219,7 +262,7 @@ function syncLogoToCurrentTheme(themeName) {
 
 
 // const APP_DEFAULT_THEMES = {
-//     home: "midna",
+//     home: "dusk",
 //     ostinuto: "hyacinth",
 //     logs: "cloud",
 //     avarana: "lotus"

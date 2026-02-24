@@ -1,0 +1,67 @@
+{
+  "appName": "Anidex",
+  "nav": {
+    "showAbout": false,
+    "showContact": false,
+    "showPortfolio": true,
+    "portfolioHref": "/home/",
+    "portfolioTheme": "dusk",
+    "showDownload": false
+  },
+
+  "hero": {
+    "title": "Anidex",
+    "subtitle": "Anidex is an offline animal classification and cataloging app inspired by the Pokédex, designed for exploring biodiversity through machine learning and structured taxonomy.",
+    "icons": [
+      { "src": "images/app icons/app_icon-1.png", "theme": "fern" }
+    ]
+  },
+
+  "themes": [
+    { "id": "fern", "label": "Fern" },
+    { "id": "froggie", "label": "Froggie" }
+
+  ],
+
+  "featuresTitle": "Key Features",
+
+  "features": [
+    {
+      "id": "intuitive-interface",
+      "label": "Intuitive Interface",
+      "subtitle": "Camera-first exploration experience",
+      "text": "The main app view centers on a live camera interface with the collection sheet subtly peeking from the bottom. Flash control, photo library uploads, double-tap camera switching, and pinch-to-zoom gestures are all seamlessly integrated.",
+      "screens": 3
+    },
+    {
+      "id": "collection-view",
+      "label": "Collection View",
+      "subtitle": "Track discovery progress",
+      "text": "View all discovered species alongside a complete index of animals yet to be found, providing a structured overview of exploration progress.",
+      "screens": 5
+    },
+    {
+      "id": "offline-classification",
+      "label": "Offline Classification",
+      "subtitle": "Instant classification using fully on-device models",
+      "text": "Classify and catalog animals anywhere with no network dependency. Whether in a rainforest, remote field site, or completely off the grid, Anidex delivers fast, reliable species recognition entirely on-device.",
+      "screens": 5
+    },
+    {
+      "id": "modular-schema",
+      "label": "Modular Model Schema",
+      "subtitle": "Hierarchical classification architecture",
+      "text": "Implemented a modular CoreML classification pipeline using a taxonomy-driven hierarchy, where a top-level phylum classifier first routes the image to the appropriate class-level model, which then performs fine-grained species identification.",
+      "screens": 1
+    }
+  ],
+
+  "links": {
+    "appStore": "#",
+    "supportEmail": "humwooter+anidex@gmail.com"
+  },
+
+  "footer": {
+    "copyright": "Anidex"
+  }
+}
