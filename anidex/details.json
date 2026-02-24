@@ -11,7 +11,7 @@
 
   "hero": {
     "title": "Anidex",
-    "subtitle": "Anidex is an offline animal classification and cataloging app inspired by the Pokédex, designed for exploring biodiversity through machine learning and structured taxonomy.",
+    "subtitle": "Anidex is an offline animal identification app inspired by the Pokédex from Pokémon, built for exploring the natural world and its biodiversity.",
     "icons": [
       { "src": "images/app icons/app_icon-1.png", "theme": "fern" }
     ]

@@ -1497,7 +1497,7 @@ section {
     .feature-screenshots--mobile { display: block; }
 
     .feature-screenshots-carousel {
-        max-width: 60%;
+        max-width: 70%;
         max-height: 50%;
         margin: 1rem auto 0;
     }
