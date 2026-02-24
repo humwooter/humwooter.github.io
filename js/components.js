@@ -1036,28 +1036,29 @@ const components = {
     const downloadHref = `${pagePath("index.html")}#download`;
 
     // primary action slot (download or portfolio)
-    const primaryDesktop = (() => {
-      if (usePortfolioPrimary) return `<a href="${getPortfolioHref()}" data-nav="page">Portfolio</a>`;
-      if (showDownload) return `<a href="${downloadHref}" data-nav-download="1">Download</a>`;
-      return "";
-    })();
-
-    // const primaryMobile = (() => {
-    //   if (usePortfolioPrimary) {
-    //     return `<div class="mobile-nav-section"><a href="${getPortfolioHref()}" data-nav="page">Portfolio</a></div>`;
-    //   }
-    //   if (showDownload) {
-    //     return `<div class="mobile-nav-section"><a href="${downloadHref}" data-nav-download="1">Download</a></div>`;
-    //   }
+    // const primaryDesktop = (() => {
+    //   if (usePortfolioPrimary) return `<a href="${getPortfolioHref()}" data-nav="page">Portfolio</a>`;
+    //   if (showDownload) return `<a href="${downloadHref}" data-nav-download="1">Download</a>`;
     //   return "";
     // })();
 
+    const primaryDesktop = (() => {
+      if (usePortfolioPrimary)
+        return `<a href="${getPortfolioHref()}" data-nav="page" data-nav-portfolio="1">Portfolio</a>`;
+    
+      if (showDownload)
+        return `<a href="${downloadHref}" data-nav-download="1">Download</a>`;
+    
+      return "";
+    })();
+
+  
     const primaryMobile = (() => {
       // case: portfolio is the only enabled primary action
       if (usePortfolioPrimary) {
         return `
           <div class="mobile-nav-section">
-            <a href="${getPortfolioHref()}" data-nav="page">Portfolio</a>
+            <a href="${getPortfolioHref()}" data-nav="page" data-nav-portfolio="1">Portfolio</a>
           </div>
         `;
       }
